@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Bell, Search, Menu, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Bell, Menu } from 'lucide-react';
+import { useLayout } from './layout-context';
 
 interface HeaderProps {
   title: string;
@@ -13,27 +12,28 @@ interface HeaderProps {
 
 export function Header({ title, subtitle, actions }: HeaderProps) {
   const { data: session } = useSession();
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { toggleSidebar } = useLayout();
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-surface-100">
-      <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-30 bg-white border-b border-surface-100">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <button
-            className="lg:hidden p-2 hover:bg-surface-100 rounded-lg"
-            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="lg:hidden p-2 hover:bg-surface-100 rounded-lg -ml-2"
+            onClick={toggleSidebar}
+            aria-label="Toggle menu"
           >
-            {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <Menu className="w-5 h-5 text-surface-600" />
           </button>
-          <div>
-            <h1 className="text-xl font-semibold text-surface-900">{title}</h1>
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl font-semibold text-surface-900 truncate">{title}</h1>
             {subtitle && (
-              <p className="text-sm text-surface-500">{subtitle}</p>
+              <p className="text-xs sm:text-sm text-surface-500 truncate">{subtitle}</p>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {actions}
           
           <button className="p-2 hover:bg-surface-100 rounded-lg relative">

@@ -44,19 +44,19 @@ function LoginForm() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-card p-8">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-surface-900">Welcome back</h2>
-        <p className="text-surface-500 mt-2">Sign in to your account</p>
+    <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8">
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-surface-900">Welcome back</h2>
+        <p className="text-surface-500 mt-2 text-sm sm:text-base">Sign in to your account</p>
       </div>
 
       {loginError && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-700">{loginError}</p>
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-xs sm:text-sm text-red-700">{loginError}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
         <Input
           label="Email address"
           type="email"
@@ -84,7 +84,7 @@ function LoginForm() {
         </Button>
       </form>
 
-      <div className="mt-6 p-4 bg-surface-50 rounded-lg">
+      <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-surface-50 rounded-lg">
         <p className="text-xs text-surface-500 text-center">
           Demo credentials for testing:
         </p>
@@ -99,15 +99,15 @@ function LoginForm() {
 
 function LoginFormFallback() {
   return (
-    <div className="bg-white rounded-2xl shadow-card p-8">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-surface-900">Welcome back</h2>
-        <p className="text-surface-500 mt-2">Sign in to your account</p>
+    <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8">
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-surface-900">Welcome back</h2>
+        <p className="text-surface-500 mt-2 text-sm sm:text-base">Sign in to your account</p>
       </div>
-      <div className="animate-pulse space-y-5">
-        <div className="h-16 bg-gray-200 rounded"></div>
-        <div className="h-16 bg-gray-200 rounded"></div>
-        <div className="h-12 bg-primary-200 rounded"></div>
+      <div className="animate-pulse space-y-4 sm:space-y-5">
+        <div className="h-14 sm:h-16 bg-gray-200 rounded"></div>
+        <div className="h-14 sm:h-16 bg-gray-200 rounded"></div>
+        <div className="h-10 sm:h-12 bg-primary-200 rounded"></div>
       </div>
     </div>
   );
@@ -115,8 +115,8 @@ function LoginFormFallback() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Branding */}
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Left side - Branding (hidden on mobile, shown on lg+) */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djZoNnYtNmgtNnptMC0xMHY2aDZ2LTZoLTZ6bTAtMTB2Nmg2di02aC02em0tMTAgMTB2Nmg2di02aC02em0wIDEwdjZoNnYtNmgtNnptLTEwLTEwdjZoNnYtNmgtNnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
         
@@ -169,11 +169,15 @@ export default function LoginPage() {
       </div>
 
       {/* Right side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-surface-50">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8 lg:hidden">
-            <h1 className="text-2xl font-bold text-primary-700">Sasa Apparel</h1>
-            <p className="text-surface-500">Manufacturing Portal</p>
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-surface-50 min-h-screen lg:min-h-0">
+        <div className="w-full max-w-sm sm:max-w-md">
+          {/* Mobile branding header */}
+          <div className="text-center mb-6 sm:mb-8 lg:hidden">
+            <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary-600 to-primary-700 mb-4">
+              <Scissors className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-primary-700">Sasa Apparel</h1>
+            <p className="text-surface-500 text-sm sm:text-base">Manufacturing Portal</p>
           </div>
 
           <Suspense fallback={<LoginFormFallback />}>
