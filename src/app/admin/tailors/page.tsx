@@ -87,7 +87,7 @@ export default function TailorsPage() {
     address: '',
     specialization: '',
     skills: [] as string[],
-    dailyCapacity: 50,
+    dailyCapacity: 100, // Default capacity
     isActive: true,
   });
   const [skillInput, setSkillInput] = useState('');
@@ -132,7 +132,7 @@ export default function TailorsPage() {
         address: tailor.address || '',
         specialization: tailor.specialization || '',
         skills: tailor.skills || [],
-        dailyCapacity: tailor.dailyCapacity || 50,
+        dailyCapacity: tailor.dailyCapacity || 100,
         isActive: tailor.isActive,
       });
     } else {
@@ -143,7 +143,7 @@ export default function TailorsPage() {
         address: '',
         specialization: '',
         skills: [],
-        dailyCapacity: 50,
+        dailyCapacity: 100, // Default capacity
         isActive: true,
       });
     }
@@ -394,7 +394,7 @@ export default function TailorsPage() {
                               )}
                             </div>
                           </TableCell>
-                          <TableCell>{tailor.dailyCapacity || 50} pcs/day</TableCell>
+                          <TableCell>{formatNumber(tailor.dailyCapacity || 100)} pcs/day</TableCell>
                           <TableCell>
                             <Badge variant={tailor.isActive ? 'success' : 'danger'}>
                               {tailor.isActive ? 'Active' : 'Inactive'}
@@ -651,10 +651,13 @@ export default function TailorsPage() {
             label="Daily Capacity (pcs/day)"
             type="number"
             value={formData.dailyCapacity}
-            onChange={(e) =>
-              setFormData({ ...formData, dailyCapacity: parseInt(e.target.value) || 50 })
-            }
+            onChange={(e) => {
+              const val = parseInt(e.target.value);
+              setFormData({ ...formData, dailyCapacity: isNaN(val) ? 1 : Math.max(1, val) });
+            }}
             min={1}
+            max={1000000}
+            helperText="Enter any value from 1 to 1,000,000 pieces per day"
           />
 
           {/* Skills */}

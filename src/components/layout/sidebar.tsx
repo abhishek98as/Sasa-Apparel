@@ -27,20 +27,29 @@ import {
   BadgeCheck,
 } from 'lucide-react';
 
+interface CRUDPermission {
+  create?: boolean;
+  read?: boolean;
+  update?: boolean;
+  delete?: boolean;
+}
+
 interface ManagerPermissions {
-  dashboard?: boolean;
-  vendors?: boolean;
-  tailors?: boolean;
-  styles?: boolean;
-  fabricCutting?: boolean;
-  tailorJobs?: boolean;
-  shipments?: boolean;
-  rates?: boolean;
-  users?: boolean;
-  inventory?: boolean;
-  qc?: boolean;
-  payments?: boolean;
-  approvals?: boolean;
+  dashboard?: CRUDPermission;
+  vendors?: CRUDPermission;
+  tailors?: CRUDPermission;
+  styles?: CRUDPermission;
+  fabricCutting?: CRUDPermission;
+  distribution?: CRUDPermission;
+  production?: CRUDPermission;
+  shipments?: CRUDPermission;
+  rates?: CRUDPermission;
+  inventory?: CRUDPermission;
+  qc?: CRUDPermission;
+  payments?: CRUDPermission;
+  approvals?: CRUDPermission;
+  reports?: CRUDPermission;
+  users?: CRUDPermission;
 }
 
 interface NavItem {
@@ -56,15 +65,15 @@ const adminNavItems: NavItem[] = [
   { href: '/admin/styles', label: 'Styles', icon: Shirt, permissionKey: 'styles' },
   { href: '/admin/tailors', label: 'Tailors', icon: Users, permissionKey: 'tailors' },
   { href: '/admin/fabric-cutting', label: 'Fabric & Cutting', icon: Scissors, permissionKey: 'fabricCutting' },
-  { href: '/admin/distribution', label: 'Distribution', icon: ClipboardList, permissionKey: 'tailorJobs' },
-  { href: '/admin/production', label: 'Production', icon: Package, permissionKey: 'tailorJobs' },
+  { href: '/admin/distribution', label: 'Distribution', icon: ClipboardList, permissionKey: 'distribution' },
+  { href: '/admin/production', label: 'Production', icon: Package, permissionKey: 'production' },
   { href: '/admin/inventory', label: 'Inventory', icon: Boxes, permissionKey: 'inventory' },
   { href: '/admin/qc', label: 'Quality Control', icon: ShieldCheck, permissionKey: 'qc' },
   { href: '/admin/shipments', label: 'Shipments', icon: Truck, permissionKey: 'shipments' },
   { href: '/admin/rates', label: 'Rates & Profit', icon: CircleDollarSign, permissionKey: 'rates' },
   { href: '/admin/payments', label: 'Payments', icon: Wallet, permissionKey: 'payments' },
   { href: '/admin/approvals', label: 'Approvals', icon: BadgeCheck, permissionKey: 'approvals' },
-  { href: '/admin/reports', label: 'Reports', icon: FileText, permissionKey: 'dashboard' },
+  { href: '/admin/reports', label: 'Reports', icon: FileText, permissionKey: 'reports' },
   { href: '/admin/users', label: 'Users', icon: UserCircle, permissionKey: 'users' },
 ];
 
@@ -80,6 +89,14 @@ const tailorNavItems: NavItem[] = [
   { href: '/tailor/jobs', label: 'My Jobs', icon: ClipboardList },
   { href: '/tailor/history', label: 'History', icon: FileText },
 ];
+
+// Helper to check if a module has at least read permission
+const canAccessModule = (permissions: ManagerPermissions | null, key: keyof ManagerPermissions): boolean => {
+  if (!permissions) return false;
+  const perm = permissions[key];
+  // Can access if has any CRUD permission (but mainly check read)
+  return !!(perm?.read || perm?.create || perm?.update || perm?.delete);
+};
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -114,14 +131,14 @@ export function Sidebar() {
       return adminNavItems;
     }
     if (role === 'manager') {
-      // Filter items based on permissions
+      // Filter items based on CRUD permissions (check if user can at least read)
       if (!permissions) {
         // If permissions not loaded yet, show only dashboard
         return adminNavItems.filter((item) => item.permissionKey === 'dashboard');
       }
       return adminNavItems.filter((item) => {
         if (!item.permissionKey) return true;
-        return permissions[item.permissionKey];
+        return canAccessModule(permissions, item.permissionKey);
       });
     }
     if (role === 'vendor') {

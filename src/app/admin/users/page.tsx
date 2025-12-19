@@ -20,7 +20,20 @@ import {
 } from '@/components/ui/table';
 import { PageLoader } from '@/components/ui/loading';
 import { useToast } from '@/components/ui/toast';
-import { Plus, Pencil, Trash2, Search, Shield, Settings } from 'lucide-react';
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Search,
+  Shield,
+  Settings,
+  Eye,
+  FilePlus,
+  FileEdit,
+  Trash,
+  Check,
+  X,
+} from 'lucide-react';
 import { formatDateTime } from '@/lib/utils';
 
 interface Vendor {
@@ -33,20 +46,29 @@ interface Tailor {
   name: string;
 }
 
+interface CRUDPermission {
+  create?: boolean;
+  read?: boolean;
+  update?: boolean;
+  delete?: boolean;
+}
+
 interface ManagerPermissions {
-  dashboard?: boolean;
-  vendors?: boolean;
-  tailors?: boolean;
-  styles?: boolean;
-  fabricCutting?: boolean;
-  tailorJobs?: boolean;
-  shipments?: boolean;
-  rates?: boolean;
-  users?: boolean;
-  inventory?: boolean;
-  qc?: boolean;
-  payments?: boolean;
-  approvals?: boolean;
+  dashboard?: CRUDPermission;
+  vendors?: CRUDPermission;
+  tailors?: CRUDPermission;
+  styles?: CRUDPermission;
+  fabricCutting?: CRUDPermission;
+  distribution?: CRUDPermission;
+  production?: CRUDPermission;
+  shipments?: CRUDPermission;
+  rates?: CRUDPermission;
+  inventory?: CRUDPermission;
+  qc?: CRUDPermission;
+  payments?: CRUDPermission;
+  approvals?: CRUDPermission;
+  reports?: CRUDPermission;
+  users?: CRUDPermission;
 }
 
 interface User {
@@ -63,21 +85,62 @@ interface User {
   lastLogin?: string;
 }
 
-const allPermissions: { key: keyof ManagerPermissions; label: string }[] = [
-  { key: 'dashboard', label: 'Dashboard' },
-  { key: 'vendors', label: 'Vendors' },
-  { key: 'tailors', label: 'Tailors' },
-  { key: 'styles', label: 'Styles' },
-  { key: 'fabricCutting', label: 'Fabric Cutting' },
-  { key: 'tailorJobs', label: 'Tailor Jobs' },
-  { key: 'shipments', label: 'Shipments' },
-  { key: 'rates', label: 'Rates' },
-  { key: 'users', label: 'Users' },
-  { key: 'inventory', label: 'Inventory' },
-  { key: 'qc', label: 'Quality Control' },
-  { key: 'payments', label: 'Payments' },
-  { key: 'approvals', label: 'Approvals' },
+// All modules with their labels
+const allModules: { key: keyof ManagerPermissions; label: string; description: string }[] = [
+  { key: 'dashboard', label: 'Dashboard', description: 'View dashboard analytics and stats' },
+  { key: 'vendors', label: 'Vendors', description: 'Manage vendor records' },
+  { key: 'tailors', label: 'Tailors', description: 'Manage tailor workforce' },
+  { key: 'styles', label: 'Styles', description: 'Manage style catalog' },
+  { key: 'fabricCutting', label: 'Fabric & Cutting', description: 'Track fabric cutting records' },
+  { key: 'distribution', label: 'Distribution', description: 'Assign work to tailors' },
+  { key: 'production', label: 'Production', description: 'Track production progress' },
+  { key: 'shipments', label: 'Shipments', description: 'Manage shipments to vendors' },
+  { key: 'rates', label: 'Rates & Profit', description: 'Set rates and view profit' },
+  { key: 'inventory', label: 'Inventory', description: 'Manage raw materials inventory' },
+  { key: 'qc', label: 'Quality Control', description: 'QC inspections and checklists' },
+  { key: 'payments', label: 'Payments', description: 'Tailor payment tracking' },
+  { key: 'approvals', label: 'Approvals', description: 'Review and approve requests' },
+  { key: 'reports', label: 'Reports', description: 'Generate and view reports' },
+  { key: 'users', label: 'Users', description: 'Manage system users' },
 ];
+
+// CRUD operations
+const crudOperations: { key: keyof CRUDPermission; label: string; icon: typeof Eye; color: string }[] = [
+  { key: 'create', label: 'Create', icon: FilePlus, color: 'text-green-600' },
+  { key: 'read', label: 'Read', icon: Eye, color: 'text-blue-600' },
+  { key: 'update', label: 'Update', icon: FileEdit, color: 'text-amber-600' },
+  { key: 'delete', label: 'Delete', icon: Trash, color: 'text-red-600' },
+];
+
+// Helper to check if module has any permission
+const hasAnyPermission = (perm?: CRUDPermission): boolean => {
+  if (!perm) return false;
+  return !!(perm.create || perm.read || perm.update || perm.delete);
+};
+
+// Helper to check if module has full access
+const hasFullAccess = (perm?: CRUDPermission): boolean => {
+  if (!perm) return false;
+  return !!(perm.create && perm.read && perm.update && perm.delete);
+};
+
+// Count total permissions
+const countPermissions = (permissions?: ManagerPermissions): { modules: number; operations: number } => {
+  if (!permissions) return { modules: 0, operations: 0 };
+  let modules = 0;
+  let operations = 0;
+  for (const key of Object.keys(permissions) as (keyof ManagerPermissions)[]) {
+    const perm = permissions[key];
+    if (hasAnyPermission(perm)) {
+      modules++;
+      if (perm?.create) operations++;
+      if (perm?.read) operations++;
+      if (perm?.update) operations++;
+      if (perm?.delete) operations++;
+    }
+  }
+  return { modules, operations };
+};
 
 export default function UsersPage() {
   const { data: session } = useSession();
@@ -178,12 +241,10 @@ export default function UsersPage() {
         isActive: formData.isActive,
       };
 
-      // Add password only if provided
       if (formData.password) {
         payload.password = formData.password;
       }
 
-      // Add role-specific fields
       if (formData.role === 'vendor' && formData.vendorId) {
         payload.vendorId = formData.vendorId;
       }
@@ -276,13 +337,90 @@ export default function UsersPage() {
     setShowPermissionsModal(true);
   };
 
-  const togglePermission = (key: keyof ManagerPermissions) => {
+  // Toggle single CRUD permission
+  const toggleCRUDPermission = (moduleKey: keyof ManagerPermissions, operation: keyof CRUDPermission) => {
     if (!permissionsUser) return;
+    const currentModule = permissionsUser.permissions?.[moduleKey] || {};
     setPermissionsUser({
       ...permissionsUser,
       permissions: {
         ...permissionsUser.permissions,
-        [key]: !permissionsUser.permissions?.[key],
+        [moduleKey]: {
+          ...currentModule,
+          [operation]: !currentModule[operation],
+        },
+      },
+    });
+  };
+
+  // Toggle all CRUD for a module
+  const toggleModuleFullAccess = (moduleKey: keyof ManagerPermissions) => {
+    if (!permissionsUser) return;
+    const currentModule = permissionsUser.permissions?.[moduleKey];
+    const hasAll = hasFullAccess(currentModule);
+    setPermissionsUser({
+      ...permissionsUser,
+      permissions: {
+        ...permissionsUser.permissions,
+        [moduleKey]: hasAll
+          ? { create: false, read: false, update: false, delete: false }
+          : { create: true, read: true, update: true, delete: true },
+      },
+    });
+  };
+
+  // Set all modules to full access
+  const setAllFullAccess = () => {
+    if (!permissionsUser) return;
+    const allPerms: ManagerPermissions = {};
+    allModules.forEach((m) => {
+      allPerms[m.key] = { create: true, read: true, update: true, delete: true };
+    });
+    setPermissionsUser({ ...permissionsUser, permissions: allPerms });
+  };
+
+  // Set all modules to read only
+  const setAllReadOnly = () => {
+    if (!permissionsUser) return;
+    const allPerms: ManagerPermissions = {};
+    allModules.forEach((m) => {
+      allPerms[m.key] = { create: false, read: true, update: false, delete: false };
+    });
+    setPermissionsUser({ ...permissionsUser, permissions: allPerms });
+  };
+
+  // Clear all permissions
+  const clearAllPermissions = () => {
+    if (!permissionsUser) return;
+    setPermissionsUser({ ...permissionsUser, permissions: {} });
+  };
+
+  // Toggle CRUD for form data (when creating user)
+  const toggleFormCRUD = (moduleKey: keyof ManagerPermissions, operation: keyof CRUDPermission) => {
+    const currentModule = formData.permissions[moduleKey] || {};
+    setFormData({
+      ...formData,
+      permissions: {
+        ...formData.permissions,
+        [moduleKey]: {
+          ...currentModule,
+          [operation]: !currentModule[operation],
+        },
+      },
+    });
+  };
+
+  // Toggle full access for form data
+  const toggleFormModuleFullAccess = (moduleKey: keyof ManagerPermissions) => {
+    const currentModule = formData.permissions[moduleKey];
+    const hasAll = hasFullAccess(currentModule);
+    setFormData({
+      ...formData,
+      permissions: {
+        ...formData.permissions,
+        [moduleKey]: hasAll
+          ? { create: false, read: false, update: false, delete: false }
+          : { create: true, read: true, update: true, delete: true },
       },
     });
   };
@@ -317,12 +455,6 @@ export default function UsersPage() {
     }
   };
 
-  // Count permissions
-  const getPermissionCount = (permissions?: ManagerPermissions) => {
-    if (!permissions) return 0;
-    return Object.values(permissions).filter(Boolean).length;
-  };
-
   if (isLoading) {
     return <PageLoader />;
   }
@@ -331,7 +463,7 @@ export default function UsersPage() {
     <div className="animate-fade-in">
       <Header
         title="Users"
-        subtitle="Manage system users, roles, and permissions"
+        subtitle="Manage system users, roles, and granular permissions"
         actions={
           isAdmin && (
             <Button onClick={() => handleOpenModal()}>
@@ -412,7 +544,7 @@ export default function UsersPage() {
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
-                  <TableHead>Linked To / Permissions</TableHead>
+                  <TableHead>Access Level</TableHead>
                   <TableHead>Last Login</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
@@ -422,89 +554,96 @@ export default function UsersPage() {
                 {filteredUsers.length === 0 ? (
                   <TableEmpty message="No users found" colSpan={7} />
                 ) : (
-                  filteredUsers.map((user) => (
-                    <TableRow key={user._id}>
-                      <TableCell className="font-medium">{user.name}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={getRoleBadgeVariant(user.role)}>
-                          {user.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {user.role === 'vendor' && user.vendor?.name}
-                        {user.role === 'tailor' && user.tailor?.name}
-                        {user.role === 'manager' && (
-                          <span className="text-sm text-surface-500">
-                            {getPermissionCount(user.permissions)} of {allPermissions.length} menus
-                          </span>
-                        )}
-                        {user.role === 'admin' && (
-                          <span className="text-sm text-surface-500">Full Access</span>
-                        )}
-                        {!user.vendor?.name && !user.tailor?.name && user.role !== 'manager' && user.role !== 'admin' && '-'}
-                      </TableCell>
-                      <TableCell>
-                        {user.lastLogin ? formatDateTime(user.lastLogin) : 'Never'}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={user.isActive ? 'success' : 'danger'}>
-                          {user.isActive ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          {isAdmin && user.role === 'manager' && (
-                            <button
-                              onClick={() => openPermissionsModal(user)}
-                              className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg text-surface-500 hover:text-amber-600"
-                              title="Manage Permissions"
-                            >
-                              <Shield className="w-4 h-4" />
-                            </button>
+                  filteredUsers.map((user) => {
+                    const permCount = countPermissions(user.permissions);
+                    return (
+                      <TableRow key={user._id}>
+                        <TableCell className="font-medium">{user.name}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                          <Badge variant={getRoleBadgeVariant(user.role)}>
+                            {user.role}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {user.role === 'vendor' && user.vendor?.name}
+                          {user.role === 'tailor' && user.tailor?.name}
+                          {user.role === 'manager' && (
+                            <div className="text-sm">
+                              <span className="font-medium">{permCount.modules}</span>
+                              <span className="text-surface-500"> modules, </span>
+                              <span className="font-medium">{permCount.operations}</span>
+                              <span className="text-surface-500"> permissions</span>
+                            </div>
                           )}
-                          {isAdmin && (
-                            <>
-                              <button
-                                onClick={() => handleOpenModal(user)}
-                                className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg text-surface-500 hover:text-surface-700"
-                                title="Edit User"
-                              >
-                                <Pencil className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handleDelete(user)}
-                                className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-surface-500 hover:text-red-600"
-                                title="Deactivate User"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </>
+                          {user.role === 'admin' && (
+                            <span className="text-sm text-red-600 font-medium">Full Access (Superuser)</span>
                           )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                          {!user.vendor?.name && !user.tailor?.name && user.role !== 'manager' && user.role !== 'admin' && '-'}
+                        </TableCell>
+                        <TableCell>
+                          {user.lastLogin ? formatDateTime(user.lastLogin) : 'Never'}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={user.isActive ? 'success' : 'danger'}>
+                            {user.isActive ? 'Active' : 'Inactive'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            {isAdmin && user.role === 'manager' && (
+                              <button
+                                onClick={() => openPermissionsModal(user)}
+                                className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg text-surface-500 hover:text-amber-600"
+                                title="Manage CRUD Permissions"
+                              >
+                                <Shield className="w-4 h-4" />
+                              </button>
+                            )}
+                            {isAdmin && (
+                              <>
+                                <button
+                                  onClick={() => handleOpenModal(user)}
+                                  className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg text-surface-500 hover:text-surface-700"
+                                  title="Edit User"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(user)}
+                                  className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-surface-500 hover:text-red-600"
+                                  title="Deactivate User"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
 
-        {/* Info about manager role */}
+        {/* Info Card */}
         <Card>
           <CardContent className="py-4">
             <div className="flex items-start gap-3">
               <Settings className="w-5 h-5 text-amber-600 mt-0.5" />
               <div>
                 <h3 className="font-medium text-surface-900 dark:text-surface-50">
-                  Manager Role Information
+                  Manager Role - Granular CRUD Permissions
                 </h3>
                 <ul className="text-sm text-surface-600 dark:text-surface-400 mt-2 space-y-1 list-disc list-inside">
-                  <li>Managers can perform most operations like admins</li>
-                  <li>Manager&apos;s update and delete actions require admin approval</li>
-                  <li>Admin can control which menu items each manager can access</li>
-                  <li>Click the shield icon to manage a manager&apos;s permissions</li>
+                  <li><strong>Create (C)</strong> - Can add new records</li>
+                  <li><strong>Read (R)</strong> - Can view and access the module</li>
+                  <li><strong>Update (U)</strong> - Can modify existing records (requires admin approval)</li>
+                  <li><strong>Delete (D)</strong> - Can remove records (requires admin approval)</li>
+                  <li>Click the shield icon to manage a manager&apos;s detailed permissions</li>
                 </ul>
               </div>
             </div>
@@ -597,31 +736,65 @@ export default function UsersPage() {
 
           {formData.role === 'manager' && (
             <div>
-              <label className="label">Menu Permissions</label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-surface-50 dark:bg-surface-800 rounded-lg">
-                {allPermissions.map((perm) => (
-                  <label key={perm.key} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={formData.permissions[perm.key] || false}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          permissions: {
-                            ...formData.permissions,
-                            [perm.key]: e.target.checked,
-                          },
-                        })
-                      }
-                      className="rounded"
-                    />
-                    {perm.label}
-                  </label>
-                ))}
-              </div>
-              <p className="text-xs text-surface-500 mt-2">
-                Select which menu items this manager can access
+              <label className="label">Access Permissions (CRUD)</label>
+              <p className="text-xs text-surface-500 mb-3">
+                Select which modules and operations this manager can access
               </p>
+              <div className="max-h-64 overflow-y-auto border border-surface-200 dark:border-surface-700 rounded-lg">
+                <table className="w-full text-sm">
+                  <thead className="bg-surface-50 dark:bg-surface-800 sticky top-0">
+                    <tr>
+                      <th className="text-left p-2 font-medium">Module</th>
+                      <th className="text-center p-2 w-16">
+                        <span className="text-green-600" title="Create">C</span>
+                      </th>
+                      <th className="text-center p-2 w-16">
+                        <span className="text-blue-600" title="Read">R</span>
+                      </th>
+                      <th className="text-center p-2 w-16">
+                        <span className="text-amber-600" title="Update">U</span>
+                      </th>
+                      <th className="text-center p-2 w-16">
+                        <span className="text-red-600" title="Delete">D</span>
+                      </th>
+                      <th className="text-center p-2 w-16">All</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allModules.map((module) => {
+                      const perm = formData.permissions[module.key] || {};
+                      return (
+                        <tr key={module.key} className="border-t border-surface-100 dark:border-surface-700">
+                          <td className="p-2">{module.label}</td>
+                          {crudOperations.map((op) => (
+                            <td key={op.key} className="text-center p-2">
+                              <input
+                                type="checkbox"
+                                checked={perm[op.key] || false}
+                                onChange={() => toggleFormCRUD(module.key, op.key)}
+                                className="w-4 h-4 rounded"
+                              />
+                            </td>
+                          ))}
+                          <td className="text-center p-2">
+                            <button
+                              type="button"
+                              onClick={() => toggleFormModuleFullAccess(module.key)}
+                              className={`p-1 rounded ${
+                                hasFullAccess(perm)
+                                  ? 'bg-green-100 text-green-600'
+                                  : 'bg-surface-100 text-surface-400 dark:bg-surface-700'
+                              }`}
+                            >
+                              {hasFullAccess(perm) ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -655,7 +828,7 @@ export default function UsersPage() {
         </form>
       </Modal>
 
-      {/* Permissions Modal */}
+      {/* Detailed Permissions Modal */}
       <Modal
         isOpen={showPermissionsModal}
         onClose={() => {
@@ -663,70 +836,132 @@ export default function UsersPage() {
           setPermissionsUser(null);
         }}
         title={`Manage Permissions - ${permissionsUser?.name}`}
+        size="lg"
       >
         {permissionsUser && (
           <div className="space-y-4">
             <p className="text-sm text-surface-600 dark:text-surface-400">
-              Select which menu items this manager can access. Note: Manager actions that modify data
-              will still require admin approval.
+              Configure granular CRUD (Create, Read, Update, Delete) permissions for each module.
+              Update and Delete operations by managers require admin approval.
             </p>
 
-            <div className="space-y-2">
-              {allPermissions.map((perm) => (
-                <label
-                  key={perm.key}
-                  className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-800 rounded-lg cursor-pointer hover:bg-surface-100 dark:hover:bg-surface-700"
-                >
-                  <span className="font-medium">{perm.label}</span>
-                  <input
-                    type="checkbox"
-                    checked={permissionsUser.permissions?.[perm.key] || false}
-                    onChange={() => togglePermission(perm.key)}
-                    className="rounded w-5 h-5"
-                  />
-                </label>
-              ))}
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-2 p-3 bg-surface-50 dark:bg-surface-800 rounded-lg">
+              <Button type="button" size="sm" variant="secondary" onClick={setAllFullAccess}>
+                Full Access (All)
+              </Button>
+              <Button type="button" size="sm" variant="secondary" onClick={setAllReadOnly}>
+                Read Only (All)
+              </Button>
+              <Button type="button" size="sm" variant="ghost" onClick={clearAllPermissions}>
+                Clear All
+              </Button>
             </div>
 
-            <div className="flex justify-between items-center pt-4">
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    const allPerms: ManagerPermissions = {};
-                    allPermissions.forEach((p) => {
-                      allPerms[p.key] = true;
-                    });
-                    setPermissionsUser({ ...permissionsUser, permissions: allPerms });
-                  }}
-                >
-                  Select All
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setPermissionsUser({ ...permissionsUser, permissions: {} })}
-                >
-                  Clear All
-                </Button>
+            {/* Permission Matrix */}
+            <div className="border border-surface-200 dark:border-surface-700 rounded-lg overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-surface-100 dark:bg-surface-800">
+                    <tr>
+                      <th className="text-left p-3 font-medium min-w-[150px]">Module</th>
+                      {crudOperations.map((op) => (
+                        <th key={op.key} className="text-center p-3 w-24">
+                          <div className="flex flex-col items-center gap-1">
+                            <op.icon className={`w-4 h-4 ${op.color}`} />
+                            <span className={op.color}>{op.label}</span>
+                          </div>
+                        </th>
+                      ))}
+                      <th className="text-center p-3 w-24">Full Access</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allModules.map((module, idx) => {
+                      const perm = permissionsUser.permissions?.[module.key] || {};
+                      const isFullAccess = hasFullAccess(perm);
+                      return (
+                        <tr
+                          key={module.key}
+                          className={`border-t border-surface-100 dark:border-surface-700 ${
+                            idx % 2 === 0 ? 'bg-white dark:bg-surface-900' : 'bg-surface-50 dark:bg-surface-800/50'
+                          }`}
+                        >
+                          <td className="p-3">
+                            <div>
+                              <p className="font-medium">{module.label}</p>
+                              <p className="text-xs text-surface-500">{module.description}</p>
+                            </div>
+                          </td>
+                          {crudOperations.map((op) => (
+                            <td key={op.key} className="text-center p-3">
+                              <button
+                                type="button"
+                                onClick={() => toggleCRUDPermission(module.key, op.key)}
+                                className={`p-2 rounded-lg transition-colors ${
+                                  perm[op.key]
+                                    ? 'bg-green-100 dark:bg-green-900/30 text-green-600'
+                                    : 'bg-surface-100 dark:bg-surface-700 text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-600'
+                                }`}
+                              >
+                                {perm[op.key] ? <Check className="w-5 h-5" /> : <X className="w-5 h-5" />}
+                              </button>
+                            </td>
+                          ))}
+                          <td className="text-center p-3">
+                            <button
+                              type="button"
+                              onClick={() => toggleModuleFullAccess(module.key)}
+                              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                                isFullAccess
+                                  ? 'bg-green-600 text-white'
+                                  : 'bg-surface-200 dark:bg-surface-700 text-surface-600 dark:text-surface-300 hover:bg-surface-300'
+                              }`}
+                            >
+                              {isFullAccess ? 'Full' : 'None'}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
-              <div className="flex gap-3">
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setShowPermissionsModal(false);
-                    setPermissionsUser(null);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button onClick={handleSavePermissions} isLoading={isSubmitting}>
-                  Save Permissions
-                </Button>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-wrap gap-4 text-xs text-surface-500 p-3 bg-surface-50 dark:bg-surface-800 rounded-lg">
+              <div className="flex items-center gap-1">
+                <FilePlus className="w-3 h-3 text-green-600" />
+                <span>Create - Add new records</span>
               </div>
+              <div className="flex items-center gap-1">
+                <Eye className="w-3 h-3 text-blue-600" />
+                <span>Read - View module & data</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <FileEdit className="w-3 h-3 text-amber-600" />
+                <span>Update - Modify records (needs approval)</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Trash className="w-3 h-3 text-red-600" />
+                <span>Delete - Remove records (needs approval)</span>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4">
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShowPermissionsModal(false);
+                  setPermissionsUser(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleSavePermissions} isLoading={isSubmitting}>
+                Save Permissions
+              </Button>
             </div>
           </div>
         )}

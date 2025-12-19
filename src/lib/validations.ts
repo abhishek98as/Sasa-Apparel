@@ -27,6 +27,18 @@ export const tailorSchema = z.object({
   phone: z.string().min(10, 'Valid phone number required'),
   address: z.string().optional(),
   specialization: z.string().optional(),
+  skills: z.array(z.string()).optional(),
+  dailyCapacity: z.number().min(1, 'Daily capacity must be at least 1').max(1000000, 'Daily capacity too high').optional(),
+  leaves: z.array(z.object({
+    date: z.string().or(z.date()),
+    reason: z.string(),
+    approved: z.boolean().optional(),
+  })).optional(),
+  overtime: z.array(z.object({
+    date: z.string().or(z.date()),
+    hours: z.number().min(0),
+    notes: z.string().optional(),
+  })).optional(),
   isActive: z.boolean().default(true),
 });
 

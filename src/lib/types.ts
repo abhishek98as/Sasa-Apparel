@@ -10,22 +10,36 @@ export interface BaseDocument {
   updatedAt: Date;
 }
 
-// Manager Permissions - defines which menu items a manager can access
-export interface ManagerPermissions {
-  dashboard?: boolean;
-  vendors?: boolean;
-  tailors?: boolean;
-  styles?: boolean;
-  fabricCutting?: boolean;
-  tailorJobs?: boolean;
-  shipments?: boolean;
-  rates?: boolean;
-  users?: boolean;
-  inventory?: boolean;
-  qc?: boolean;
-  payments?: boolean;
-  approvals?: boolean;
+// CRUD Permission for each module
+export interface CRUDPermission {
+  create?: boolean;
+  read?: boolean;
+  update?: boolean;
+  delete?: boolean;
 }
+
+// Manager Permissions - defines what a manager can access and do
+export interface ManagerPermissions {
+  // Each module can have granular CRUD permissions
+  dashboard?: CRUDPermission;
+  vendors?: CRUDPermission;
+  tailors?: CRUDPermission;
+  styles?: CRUDPermission;
+  fabricCutting?: CRUDPermission;
+  distribution?: CRUDPermission;
+  production?: CRUDPermission;
+  shipments?: CRUDPermission;
+  rates?: CRUDPermission;
+  inventory?: CRUDPermission;
+  qc?: CRUDPermission;
+  payments?: CRUDPermission;
+  approvals?: CRUDPermission;
+  reports?: CRUDPermission;
+  users?: CRUDPermission;
+}
+
+// Helper type to check if module has any access
+export type ModuleKey = keyof ManagerPermissions;
 
 // User
 export interface User extends BaseDocument {
