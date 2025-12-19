@@ -201,9 +201,12 @@ export const rateSchema = z.object({
   effectiveDate: z.string().or(z.date()),
 });
 
-// Job update validation
+// Job update validation (supports full editing)
 export const jobUpdateSchema = z.object({
+  tailorId: z.string().optional(),
+  issuedPcs: z.number().min(1, 'Must issue at least 1 piece').optional(),
   returnedPcs: z.number().min(0).optional(),
+  rate: z.number().min(0, 'Rate must be positive').optional(),
   status: z.enum(['pending', 'in-progress', 'completed', 'returned']).optional(),
   qcStatus: z.enum(['pending', 'passed', 'failed', 'rework']).optional(),
   qcNotes: z.string().optional(),

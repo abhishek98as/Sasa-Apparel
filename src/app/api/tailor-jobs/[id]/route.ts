@@ -141,12 +141,29 @@ export async function PUT(
       updatedAt: new Date(),
     };
 
+    // Handle tailor change
+    if (validation.data.tailorId) {
+      updateData.tailorId = new ObjectId(validation.data.tailorId);
+    }
+
+    // Handle issued pieces change
+    if (validation.data.issuedPcs !== undefined) {
+      updateData.issuedPcs = validation.data.issuedPcs;
+    }
+
+    // Handle rate change
+    if (validation.data.rate !== undefined) {
+      updateData.rate = validation.data.rate;
+    }
+
+    // Handle returned pieces
+    const effectiveIssuedPcs = validation.data.issuedPcs ?? existingJob.issuedPcs;
     if (validation.data.returnedPcs !== undefined) {
-      if (validation.data.returnedPcs > existingJob.issuedPcs) {
+      if (validation.data.returnedPcs > effectiveIssuedPcs) {
         return NextResponse.json(
           {
             success: false,
-            error: `Cannot return more than issued (${existingJob.issuedPcs})`,
+            error: `Cannot return more than issued (${effectiveIssuedPcs})`,
           },
           { status: 400 }
         );
@@ -154,7 +171,7 @@ export async function PUT(
       updateData.returnedPcs = validation.data.returnedPcs;
 
       // Auto-update status if all pieces returned
-      if (validation.data.returnedPcs === existingJob.issuedPcs) {
+      if (validation.data.returnedPcs === effectiveIssuedPcs) {
         updateData.status = 'completed';
         updateData.completedDate = new Date();
       }
@@ -174,7 +191,7 @@ export async function PUT(
       }
     }
 
-    if (validation.data.qcNotes) {
+    if (validation.data.qcNotes !== undefined) {
       updateData.qcNotes = validation.data.qcNotes;
     }
 
@@ -236,7 +253,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || !['admin', 'manager'].includes(session.user.role)) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -259,10 +276,48 @@ export async function DELETE(
       .collection(COLLECTIONS.TAILOR_JOBS)
       .findOne({ _id: new ObjectId(id) });
 
-    if (job && job.returnedPcs > 0) {
+    if (!job) {
+      return NextResponse.json(
+        { success: false, error: 'Job not found' },
+        { status: 404 }
+      );
+    }
+
+    if (job.returnedPcs > 0) {
       return NextResponse.json(
         { success: false, error: 'Cannot delete job with returned pieces' },
         { status: 400 }
+      );
+    }
+
+    // Manager deletes require approval
+    if (session.user.role === 'manager') {
+      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
+        entityType: 'tailorJob',
+        entityId: new ObjectId(id),
+        action: 'delete',
+        payload: {
+          collection: COLLECTIONS.TAILOR_JOBS,
+          type: 'delete',
+          data: { jobInfo: `${job.styleId} - ${job.issuedPcs} pcs` },
+        },
+        requestedBy: {
+          userId: new ObjectId(session.user.id),
+          name: session.user.name,
+          role: session.user.role,
+        },
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: { approvalId: approval.insertedId },
+          message: 'Deletion submitted for admin approval',
+        },
+        { status: 202 }
       );
     }
 

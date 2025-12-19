@@ -20,7 +20,7 @@ import {
 import { PageLoader } from '@/components/ui/loading';
 import { useToast } from '@/components/ui/toast';
 import { formatNumber, formatDate, formatCurrency } from '@/lib/utils';
-import { Search, CheckCircle, Clock, AlertCircle, RefreshCw } from 'lucide-react';
+import { Search, CheckCircle, Clock, AlertCircle, RefreshCw, Pencil, Trash2 } from 'lucide-react';
 
 interface Style {
   _id: string;
@@ -54,47 +54,85 @@ interface TailorJob {
 export default function ProductionPage() {
   const { showToast } = useToast();
   const [jobs, setJobs] = useState<TailorJob[]>([]);
+  const [tailors, setTailors] = useState<Tailor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Update modal (for returned pieces & QC)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<TailorJob | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [updateData, setUpdateData] = useState({
     returnedPcs: 0,
     qcStatus: 'pending' as 'pending' | 'passed' | 'failed' | 'rework',
     qcNotes: '',
   });
 
+  // Edit modal (for full job editing)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingJob, setEditingJob] = useState<TailorJob | null>(null);
+  const [editData, setEditData] = useState({
+    tailorId: '',
+    issuedPcs: 0,
+    returnedPcs: 0,
+    rate: 0,
+    status: 'in-progress' as 'pending' | 'in-progress' | 'completed' | 'returned',
+    qcStatus: 'pending' as 'pending' | 'passed' | 'failed' | 'rework',
+    qcNotes: '',
+  });
+
   useEffect(() => {
-    fetchJobs();
+    fetchData();
   }, []);
 
-  const fetchJobs = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch('/api/tailor-jobs');
-      const result = await response.json();
-      if (result.success) {
-        setJobs(result.data);
-      }
+      const [jobsRes, tailorsRes] = await Promise.all([
+        fetch('/api/tailor-jobs'),
+        fetch('/api/tailors?active=true'),
+      ]);
+      const [jobsData, tailorsData] = await Promise.all([
+        jobsRes.json(),
+        tailorsRes.json(),
+      ]);
+
+      if (jobsData.success) setJobs(jobsData.data);
+      if (tailorsData.success) setTailors(tailorsData.data);
     } catch (error) {
-      showToast('Failed to fetch jobs', 'error');
+      showToast('Failed to fetch data', 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleOpenModal = (job: TailorJob) => {
+  // Open Update Modal (for returned pieces & QC)
+  const handleOpenUpdateModal = (job: TailorJob) => {
     setSelectedJob(job);
     setUpdateData({
       returnedPcs: job.returnedPcs,
       qcStatus: job.qcStatus,
       qcNotes: job.qcNotes || '',
     });
-    setIsModalOpen(true);
+    setIsUpdateModalOpen(true);
   };
 
+  // Open Edit Modal (for full job editing)
+  const handleOpenEditModal = (job: TailorJob) => {
+    setEditingJob(job);
+    setEditData({
+      tailorId: job.tailorId,
+      issuedPcs: job.issuedPcs,
+      returnedPcs: job.returnedPcs,
+      rate: job.rate,
+      status: job.status,
+      qcStatus: job.qcStatus,
+      qcNotes: job.qcNotes || '',
+    });
+    setIsEditModalOpen(true);
+  };
+
+  // Handle Update (returned pieces & QC only)
   const handleUpdate = async () => {
     if (!selectedJob) return;
     setIsSubmitting(true);
@@ -109,16 +147,67 @@ export default function ProductionPage() {
       const result = await response.json();
 
       if (result.success) {
-        showToast('Job updated successfully', 'success');
-        setIsModalOpen(false);
-        fetchJobs();
+        showToast(result.message || 'Job updated successfully', 'success');
+        setIsUpdateModalOpen(false);
+        fetchData();
       } else {
-        showToast(result.error, 'error');
+        showToast(result.error || 'Failed to update job', 'error');
       }
     } catch (error) {
       showToast('An error occurred', 'error');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Handle Edit (full job editing)
+  const handleEdit = async () => {
+    if (!editingJob) return;
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`/api/tailor-jobs/${editingJob._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast(result.message || 'Job updated successfully', 'success');
+        setIsEditModalOpen(false);
+        fetchData();
+      } else {
+        showToast(result.error || 'Failed to update job', 'error');
+      }
+    } catch (error) {
+      showToast('An error occurred', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handle Delete
+  const handleDelete = async (job: TailorJob) => {
+    if (!confirm(`Are you sure you want to delete this job for "${job.style?.name}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/tailor-jobs/${job._id}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        showToast(result.message || 'Job deleted successfully', 'success');
+        fetchData();
+      } else {
+        showToast(result.error || 'Failed to delete job', 'error');
+      }
+    } catch (error) {
+      showToast('An error occurred', 'error');
     }
   };
 
@@ -128,7 +217,6 @@ export default function ProductionPage() {
       job.style?.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       job.tailor?.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-    // Handle rework filter specially - show jobs that are rework OR have rework qcStatus
     const matchesStatus =
       !filterStatus ||
       (filterStatus === 'rework'
@@ -186,7 +274,7 @@ export default function ProductionPage() {
     <div className="animate-fade-in">
       <Header
         title="Production Tracking"
-        subtitle="Monitor tailor jobs and quality control"
+        subtitle="Monitor and edit tailor jobs and quality control"
       />
 
       <div className="p-6 space-y-6">
@@ -195,7 +283,7 @@ export default function ProductionPage() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-100 rounded-lg">
+                <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
                   <Clock className="w-5 h-5 text-amber-600" />
                 </div>
                 <div>
@@ -208,7 +296,7 @@ export default function ProductionPage() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-accent-100 rounded-lg">
+                <div className="p-2 bg-accent-100 dark:bg-green-900/30 rounded-lg">
                   <CheckCircle className="w-5 h-5 text-accent-600" />
                 </div>
                 <div>
@@ -221,7 +309,7 @@ export default function ProductionPage() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-100 rounded-lg">
+                <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
                   <RefreshCw className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
@@ -234,7 +322,7 @@ export default function ProductionPage() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                   <AlertCircle className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
@@ -336,13 +424,30 @@ export default function ProductionPage() {
                       <TableCell>{getStatusBadge(job.status, job.isRework)}</TableCell>
                       <TableCell>{getQCBadge(job.qcStatus)}</TableCell>
                       <TableCell>
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={() => handleOpenModal(job)}
-                        >
-                          Update
-                        </Button>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => handleOpenUpdateModal(job)}
+                            title="Update Return/QC"
+                          >
+                            Update
+                          </Button>
+                          <button
+                            onClick={() => handleOpenEditModal(job)}
+                            className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg text-surface-500 hover:text-surface-700"
+                            title="Edit Job"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(job)}
+                            className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-surface-500 hover:text-red-600"
+                            title="Delete Job"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
@@ -353,15 +458,15 @@ export default function ProductionPage() {
         </Card>
       </div>
 
-      {/* Update Modal */}
+      {/* Update Modal (Returned Pieces & QC) */}
       <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Update Job Status"
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        title="Update Return & QC Status"
       >
         {selectedJob && (
           <div className="space-y-4">
-            <div className="p-4 bg-surface-50 rounded-lg">
+            <div className="p-4 bg-surface-50 dark:bg-surface-800 rounded-lg">
               <p className="font-medium">{selectedJob.style?.name}</p>
               <p className="text-sm text-surface-500">
                 Tailor: {selectedJob.tailor?.name} • Issued:{' '}
@@ -411,11 +516,146 @@ export default function ProductionPage() {
             />
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
+              <Button variant="secondary" onClick={() => setIsUpdateModalOpen(false)}>
                 Cancel
               </Button>
               <Button onClick={handleUpdate} isLoading={isSubmitting}>
-                Update Job
+                Update
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Edit Modal (Full Job Editing) */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        title="Edit Production Job"
+        size="lg"
+      >
+        {editingJob && (
+          <div className="space-y-4">
+            <div className="p-4 bg-surface-50 dark:bg-surface-800 rounded-lg">
+              <p className="font-medium">{editingJob.style?.name}</p>
+              <p className="text-sm text-surface-500">
+                Style Code: {editingJob.style?.code} • Issue Date: {formatDate(editingJob.issueDate)}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Select
+                label="Tailor"
+                value={editData.tailorId}
+                onChange={(e) =>
+                  setEditData({ ...editData, tailorId: e.target.value })
+                }
+                options={tailors.map((t) => ({ value: t._id, label: t.name }))}
+              />
+              <Input
+                label="Rate (₹/pc)"
+                type="number"
+                min="0"
+                value={editData.rate}
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    rate: parseFloat(e.target.value) || 0,
+                  })
+                }
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="Issued Pieces"
+                type="number"
+                min="1"
+                value={editData.issuedPcs}
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    issuedPcs: parseInt(e.target.value) || 0,
+                  })
+                }
+              />
+              <Input
+                label="Returned Pieces"
+                type="number"
+                min="0"
+                max={editData.issuedPcs}
+                value={editData.returnedPcs}
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    returnedPcs: parseInt(e.target.value) || 0,
+                  })
+                }
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Select
+                label="Status"
+                value={editData.status}
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    status: e.target.value as typeof editData.status,
+                  })
+                }
+                options={[
+                  { value: 'pending', label: 'Pending' },
+                  { value: 'in-progress', label: 'In Progress' },
+                  { value: 'completed', label: 'Completed' },
+                  { value: 'returned', label: 'Returned' },
+                ]}
+              />
+              <Select
+                label="QC Status"
+                value={editData.qcStatus}
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    qcStatus: e.target.value as typeof editData.qcStatus,
+                  })
+                }
+                options={[
+                  { value: 'pending', label: 'QC Pending' },
+                  { value: 'passed', label: 'QC Passed' },
+                  { value: 'failed', label: 'QC Failed' },
+                  { value: 'rework', label: 'Rework' },
+                ]}
+              />
+            </div>
+
+            <Input
+              label="QC Notes"
+              value={editData.qcNotes}
+              onChange={(e) =>
+                setEditData({ ...editData, qcNotes: e.target.value })
+              }
+              placeholder="Optional notes..."
+            />
+
+            {/* Summary */}
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="flex justify-between text-sm">
+                <span className="text-surface-600 dark:text-surface-400">Pending Pieces:</span>
+                <span className="font-medium">{formatNumber(editData.issuedPcs - editData.returnedPcs)}</span>
+              </div>
+              <div className="flex justify-between text-sm mt-1">
+                <span className="text-surface-600 dark:text-surface-400">Total Amount:</span>
+                <span className="font-medium">{formatCurrency(editData.returnedPcs * editData.rate)}</span>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4">
+              <Button variant="secondary" onClick={() => setIsEditModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleEdit} isLoading={isSubmitting}>
+                Save Changes
               </Button>
             </div>
           </div>
@@ -424,4 +664,3 @@ export default function ProductionPage() {
     </div>
   );
 }
-
