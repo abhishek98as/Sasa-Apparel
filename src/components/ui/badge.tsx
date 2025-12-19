@@ -5,9 +5,10 @@ interface BadgeProps {
   children: ReactNode;
   variant?: 'success' | 'warning' | 'danger' | 'info' | 'neutral';
   className?: string;
+  onClick?: () => void;
 }
 
-export function Badge({ children, variant = 'neutral', className }: BadgeProps) {
+export function Badge({ children, variant = 'neutral', className, onClick }: BadgeProps) {
   const variants = {
     success: 'badge-success',
     warning: 'badge-warning',
@@ -16,6 +17,14 @@ export function Badge({ children, variant = 'neutral', className }: BadgeProps) 
     neutral: 'badge-neutral',
   };
 
-  return <span className={cn(variants[variant], className)}>{children}</span>;
+  return (
+    <span 
+      className={cn(variants[variant], className)} 
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+    >
+      {children}
+    </span>
+  );
 }
 

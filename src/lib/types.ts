@@ -56,11 +56,27 @@ export interface FabricCutting extends BaseDocument {
 }
 
 // Tailor
+export interface TailorLeave {
+  date: Date;
+  reason: string;
+  approved?: boolean;
+}
+
+export interface TailorOvertime {
+  date: Date;
+  hours: number;
+  notes?: string;
+}
+
 export interface Tailor extends BaseDocument {
   name: string;
   phone: string;
   address?: string;
   specialization?: string;
+  skills?: string[]; // Style types they excel at
+  dailyCapacity?: number; // Max pieces per day
+  leaves?: TailorLeave[];
+  overtime?: TailorOvertime[];
   isActive: boolean;
 }
 

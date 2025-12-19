@@ -1,9 +1,9 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { Bell, Menu, Moon, Sun } from 'lucide-react';
+import { Bell, Menu, Moon, Sun, Globe } from 'lucide-react';
 import { useLayout } from './layout-context';
 import { useTheme } from '../theme-provider';
+import { useI18n } from '../i18n-provider';
 
 interface HeaderProps {
   title: string;
@@ -12,9 +12,13 @@ interface HeaderProps {
 }
 
 export function Header({ title, subtitle, actions }: HeaderProps) {
-  const { data: session } = useSession();
   const { toggleSidebar } = useLayout();
   const { theme, toggleTheme } = useTheme();
+  const { locale, setLocale } = useI18n();
+
+  const toggleLanguage = () => {
+    setLocale(locale === 'en' ? 'hi' : 'en');
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-surface-100 dark:bg-surface-900 dark:border-surface-800">
@@ -28,7 +32,7 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
             <Menu className="w-5 h-5 text-surface-600" />
           </button>
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-xl font-semibold text-surface-900 truncate">{title}</h1>
+            <h1 className="text-lg sm:text-xl font-semibold text-surface-900 dark:text-surface-50 truncate">{title}</h1>
             {subtitle && (
               <p className="text-xs sm:text-sm text-surface-500 truncate">{subtitle}</p>
             )}
@@ -37,8 +41,23 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
 
         <div className="flex items-center gap-2 sm:gap-3">
           {actions}
+          
+          {/* Language Toggle */}
           <button
-            className="p-2 hover:bg-surface-100 rounded-lg"
+            className="p-2 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg flex items-center gap-1"
+            onClick={toggleLanguage}
+            aria-label="Toggle language"
+            title={locale === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+          >
+            <Globe className="w-5 h-5 text-surface-500" />
+            <span className="text-xs font-medium text-surface-600 dark:text-surface-400 uppercase">
+              {locale}
+            </span>
+          </button>
+
+          {/* Theme Toggle */}
+          <button
+            className="p-2 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg"
             onClick={toggleTheme}
             aria-label="Toggle theme"
           >
@@ -49,7 +68,7 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
             )}
           </button>
 
-          <button className="p-2 hover:bg-surface-100 rounded-lg relative">
+          <button className="p-2 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg relative">
             <Bell className="w-5 h-5 text-surface-500" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-primary-600 rounded-full"></span>
           </button>

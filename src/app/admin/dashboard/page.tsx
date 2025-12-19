@@ -18,6 +18,9 @@ import {
   AlertCircle,
   Clock,
   CheckCircle,
+  BarChart2,
+  PieChartIcon,
+  Activity,
 } from 'lucide-react';
 import {
   BarChart,
@@ -30,6 +33,11 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
+  Legend,
+  Area,
+  AreaChart,
 } from 'recharts';
 
 interface DashboardData {
@@ -69,10 +77,59 @@ interface DashboardData {
   };
 }
 
-const COLORS = ['#df6358', '#22c55e', '#3b82f6', '#f59e0b'];
+interface AnalyticsData {
+  efficiencyTrends: {
+    period: string;
+    received: number;
+    completed: number;
+    shipped: number;
+  }[];
+  tailorPerformance: {
+    _id: string;
+    tailorName: string;
+    totalReturned: number;
+    totalEarnings: number;
+    jobCount: number;
+    completionRate: number;
+    avgTurnaround: number;
+    pendingPcs: number;
+  }[];
+  styleProfitability: {
+    styleName: string;
+    styleCode: string;
+    revenue: number;
+    tailorCost: number;
+    profit: number;
+    profitMargin: number;
+    totalShipped: number;
+  }[];
+  vendorAnalysis: {
+    vendorName: string;
+    totalCuttingReceived: number;
+    totalShipped: number;
+    pendingPcs: number;
+    fulfillmentRate: number;
+  }[];
+  qcAnalysis: {
+    styleName: string;
+    total: number;
+    passed: number;
+    failed: number;
+    rework: number;
+    passRate: number;
+  }[];
+}
+
+const COLORS = ['#df6358', '#22c55e', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899'];
+const CHART_COLORS = {
+  received: '#df6358',
+  completed: '#22c55e',
+  shipped: '#3b82f6',
+};
 
 export default function AdminDashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -80,10 +137,29 @@ export default function AdminDashboard() {
   const [newPassword, setNewPassword] = useState('');
   const [isChanging, setIsChanging] = useState(false);
   const [changeMessage, setChangeMessage] = useState<string | null>(null);
+  const [analyticsPeriod, setAnalyticsPeriod] = useState<'weekly' | 'monthly' | 'yearly'>('monthly');
+  const [analyticsTab, setAnalyticsTab] = useState<'efficiency' | 'tailors' | 'profitability' | 'vendors'>('efficiency');
 
   useEffect(() => {
     fetchDashboardData();
+    fetchAnalytics();
   }, []);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [analyticsPeriod]);
+
+  const fetchAnalytics = async () => {
+    try {
+      const response = await fetch(`/api/admin/analytics?period=${analyticsPeriod}`);
+      const result = await response.json();
+      if (result.success) {
+        setAnalytics(result.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch analytics:', error);
+    }
+  };
 
   const fetchDashboardData = async (params?: { startDate?: string; endDate?: string }) => {
     try {
@@ -444,7 +520,7 @@ export default function AdminDashboard() {
                   {data.recentActivity.map((activity, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-3 p-3 rounded-lg bg-surface-50"
+                      className="flex items-start gap-3 p-3 rounded-lg bg-surface-50 dark:bg-surface-800"
                     >
                       <div className="mt-0.5">
                         {activity.type === 'cutting' && (
@@ -458,7 +534,7 @@ export default function AdminDashboard() {
                         )}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-surface-700">
+                        <p className="text-sm text-surface-700 dark:text-surface-300">
                           {activity.description}
                         </p>
                         <p className="text-xs text-surface-500 mt-1">
@@ -476,6 +552,310 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Advanced Analytics Section */}
+        <Card>
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <Activity className="w-5 h-5 text-primary-600" />
+                <CardTitle>Advanced Analytics</CardTitle>
+              </div>
+              <div className="flex gap-2">
+                {(['weekly', 'monthly', 'yearly'] as const).map((period) => (
+                  <button
+                    key={period}
+                    onClick={() => setAnalyticsPeriod(period)}
+                    className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                      analyticsPeriod === period
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-300 hover:bg-surface-200'
+                    }`}
+                  >
+                    {period.charAt(0).toUpperCase() + period.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {/* Analytics Tabs */}
+            <div className="flex gap-2 mb-6 border-b border-surface-200 dark:border-surface-700 overflow-x-auto">
+              {[
+                { key: 'efficiency', label: 'Production Efficiency', icon: TrendingUp },
+                { key: 'tailors', label: 'Tailor Performance', icon: Users },
+                { key: 'profitability', label: 'Style Profitability', icon: BarChart2 },
+                { key: 'vendors', label: 'Vendor Analysis', icon: Truck },
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setAnalyticsTab(tab.key as typeof analyticsTab)}
+                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap ${
+                    analyticsTab === tab.key
+                      ? 'border-primary-600 text-primary-600'
+                      : 'border-transparent text-surface-500 hover:text-surface-700'
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Efficiency Trends */}
+            {analyticsTab === 'efficiency' && (
+              <div>
+                <p className="text-sm text-surface-500 mb-4">
+                  Track production flow: cutting received → completed → shipped
+                </p>
+                {analytics?.efficiencyTrends && analytics.efficiencyTrends.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={350}>
+                    <AreaChart data={analytics.efficiencyTrends}>
+                      <defs>
+                        <linearGradient id="colorReceived" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={CHART_COLORS.received} stopOpacity={0.3} />
+                          <stop offset="95%" stopColor={CHART_COLORS.received} stopOpacity={0} />
+                        </linearGradient>
+                        <linearGradient id="colorCompleted" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={CHART_COLORS.completed} stopOpacity={0.3} />
+                          <stop offset="95%" stopColor={CHART_COLORS.completed} stopOpacity={0} />
+                        </linearGradient>
+                        <linearGradient id="colorShipped" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={CHART_COLORS.shipped} stopOpacity={0.3} />
+                          <stop offset="95%" stopColor={CHART_COLORS.shipped} stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                      <XAxis dataKey="period" tick={{ fontSize: 12 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Legend />
+                      <Area
+                        type="monotone"
+                        dataKey="received"
+                        stroke={CHART_COLORS.received}
+                        fillOpacity={1}
+                        fill="url(#colorReceived)"
+                        name="Received"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="completed"
+                        stroke={CHART_COLORS.completed}
+                        fillOpacity={1}
+                        fill="url(#colorCompleted)"
+                        name="Completed"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="shipped"
+                        stroke={CHART_COLORS.shipped}
+                        fillOpacity={1}
+                        fill="url(#colorShipped)"
+                        name="Shipped"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-[350px] flex items-center justify-center text-surface-500">
+                    No efficiency data available
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Tailor Performance */}
+            {analyticsTab === 'tailors' && (
+              <div>
+                <p className="text-sm text-surface-500 mb-4">
+                  Compare tailor output, earnings, and turnaround time
+                </p>
+                {analytics?.tailorPerformance && analytics.tailorPerformance.length > 0 ? (
+                  <div className="space-y-4">
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={analytics.tailorPerformance.slice(0, 10)} layout="vertical">
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                        <XAxis type="number" tick={{ fontSize: 12 }} />
+                        <YAxis
+                          type="category"
+                          dataKey="tailorName"
+                          tick={{ fontSize: 11 }}
+                          width={100}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="totalReturned" fill="#22c55e" name="Pcs Completed" />
+                        <Bar dataKey="pendingPcs" fill="#f59e0b" name="Pending Pcs" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <div className="overflow-x-auto">
+                      <table className="table text-sm">
+                        <thead>
+                          <tr>
+                            <th>Tailor</th>
+                            <th>Completed</th>
+                            <th>Earnings</th>
+                            <th>Completion %</th>
+                            <th>Avg Days</th>
+                            <th>Pending</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {analytics.tailorPerformance.slice(0, 10).map((t) => (
+                            <tr key={t._id}>
+                              <td className="font-medium">{t.tailorName || 'Unknown'}</td>
+                              <td>{formatNumber(t.totalReturned)}</td>
+                              <td>{formatCurrency(t.totalEarnings)}</td>
+                              <td>
+                                <Badge
+                                  variant={
+                                    t.completionRate >= 80
+                                      ? 'success'
+                                      : t.completionRate >= 50
+                                      ? 'warning'
+                                      : 'danger'
+                                  }
+                                >
+                                  {t.completionRate.toFixed(0)}%
+                                </Badge>
+                              </td>
+                              <td>{t.avgTurnaround || '-'}</td>
+                              <td>{formatNumber(t.pendingPcs)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center text-surface-500">
+                    No tailor performance data available
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Style Profitability */}
+            {analyticsTab === 'profitability' && (
+              <div>
+                <p className="text-sm text-surface-500 mb-4">
+                  Revenue from vendor rate minus tailor costs per style
+                </p>
+                {analytics?.styleProfitability && analytics.styleProfitability.length > 0 ? (
+                  <div className="space-y-4">
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={analytics.styleProfitability.slice(0, 10)}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                        <XAxis dataKey="styleName" tick={{ fontSize: 11 }} angle={-45} textAnchor="end" height={80} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip
+                          formatter={(value: number) => formatCurrency(value)}
+                        />
+                        <Legend />
+                        <Bar dataKey="revenue" fill="#3b82f6" name="Revenue" />
+                        <Bar dataKey="tailorCost" fill="#f59e0b" name="Tailor Cost" />
+                        <Bar dataKey="profit" fill="#22c55e" name="Profit" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {analytics.styleProfitability.slice(0, 8).map((s, idx) => (
+                        <div
+                          key={idx}
+                          className={`p-3 rounded-lg border ${
+                            s.profit > 0
+                              ? 'border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800'
+                              : 'border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800'
+                          }`}
+                        >
+                          <p className="text-xs text-surface-500 truncate">{s.styleName}</p>
+                          <p
+                            className={`text-lg font-bold ${
+                              s.profit > 0 ? 'text-green-600' : 'text-red-600'
+                            }`}
+                          >
+                            {formatCurrency(s.profit)}
+                          </p>
+                          <p className="text-xs text-surface-400">
+                            {s.profitMargin.toFixed(1)}% margin
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center text-surface-500">
+                    No profitability data available
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Vendor Analysis */}
+            {analyticsTab === 'vendors' && (
+              <div>
+                <p className="text-sm text-surface-500 mb-4">
+                  Cutting received vs shipped, and fulfillment rates per vendor
+                </p>
+                {analytics?.vendorAnalysis && analytics.vendorAnalysis.length > 0 ? (
+                  <div className="space-y-4">
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={analytics.vendorAnalysis}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                        <XAxis dataKey="vendorName" tick={{ fontSize: 11 }} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="totalCuttingReceived" fill="#df6358" name="Received" />
+                        <Bar dataKey="totalShipped" fill="#22c55e" name="Shipped" />
+                        <Bar dataKey="pendingPcs" fill="#f59e0b" name="Pending" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <div className="overflow-x-auto">
+                      <table className="table text-sm">
+                        <thead>
+                          <tr>
+                            <th>Vendor</th>
+                            <th>Received</th>
+                            <th>Shipped</th>
+                            <th>Pending</th>
+                            <th>Fulfillment %</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {analytics.vendorAnalysis.map((v, idx) => (
+                            <tr key={idx}>
+                              <td className="font-medium">{v.vendorName}</td>
+                              <td>{formatNumber(v.totalCuttingReceived)}</td>
+                              <td>{formatNumber(v.totalShipped)}</td>
+                              <td>{formatNumber(v.pendingPcs)}</td>
+                              <td>
+                                <Badge
+                                  variant={
+                                    v.fulfillmentRate >= 80
+                                      ? 'success'
+                                      : v.fulfillmentRate >= 50
+                                      ? 'warning'
+                                      : 'danger'
+                                  }
+                                >
+                                  {v.fulfillmentRate.toFixed(0)}%
+                                </Badge>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center text-surface-500">
+                    No vendor data available
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
