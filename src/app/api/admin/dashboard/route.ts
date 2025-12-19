@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { getStartOfDay, getEndOfDay, getStartOfMonth, getEndOfMonth } from '@/lib/utils';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'manager')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -15,11 +15,28 @@ export async function GET() {
     }
 
     const db = await getDb();
+    const searchParams = request.nextUrl.searchParams;
+    const startDateParam = searchParams.get('startDate');
+    const endDateParam = searchParams.get('endDate');
+
     const today = new Date();
     const startOfToday = getStartOfDay(today);
     const endOfToday = getEndOfDay(today);
     const startOfMonth = getStartOfMonth(today);
     const endOfMonth = getEndOfMonth(today);
+
+    const startDate = startDateParam ? new Date(startDateParam) : undefined;
+    const endDate = endDateParam ? getEndOfDay(new Date(endDateParam)) : undefined;
+
+    const dateFilter =
+      startDate || endDate
+        ? {
+            ...(startDate ? { $gte: startDate } : {}),
+            ...(endDate ? { $lte: endDate } : {}),
+          }
+        : undefined;
+
+    const rangeLabel = startDate || endDate ? 'Filtered range' : 'All time';
 
     // Get cutting received today
     const cuttingToday = await db
@@ -27,7 +44,7 @@ export async function GET() {
       .aggregate([
         {
           $match: {
-            date: { $gte: startOfToday, $lte: endOfToday },
+            ...(dateFilter ? { date: dateFilter } : { date: { $gte: startOfToday, $lte: endOfToday } }),
           },
         },
         {
@@ -45,7 +62,7 @@ export async function GET() {
       .aggregate([
         {
           $match: {
-            date: { $gte: startOfMonth, $lte: endOfMonth },
+            ...(dateFilter ? { date: dateFilter } : { date: { $gte: startOfMonth, $lte: endOfMonth } }),
           },
         },
         {
@@ -61,6 +78,7 @@ export async function GET() {
     const tailorJobStats = await db
       .collection(COLLECTIONS.TAILOR_JOBS)
       .aggregate([
+        ...(dateFilter ? [{ $match: { issueDate: dateFilter } }] : []),
         {
           $group: {
             _id: null,
@@ -88,6 +106,7 @@ export async function GET() {
     const shipmentStats = await db
       .collection(COLLECTIONS.SHIPMENTS)
       .aggregate([
+        ...(dateFilter ? [{ $match: { date: dateFilter } }] : []),
         {
           $group: {
             _id: null,
@@ -101,6 +120,7 @@ export async function GET() {
     const receivableData = await db
       .collection(COLLECTIONS.SHIPMENTS)
       .aggregate([
+        ...(dateFilter ? [{ $match: { date: dateFilter } }] : []),
         {
           $lookup: {
             from: COLLECTIONS.RATES,
@@ -140,16 +160,30 @@ export async function GET() {
         {
           $lookup: {
             from: COLLECTIONS.FABRIC_CUTTING,
-            localField: '_id',
-            foreignField: 'styleId',
+            let: { styleId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$styleId', '$$styleId'] },
+                  ...(dateFilter ? { date: dateFilter } : {}),
+                },
+              },
+            ],
             as: 'cutting',
           },
         },
         {
           $lookup: {
             from: COLLECTIONS.TAILOR_JOBS,
-            localField: '_id',
-            foreignField: 'styleId',
+            let: { styleId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$styleId', '$$styleId'] },
+                  ...(dateFilter ? { issueDate: dateFilter } : {}),
+                },
+              },
+            ],
             as: 'jobs',
           },
         },
@@ -193,6 +227,7 @@ export async function GET() {
     const recentCutting = await db
       .collection(COLLECTIONS.FABRIC_CUTTING)
       .aggregate([
+        ...(dateFilter ? [{ $match: { date: dateFilter } }] : []),
         { $sort: { createdAt: -1 } },
         { $limit: 5 },
         {
@@ -224,6 +259,7 @@ export async function GET() {
     const recentShipments = await db
       .collection(COLLECTIONS.SHIPMENTS)
       .aggregate([
+        ...(dateFilter ? [{ $match: { date: dateFilter } }] : []),
         { $sort: { createdAt: -1 } },
         { $limit: 5 },
         {
@@ -293,6 +329,11 @@ export async function GET() {
         metrics,
         styleWiseData,
         recentActivity,
+        range: {
+          startDate: startDate?.toISOString() || null,
+          endDate: endDate?.toISOString() || null,
+          label: rangeLabel,
+        },
       },
     });
   } catch (error) {

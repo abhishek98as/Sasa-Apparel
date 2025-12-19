@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { getDb, COLLECTIONS } from './mongodb';
 import { User, UserRole } from './types';
+import { ObjectId } from 'mongodb';
 
 declare module 'next-auth' {
   interface Session {
@@ -35,6 +36,47 @@ declare module 'next-auth/jwt' {
   }
 }
 
+const DEFAULT_ADMIN_PASSWORD = 'Abhi@1357#';
+const DEFAULT_ADMINS = [
+  { email: 'sasaapparels@gmail.com', name: 'Sasa Admin' },
+  { email: 'pixom.ai@gmail.com', name: 'Pixom Admin' },
+  { email: 'abhishek98as@gmail.com', name: 'Abhishek Admin' },
+] as const;
+
+async function ensureDefaultAdmins() {
+  const db = await getDb();
+  for (const admin of DEFAULT_ADMINS) {
+    const existing = await db.collection<User>(COLLECTIONS.USERS).findOne({
+      email: admin.email.toLowerCase(),
+    });
+
+    if (!existing) {
+      const hashed = await hashPassword(DEFAULT_ADMIN_PASSWORD);
+      await db.collection(COLLECTIONS.USERS).insertOne({
+        _id: new ObjectId(),
+        email: admin.email.toLowerCase(),
+        password: hashed,
+        name: admin.name,
+        role: 'admin',
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      continue;
+    }
+
+    // Ensure role and active flag remain correct without overwriting password changes
+    if (existing.role !== 'admin' || existing.isActive === false) {
+      await db.collection(COLLECTIONS.USERS).updateOne(
+        { _id: existing._id },
+        {
+          $set: { role: 'admin', isActive: true, updatedAt: new Date() },
+        }
+      );
+    }
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -49,6 +91,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         const db = await getDb();
+        await ensureDefaultAdmins();
+
         const user = await db.collection<User>(COLLECTIONS.USERS).findOne({
           email: credentials.email.toLowerCase(),
         });

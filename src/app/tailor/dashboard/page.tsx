@@ -52,14 +52,19 @@ export default function TailorDashboard() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [returnedPcs, setReturnedPcs] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (params?: { startDate?: string; endDate?: string }) => {
     try {
-      const response = await fetch('/api/tailor/dashboard');
+      const query = new URLSearchParams();
+      if (params?.startDate) query.set('startDate', params.startDate);
+      if (params?.endDate) query.set('endDate', params.endDate);
+      const response = await fetch(`/api/tailor/dashboard${query.toString() ? `?${query.toString()}` : ''}`);
       const result = await response.json();
       if (result.success) {
         setData(result.data);
@@ -68,6 +73,38 @@ export default function TailorDashboard() {
       console.error('Failed to fetch dashboard data:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const applyRange = () => {
+    fetchData({ startDate: startDate || undefined, endDate: endDate || undefined });
+  };
+
+  const quickSetRange = (range: 'today' | 'week' | 'month' | 'all') => {
+    const now = new Date();
+    if (range === 'today') {
+      const iso = now.toISOString().slice(0, 10);
+      setStartDate(iso);
+      setEndDate(iso);
+      fetchData({ startDate: iso, endDate: iso });
+    } else if (range === 'week') {
+      const end = now.toISOString().slice(0, 10);
+      const start = new Date(now);
+      start.setDate(start.getDate() - 6);
+      const startIso = start.toISOString().slice(0, 10);
+      setStartDate(startIso);
+      setEndDate(end);
+      fetchData({ startDate: startIso, endDate: end });
+    } else if (range === 'month') {
+      const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().slice(0, 10);
+      setStartDate(start);
+      setEndDate(end);
+      fetchData({ startDate: start, endDate: end });
+    } else {
+      setStartDate('');
+      setEndDate('');
+      fetchData();
     }
   };
 
@@ -120,6 +157,46 @@ export default function TailorDashboard() {
       />
 
       <div className="p-6 space-y-6">
+        <div className="card p-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div>
+              <label className="label">From</label>
+              <input
+                type="date"
+                className="input"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="label">To</label>
+              <input
+                type="date"
+                className="input"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <div className="flex items-end">
+              <Button onClick={applyRange}>Apply</Button>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="secondary" onClick={() => quickSetRange('today')}>
+              Today
+            </Button>
+            <Button variant="secondary" onClick={() => quickSetRange('week')}>
+              Last 7 days
+            </Button>
+            <Button variant="secondary" onClick={() => quickSetRange('month')}>
+              This Month
+            </Button>
+            <Button variant="ghost" onClick={() => quickSetRange('all')}>
+              All Time
+            </Button>
+          </div>
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard

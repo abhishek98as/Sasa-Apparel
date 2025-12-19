@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
-import { getDb } from '@/lib/mongodb';
+import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { tailorSchema } from '@/lib/validations';
 
 const COLLECTION = 'tailors';
@@ -57,7 +57,7 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'manager')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -84,6 +84,37 @@ export async function PUT(
     }
 
     const db = await getDb();
+
+    if (session.user.role === 'manager') {
+      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
+        entityType: 'tailor',
+        entityId: new ObjectId(id),
+        action: 'update',
+        payload: {
+          collection: COLLECTION,
+          type: 'update',
+          data: validation.data,
+        },
+        requestedBy: {
+          userId: new ObjectId(session.user.id),
+          name: session.user.name,
+          role: session.user.role,
+        },
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: { approvalId: approval.insertedId },
+          message: 'Update submitted for admin approval',
+        },
+        { status: 202 }
+      );
+    }
+
     const result = await db.collection(COLLECTION).findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: { ...validation.data, updatedAt: new Date() } },
@@ -118,7 +149,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'manager')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -135,6 +166,36 @@ export async function DELETE(
     }
 
     const db = await getDb();
+
+    if (session.user.role === 'manager') {
+      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
+        entityType: 'tailor',
+        entityId: new ObjectId(id),
+        action: 'delete',
+        payload: {
+          collection: COLLECTION,
+          type: 'softDelete',
+        },
+        requestedBy: {
+          userId: new ObjectId(session.user.id),
+          name: session.user.name,
+          role: session.user.role,
+        },
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: { approvalId: approval.insertedId },
+          message: 'Deactivation submitted for admin approval',
+        },
+        { status: 202 }
+      );
+    }
+
     const result = await db.collection(COLLECTION).findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: { isActive: false, updatedAt: new Date() } },

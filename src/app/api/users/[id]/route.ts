@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'manager')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -58,7 +58,7 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'manager')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -105,6 +105,37 @@ export async function PUT(
       updateData.tailorId = new ObjectId(validation.data.tailorId);
     }
 
+    // Managers submit approval instead of applying destructive changes directly
+    if (session.user.role === 'manager') {
+      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
+        entityType: 'user',
+        entityId: new ObjectId(id),
+        action: 'update',
+        payload: {
+          collection: COLLECTIONS.USERS,
+          type: 'update',
+          data: updateData,
+        },
+        requestedBy: {
+          userId: new ObjectId(session.user.id),
+          name: session.user.name,
+          role: session.user.role,
+        },
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: { approvalId: approval.insertedId },
+          message: 'Update submitted for admin approval',
+        },
+        { status: 202 }
+      );
+    }
+
     const result = await db.collection(COLLECTIONS.USERS).findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: updateData },
@@ -139,7 +170,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'manager')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -164,6 +195,37 @@ export async function DELETE(
     }
 
     const db = await getDb();
+
+    if (session.user.role === 'manager') {
+      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
+        entityType: 'user',
+        entityId: new ObjectId(id),
+        action: 'delete',
+        payload: {
+          collection: COLLECTIONS.USERS,
+          type: 'softDelete',
+          data: {},
+        },
+        requestedBy: {
+          userId: new ObjectId(session.user.id),
+          name: session.user.name,
+          role: session.user.role,
+        },
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: { approvalId: approval.insertedId },
+          message: 'Deactivation submitted for admin approval',
+        },
+        { status: 202 }
+      );
+    }
+
     const result = await db.collection(COLLECTIONS.USERS).findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: { isActive: false, updatedAt: new Date() } },

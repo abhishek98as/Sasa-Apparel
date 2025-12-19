@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== 'tailor' || !session.user.tailorId) {
@@ -14,6 +14,17 @@ export async function GET() {
       );
     }
 
+    const searchParams = request.nextUrl.searchParams;
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+    const dateFilter =
+      startDate || endDate
+        ? {
+            ...(startDate ? { $gte: new Date(startDate) } : {}),
+            ...(endDate ? { $lte: new Date(endDate + 'T23:59:59.999Z') } : {}),
+          }
+        : undefined;
+
     const tailorId = new ObjectId(session.user.tailorId);
     const db = await getDb();
 
@@ -21,7 +32,7 @@ export async function GET() {
     const jobs = await db
       .collection(COLLECTIONS.TAILOR_JOBS)
       .aggregate([
-        { $match: { tailorId } },
+        { $match: { tailorId, ...(dateFilter ? { issueDate: dateFilter } : {}) } },
         {
           $lookup: {
             from: COLLECTIONS.STYLES,

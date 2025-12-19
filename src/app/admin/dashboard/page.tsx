@@ -7,6 +7,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PageLoader } from '@/components/ui/loading';
 import { formatCurrency, formatNumber, formatDate } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Scissors,
   Package,
@@ -60,6 +62,11 @@ interface DashboardData {
     shipped: number;
     pending: number;
   }[];
+  range?: {
+    startDate: string | null;
+    endDate: string | null;
+    label: string;
+  };
 }
 
 const COLORS = ['#df6358', '#22c55e', '#3b82f6', '#f59e0b'];
@@ -67,14 +74,23 @@ const COLORS = ['#df6358', '#22c55e', '#3b82f6', '#f59e0b'];
 export default function AdminDashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [isChanging, setIsChanging] = useState(false);
+  const [changeMessage, setChangeMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = async (params?: { startDate?: string; endDate?: string }) => {
     try {
-      const response = await fetch('/api/admin/dashboard');
+      const query = new URLSearchParams();
+      if (params?.startDate) query.set('startDate', params.startDate);
+      if (params?.endDate) query.set('endDate', params.endDate);
+      const response = await fetch(`/api/admin/dashboard${query.toString() ? `?${query.toString()}` : ''}`);
       const result = await response.json();
       if (result.success) {
         setData(result.data);
@@ -83,6 +99,44 @@ export default function AdminDashboard() {
       console.error('Failed to fetch dashboard data:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const applyRange = () => {
+    fetchDashboardData({ startDate: startDate || undefined, endDate: endDate || undefined });
+  };
+
+  const quickSetRange = (range: 'today' | 'week' | 'month' | 'year' | 'all') => {
+    const now = new Date();
+    if (range === 'today') {
+      const iso = now.toISOString().slice(0, 10);
+      setStartDate(iso);
+      setEndDate(iso);
+      fetchDashboardData({ startDate: iso, endDate: iso });
+    } else if (range === 'week') {
+      const end = now.toISOString().slice(0, 10);
+      const start = new Date(now);
+      start.setDate(start.getDate() - 6);
+      const startIso = start.toISOString().slice(0, 10);
+      setStartDate(startIso);
+      setEndDate(end);
+      fetchDashboardData({ startDate: startIso, endDate: end });
+    } else if (range === 'month') {
+      const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().slice(0, 10);
+      setStartDate(start);
+      setEndDate(end);
+      fetchDashboardData({ startDate: start, endDate: end });
+    } else if (range === 'year') {
+      const start = new Date(now.getFullYear(), 0, 1).toISOString().slice(0, 10);
+      const end = new Date(now.getFullYear(), 11, 31).toISOString().slice(0, 10);
+      setStartDate(start);
+      setEndDate(end);
+      fetchDashboardData({ startDate: start, endDate: end });
+    } else {
+      setStartDate('');
+      setEndDate('');
+      fetchDashboardData();
     }
   };
 
@@ -116,14 +170,125 @@ export default function AdminDashboard() {
     <div className="animate-fade-in">
       <Header
         title="Dashboard"
-        subtitle={`Welcome back! Here's what's happening today.`}
+        subtitle={`Welcome back! ${data?.range?.label || 'All time'} view`}
       />
 
       <div className="p-6 space-y-6">
+        {/* Date Filters */}
+        <div className="card p-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div>
+              <label className="label">From</label>
+              <input
+                type="date"
+                className="input"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="label">To</label>
+              <input
+                type="date"
+                className="input"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <div className="flex items-end">
+              <button className="btn btn-primary" onClick={applyRange}>
+                Apply
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button className="btn btn-secondary" onClick={() => quickSetRange('today')}>
+              Today
+            </button>
+            <button className="btn btn-secondary" onClick={() => quickSetRange('week')}>
+              Last 7 days
+            </button>
+            <button className="btn btn-secondary" onClick={() => quickSetRange('month')}>
+              This Month
+            </button>
+            <button className="btn btn-secondary" onClick={() => quickSetRange('year')}>
+              This Year
+            </button>
+            <button className="btn btn-ghost" onClick={() => quickSetRange('all')}>
+              All Time
+            </button>
+          </div>
+        </div>
+
+        {data?.range && (
+          <div className="flex items-center gap-3 text-sm text-surface-600 px-2">
+            <span className="badge badge-neutral">Range</span>
+            <span>
+              {data.range.startDate ? new Date(data.range.startDate).toLocaleDateString() : 'All time'} -{' '}
+              {data.range.endDate ? new Date(data.range.endDate).toLocaleDateString() : 'All time'}
+            </span>
+            <span className="text-surface-400">({data.range.label})</span>
+          </div>
+        )}
+
+        <div className="card p-4 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col sm:flex-row gap-3 flex-1">
+            <Input
+              label="Current Password"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <Input
+              label="New Password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div className="flex items-end gap-3">
+            <Button
+              onClick={async () => {
+                setIsChanging(true);
+                setChangeMessage(null);
+                try {
+                  const res = await fetch('/api/auth/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      currentPassword: currentPassword.trim(),
+                      newPassword: newPassword.trim(),
+                    }),
+                  });
+                  const result = await res.json();
+                  if (result.success) {
+                    setChangeMessage('Password updated');
+                    setCurrentPassword('');
+                    setNewPassword('');
+                  } else {
+                    setChangeMessage(result.error || 'Unable to update password');
+                  }
+                } catch {
+                  setChangeMessage('Unable to update password');
+                } finally {
+                  setIsChanging(false);
+                }
+              }}
+              isLoading={isChanging}
+            >
+              Update Password
+            </Button>
+            {changeMessage && (
+              <span className="text-xs text-surface-600">{changeMessage}</span>
+            )}
+          </div>
+        </div>
+
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            title="Cutting Received Today"
+            title="Cutting Received (Range)"
             value={formatNumber(metrics.totalCuttingReceivedToday)}
             icon={Scissors}
             className="animate-slide-up stagger-1"

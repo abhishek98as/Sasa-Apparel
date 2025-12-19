@@ -4,12 +4,16 @@ import { UserRole } from './lib/types';
 
 // Define route access by role
 const roleRoutes: Record<string, UserRole[]> = {
-  '/admin': ['admin'],
-  '/vendor': ['admin', 'vendor'],
-  '/tailor': ['admin', 'tailor'],
-  '/api/admin': ['admin'],
-  '/api/vendors': ['admin', 'vendor'],
-  '/api/tailors': ['admin', 'tailor'],
+  '/admin': ['admin', 'manager'],
+  '/vendor': ['admin', 'vendor', 'manager'],
+  '/tailor': ['admin', 'tailor', 'manager'],
+  '/api/admin': ['admin', 'manager'],
+  '/api/vendors': ['admin', 'vendor', 'manager'],
+  '/api/tailors': ['admin', 'tailor', 'manager'],
+  '/api/approvals': ['admin', 'manager'],
+  '/api/inventory': ['admin', 'manager'],
+  '/api/qc': ['admin', 'manager'],
+  '/api/tailor-payments': ['admin', 'manager'],
 };
 
 export default withAuth(
@@ -26,7 +30,7 @@ export default withAuth(
             return NextResponse.redirect(new URL('/vendor/dashboard', req.url));
           } else if (token?.role === 'tailor') {
             return NextResponse.redirect(new URL('/tailor/dashboard', req.url));
-          } else if (token?.role === 'admin') {
+          } else if (token?.role === 'admin' || token?.role === 'manager') {
             return NextResponse.redirect(new URL('/admin/dashboard', req.url));
           }
           return NextResponse.redirect(new URL('/login', req.url));

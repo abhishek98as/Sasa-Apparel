@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply bg-surface-50 text-surface-900 antialiased;
+    @apply bg-surface-50 text-surface-900 antialiased dark:bg-surface-900 dark:text-surface-50;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
@@ -38,7 +38,7 @@
 
 @layer components {
   .card {
-    @apply bg-white rounded-xl shadow-card border border-surface-100;
+    @apply bg-white rounded-xl shadow-card border border-surface-100 dark:bg-surface-800 dark:border-surface-700;
   }
 
   .btn {
@@ -50,7 +50,7 @@
   }
 
   .btn-secondary {
-    @apply btn bg-surface-100 text-surface-700 hover:bg-surface-200 focus:ring-surface-400 active:bg-surface-300;
+    @apply btn bg-surface-100 text-surface-700 hover:bg-surface-200 focus:ring-surface-400 active:bg-surface-300 dark:bg-surface-800 dark:text-surface-100 dark:hover:bg-surface-700;
   }
 
   .btn-success {
@@ -58,7 +58,7 @@
   }
 
   .btn-ghost {
-    @apply btn bg-transparent text-surface-600 hover:bg-surface-100 focus:ring-surface-300;
+    @apply btn bg-transparent text-surface-600 hover:bg-surface-100 focus:ring-surface-300 dark:text-surface-200 dark:hover:bg-surface-800;
   }
 
   .btn-danger {
@@ -66,7 +66,7 @@
   }
 
   .input {
-    @apply w-full rounded-lg border border-surface-300 bg-white px-4 py-2.5 text-sm text-surface-900 placeholder:text-surface-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200;
+    @apply w-full rounded-lg border border-surface-300 bg-white px-4 py-2.5 text-sm text-surface-900 placeholder:text-surface-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 dark:bg-surface-800 dark:text-surface-50 dark:border-surface-600;
   }
 
   .input-error {
@@ -86,15 +86,15 @@
   }
 
   .table th {
-    @apply text-left text-xs font-semibold uppercase tracking-wider text-surface-500 bg-surface-50 px-4 py-3;
+    @apply text-left text-xs font-semibold uppercase tracking-wider text-surface-500 bg-surface-50 px-4 py-3 dark:bg-surface-800 dark:text-surface-200;
   }
 
   .table td {
-    @apply px-4 py-3 border-t border-surface-100;
+    @apply px-4 py-3 border-t border-surface-100 dark:border-surface-800;
   }
 
   .table tbody tr:hover {
-    @apply bg-surface-50;
+    @apply bg-surface-50 dark:bg-surface-800;
   }
 
   .badge {
@@ -138,11 +138,11 @@
   }
 
   .sidebar-link {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-100 hover:text-surface-900 transition-colors;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-100 hover:text-surface-900 transition-colors dark:text-surface-200 dark:hover:bg-surface-800 dark:hover:text-white;
   }
 
   .sidebar-link-active {
-    @apply bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800;
+    @apply bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800 dark:bg-primary-900/50 dark:text-primary-200;
   }
 }
 

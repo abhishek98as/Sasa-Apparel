@@ -53,5 +53,12 @@ export const COLLECTIONS = {
   SHIPMENTS: 'shipments',
   RATES: 'rates',
   EVENTS: 'events',
+  INVENTORY_ITEMS: 'inventoryItems',
+  INVENTORY_MOVEMENTS: 'inventoryMovements',
+  REORDER_SUGGESTIONS: 'reorderSuggestions',
+  QC_CHECKLISTS: 'qcChecklists',
+  QC_INSPECTIONS: 'qcInspections',
+  TAILOR_PAYMENTS: 'tailorPayments',
+  APPROVALS: 'approvals',
 } as const;
 

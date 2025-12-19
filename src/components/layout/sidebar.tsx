@@ -21,6 +21,10 @@ import {
   ClipboardList,
   CircleDollarSign,
   X,
+  Boxes,
+  ShieldCheck,
+  Wallet,
+  BadgeCheck,
 } from 'lucide-react';
 
 interface NavItem {
@@ -37,8 +41,12 @@ const adminNavItems: NavItem[] = [
   { href: '/admin/fabric-cutting', label: 'Fabric & Cutting', icon: Scissors },
   { href: '/admin/distribution', label: 'Distribution', icon: ClipboardList },
   { href: '/admin/production', label: 'Production', icon: Package },
+  { href: '/admin/inventory', label: 'Inventory', icon: Boxes },
+  { href: '/admin/qc', label: 'Quality Control', icon: ShieldCheck },
   { href: '/admin/shipments', label: 'Shipments', icon: Truck },
   { href: '/admin/rates', label: 'Rates & Profit', icon: CircleDollarSign },
+  { href: '/admin/payments', label: 'Payments', icon: Wallet },
+  { href: '/admin/approvals', label: 'Approvals', icon: BadgeCheck },
   { href: '/admin/reports', label: 'Reports', icon: FileText },
   { href: '/admin/users', label: 'Users', icon: UserCircle },
 ];
@@ -64,17 +72,23 @@ export function Sidebar() {
   const role = session?.user?.role;
   
   const navItems =
-    role === 'admin'
+    role === 'admin' || role === 'manager'
       ? adminNavItems
       : role === 'vendor'
       ? vendorNavItems
       : tailorNavItems;
 
   const roleLabel =
-    role === 'admin' ? 'Administrator' : role === 'vendor' ? 'Vendor Portal' : 'Tailor Portal';
+    role === 'admin'
+      ? 'Administrator'
+      : role === 'manager'
+      ? 'Manager Portal'
+      : role === 'vendor'
+      ? 'Vendor Portal'
+      : 'Tailor Portal';
 
   const roleColor =
-    role === 'admin'
+    role === 'admin' || role === 'manager'
       ? 'bg-primary-600'
       : role === 'vendor'
       ? 'bg-blue-600'
@@ -98,7 +112,7 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-surface-200 flex flex-col h-screen transform transition-transform duration-300 ease-in-out lg:transform-none',
+          'fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-surface-200 dark:bg-surface-900 dark:border-surface-800 flex flex-col h-screen transform transition-transform duration-300 ease-in-out lg:transform-none',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >

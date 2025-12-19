@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 // User Roles
-export type UserRole = 'admin' | 'vendor' | 'tailor';
+export type UserRole = 'admin' | 'manager' | 'vendor' | 'tailor';
 
 // Base interface for MongoDB documents
 export interface BaseDocument {
@@ -102,8 +102,22 @@ export interface Rate extends BaseDocument {
 }
 
 // Audit Event
-export type EventAction = 'create' | 'update' | 'delete' | 'login' | 'logout';
-export type EntityType = 'user' | 'vendor' | 'style' | 'fabricCutting' | 'tailorJob' | 'shipment' | 'rate';
+export type EventAction = 'create' | 'update' | 'delete' | 'login' | 'logout' | 'approve' | 'reject';
+export type EntityType =
+  | 'user'
+  | 'vendor'
+  | 'style'
+  | 'fabricCutting'
+  | 'tailorJob'
+  | 'shipment'
+  | 'rate'
+  | 'inventoryItem'
+  | 'inventoryMovement'
+  | 'reorderSuggestion'
+  | 'qcChecklist'
+  | 'qcInspection'
+  | 'tailorPayment'
+  | 'approval';
 
 export interface AuditEvent extends BaseDocument {
   entityType: EntityType;
@@ -163,5 +177,126 @@ export interface TailorCapacity {
   totalReturned: number;
   pendingPcs: number;
   availableCapacity: number; // Higher is better for assignment
+}
+
+// Inventory
+export type InventoryUnit = 'kg' | 'piece' | 'meter';
+export type InventoryItemType = 'raw' | 'accessory';
+
+export interface InventoryItem extends BaseDocument {
+  name: string;
+  sku: string;
+  type: InventoryItemType;
+  unit: InventoryUnit;
+  costPerUnit: number;
+  minStock: number;
+  currentStock: number;
+  vendorId?: ObjectId;
+  category?: string;
+  tags?: string[];
+  isActive: boolean;
+}
+
+export type InventoryMovementType = 'in' | 'out' | 'waste' | 'adjust';
+
+export interface InventoryMovement extends BaseDocument {
+  itemId: ObjectId;
+  type: InventoryMovementType;
+  quantity: number;
+  unitCost?: number;
+  reference?: string;
+  notes?: string;
+  relatedEntity?: {
+    type: EntityType;
+    id: ObjectId;
+  };
+  createdBy: {
+    userId: ObjectId;
+    name: string;
+    role: UserRole;
+  };
+}
+
+export type ReorderStatus = 'open' | 'acknowledged' | 'ordered' | 'closed';
+
+export interface ReorderSuggestion extends BaseDocument {
+  itemId: ObjectId;
+  suggestedQty: number;
+  status: ReorderStatus;
+  generatedReason: string;
+  approvedBy?: ObjectId;
+  acknowledgedBy?: ObjectId;
+}
+
+// QC
+export type DefectCategory = 'stitching' | 'fabric' | 'measurement' | 'other';
+
+export interface QCChecklistItem {
+  label: string;
+  category: DefectCategory;
+  isCritical?: boolean;
+}
+
+export interface QCChecklist extends BaseDocument {
+  styleId: ObjectId;
+  items: QCChecklistItem[];
+  version: number;
+  isActive: boolean;
+}
+
+export interface QCDefect {
+  category: DefectCategory;
+  description: string;
+  severity?: 'low' | 'medium' | 'high';
+}
+
+export interface QCInspection extends BaseDocument {
+  styleId: ObjectId;
+  jobId?: ObjectId;
+  checklistId?: ObjectId;
+  status: QCStatus;
+  defects?: QCDefect[];
+  photos?: string[];
+  rejectionReason?: string;
+  reworkAssignedTo?: ObjectId;
+  inspectedBy: {
+    userId: ObjectId;
+    name: string;
+  };
+}
+
+// Tailor payments
+export type PaymentEntryType = 'earning' | 'advance' | 'deduction' | 'payout';
+
+export interface TailorPayment extends BaseDocument {
+  tailorId: ObjectId;
+  jobId?: ObjectId;
+  amount: number;
+  entryType: PaymentEntryType;
+  description?: string;
+  balanceAfter?: number;
+  reference?: string;
+  createdBy: {
+    userId: ObjectId;
+    name: string;
+  };
+}
+
+// Approvals
+export type ApprovalStatus = 'pending' | 'approved' | 'rejected';
+
+export interface ApprovalRequest extends BaseDocument {
+  entityType: EntityType;
+  entityId: ObjectId;
+  action: EventAction;
+  payload: Record<string, unknown>;
+  requestedBy: {
+    userId: ObjectId;
+    name: string;
+    role: UserRole;
+  };
+  status: ApprovalStatus;
+  decisionBy?: ObjectId;
+  decisionRemarks?: string;
 }
 

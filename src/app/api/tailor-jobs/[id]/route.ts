@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session) {
+    if (!session || !['admin', 'manager', 'tailor'].includes(session.user.role)) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -119,7 +119,9 @@ export async function PUT(
     }
 
     // For tailor role, only allow updating their own jobs
-    if (session.user.role === 'tailor') {
+    const isTailor = session.user.role === 'tailor';
+    const isManager = session.user.role === 'manager';
+    if (isTailor) {
       if (existingJob.tailorId.toString() !== session.user.tailorId) {
         return NextResponse.json(
           { success: false, error: 'Unauthorized to update this job' },
@@ -174,6 +176,37 @@ export async function PUT(
 
     if (validation.data.qcNotes) {
       updateData.qcNotes = validation.data.qcNotes;
+    }
+
+    // Tailor updates always require approval; manager updates also require approval
+    if (isTailor || isManager) {
+      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
+        entityType: 'tailorJob',
+        entityId: new ObjectId(id),
+        action: 'update',
+        payload: {
+          collection: COLLECTIONS.TAILOR_JOBS,
+          type: 'update',
+          data: updateData,
+        },
+        requestedBy: {
+          userId: new ObjectId(session.user.id),
+          name: session.user.name,
+          role: session.user.role,
+        },
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: { approvalId: approval.insertedId },
+          message: 'Update submitted for approval',
+        },
+        { status: 202 }
+      );
     }
 
     const result = await db.collection(COLLECTIONS.TAILOR_JOBS).findOneAndUpdate(

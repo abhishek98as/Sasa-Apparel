@@ -6,12 +6,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Scissors, Package, Users } from 'lucide-react';
+import { useI18n } from '@/components/i18n-provider';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
   const error = searchParams.get('error');
+  const { t, locale, setLocale } = useI18n();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,10 +25,21 @@ function LoginForm() {
     setIsLoading(true);
     setLoginError(null);
 
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    setEmail(trimmedEmail);
+    setPassword(trimmedPassword);
+
+    if (!trimmedEmail || !trimmedPassword) {
+      setIsLoading(false);
+      setLoginError('Email and password are required');
+      return;
+    }
+
     try {
       const result = await signIn('credentials', {
-        email,
-        password,
+        email: trimmedEmail,
+        password: trimmedPassword,
         redirect: false,
       });
 
@@ -46,8 +59,26 @@ function LoginForm() {
   return (
     <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8">
       <div className="text-center mb-6 sm:mb-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-surface-900">Welcome back</h2>
-        <p className="text-surface-500 mt-2 text-sm sm:text-base">Sign in to your account</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-surface-900">{t('welcome.back')}</h2>
+        <p className="text-surface-500 mt-2 text-sm sm:text-base">{t('sign.in')}</p>
+
+        <div className="mt-4 inline-flex items-center gap-2 text-xs text-surface-500">
+          <span className="uppercase font-semibold">Language:</span>
+          <button
+            type="button"
+            onClick={() => setLocale('en')}
+            className={`px-2 py-1 rounded ${locale === 'en' ? 'bg-primary-100 text-primary-700' : 'bg-surface-100'}`}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => setLocale('hi')}
+            className={`px-2 py-1 rounded ${locale === 'hi' ? 'bg-primary-100 text-primary-700' : 'bg-surface-100'}`}
+          >
+            हिन्दी
+          </button>
+        </div>
       </div>
 
       {loginError && (
@@ -58,7 +89,7 @@ function LoginForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
         <Input
-          label="Email address"
+          label={t('email')}
           type="email"
           placeholder="you@example.com"
           value={email}
@@ -67,7 +98,7 @@ function LoginForm() {
         />
 
         <Input
-          label="Password"
+          label={t('password')}
           type="password"
           placeholder="Enter your password"
           value={password}
@@ -80,7 +111,7 @@ function LoginForm() {
           isLoading={isLoading}
           className="w-full"
         >
-          Sign in
+          {t('sign.in')}
         </Button>
       </form>
 
