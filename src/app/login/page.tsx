@@ -114,16 +114,6 @@ function LoginForm() {
           {t('sign.in')}
         </Button>
       </form>
-
-      <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-surface-50 rounded-lg">
-        <p className="text-xs text-surface-500 text-center">
-          Demo credentials for testing:
-        </p>
-        <div className="mt-2 space-y-1 text-xs text-surface-600">
-          <p><strong>Admin:</strong> admin@sasa.com / admin123</p>
-          <p><strong>Vendor:</strong> vendor@test.com / vendor123</p>
-        </div>
-      </div>
     </div>
   );
 }
