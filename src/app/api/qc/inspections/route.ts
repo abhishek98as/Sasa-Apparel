@@ -58,14 +58,18 @@ export async function POST(request: NextRequest) {
     const db = await getDb();
     const now = new Date();
 
+    const styleId = new ObjectId(validation.data.styleId);
+    const reworkTailorId = validation.data.reworkAssignedTo
+      ? new ObjectId(validation.data.reworkAssignedTo)
+      : undefined;
+
+    // Create the inspection record
     const result = await db.collection(COLLECTIONS.QC_INSPECTIONS).insertOne({
       ...validation.data,
-      styleId: new ObjectId(validation.data.styleId),
+      styleId,
       jobId: validation.data.jobId ? new ObjectId(validation.data.jobId) : undefined,
       checklistId: validation.data.checklistId ? new ObjectId(validation.data.checklistId) : undefined,
-      reworkAssignedTo: validation.data.reworkAssignedTo
-        ? new ObjectId(validation.data.reworkAssignedTo)
-        : undefined,
+      reworkAssignedTo: reworkTailorId,
       createdAt: now,
       updatedAt: now,
       inspectedBy: {
@@ -74,8 +78,66 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    let reworkJobId = null;
+
+    // If status is "rework" and a tailor is assigned, create a rework job in Production
+    if (validation.data.status === 'rework' && reworkTailorId) {
+      // Get the style to find a default rate
+      const style = await db.collection(COLLECTIONS.STYLES).findOne({ _id: styleId });
+      
+      // Get the rate for this style (use tailor rate or default)
+      const rateDoc = await db.collection(COLLECTIONS.RATES).findOne({ styleId });
+      const rate = rateDoc?.tailorRate || 0;
+
+      // Get defect count for rework pieces estimation (default to 1 if not specified)
+      const reworkPcs = body.reworkPcs || 1;
+
+      // Create a rework job - this will show in Production page
+      const reworkJob = await db.collection(COLLECTIONS.TAILOR_JOBS).insertOne({
+        styleId,
+        tailorId: reworkTailorId,
+        fabricCuttingId: null, // Rework jobs don't need a cutting record
+        issuedPcs: reworkPcs,
+        rate,
+        issueDate: now,
+        status: 'in-progress', // Rework is immediately in progress
+        returnedPcs: 0,
+        qcStatus: 'rework', // Mark as rework for tracking
+        qcNotes: validation.data.rejectionReason || 'Rework from QC inspection',
+        isRework: true, // Flag to identify rework jobs
+        sourceInspectionId: result.insertedId,
+        createdAt: now,
+        updatedAt: now,
+      });
+
+      reworkJobId = reworkJob.insertedId;
+    }
+
+    // If the original job is linked, update its qcStatus
+    if (validation.data.jobId) {
+      await db.collection(COLLECTIONS.TAILOR_JOBS).updateOne(
+        { _id: new ObjectId(validation.data.jobId) },
+        {
+          $set: {
+            qcStatus: validation.data.status,
+            qcNotes: validation.data.rejectionReason,
+            updatedAt: now,
+          },
+        }
+      );
+    }
+
     return NextResponse.json(
-      { success: true, data: { inspectionId: result.insertedId }, message: 'Inspection recorded' },
+      {
+        success: true,
+        data: {
+          inspectionId: result.insertedId,
+          reworkJobId,
+        },
+        message: reworkJobId
+          ? 'Inspection recorded and rework job created'
+          : 'Inspection recorded',
+      },
       { status: 201 }
     );
   } catch (error) {

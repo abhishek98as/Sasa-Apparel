@@ -20,7 +20,7 @@ import {
 import { PageLoader } from '@/components/ui/loading';
 import { useToast } from '@/components/ui/toast';
 import { formatNumber, formatDate, formatCurrency } from '@/lib/utils';
-import { Search, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Search, CheckCircle, Clock, AlertCircle, RefreshCw } from 'lucide-react';
 
 interface Style {
   _id: string;
@@ -47,6 +47,8 @@ interface TailorJob {
   qcStatus: 'pending' | 'passed' | 'failed' | 'rework';
   qcNotes?: string;
   completedDate?: string;
+  isRework?: boolean;
+  sourceInspectionId?: string;
 }
 
 export default function ProductionPage() {
@@ -126,12 +128,20 @@ export default function ProductionPage() {
       job.style?.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       job.tailor?.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = !filterStatus || job.status === filterStatus;
+    // Handle rework filter specially - show jobs that are rework OR have rework qcStatus
+    const matchesStatus =
+      !filterStatus ||
+      (filterStatus === 'rework'
+        ? job.isRework || job.qcStatus === 'rework'
+        : job.status === filterStatus);
 
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string, isRework?: boolean) => {
+    if (isRework) {
+      return <Badge variant="danger">Rework</Badge>;
+    }
     switch (status) {
       case 'pending':
         return <Badge variant="neutral">Pending</Badge>;
@@ -162,8 +172,9 @@ export default function ProductionPage() {
   };
 
   // Stats
-  const totalInProgress = jobs.filter((j) => j.status === 'in-progress').length;
+  const totalInProgress = jobs.filter((j) => j.status === 'in-progress' && !j.isRework).length;
   const totalCompleted = jobs.filter((j) => j.status === 'completed').length;
+  const totalRework = jobs.filter((j) => j.isRework || j.qcStatus === 'rework').length;
   const totalPending = jobs.reduce((sum, j) => sum + (j.issuedPcs - j.returnedPcs), 0);
   const totalCost = jobs.reduce((sum, j) => sum + j.returnedPcs * j.rate, 0);
 
@@ -180,7 +191,7 @@ export default function ProductionPage() {
 
       <div className="p-6 space-y-6">
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -203,6 +214,19 @@ export default function ProductionPage() {
                 <div>
                   <p className="text-sm text-surface-500">Completed</p>
                   <p className="text-xl font-bold">{totalCompleted}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <RefreshCw className="w-5 h-5 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-surface-500">Rework</p>
+                  <p className="text-xl font-bold">{totalRework}</p>
                 </div>
               </div>
             </CardContent>
@@ -249,6 +273,7 @@ export default function ProductionPage() {
               { value: 'pending', label: 'Pending' },
               { value: 'in-progress', label: 'In Progress' },
               { value: 'completed', label: 'Completed' },
+              { value: 'rework', label: 'Rework' },
             ]}
             className="w-40"
           />
@@ -308,7 +333,7 @@ export default function ProductionPage() {
                       <TableCell>
                         {formatCurrency(job.returnedPcs * job.rate)}
                       </TableCell>
-                      <TableCell>{getStatusBadge(job.status)}</TableCell>
+                      <TableCell>{getStatusBadge(job.status, job.isRework)}</TableCell>
                       <TableCell>{getQCBadge(job.qcStatus)}</TableCell>
                       <TableCell>
                         <Button
