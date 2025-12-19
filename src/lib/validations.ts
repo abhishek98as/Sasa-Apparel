@@ -43,21 +43,32 @@ export const tailorSchema = z.object({
 });
 
 // Manager permissions schema
+// CRUD Permission schema for each module
+export const crudPermissionSchema = z.object({
+  create: z.boolean().optional(),
+  read: z.boolean().optional(),
+  update: z.boolean().optional(),
+  delete: z.boolean().optional(),
+}).optional();
+
+// Manager permissions with granular CRUD access per module
 export const managerPermissionsSchema = z.object({
-  dashboard: z.boolean().optional(),
-  vendors: z.boolean().optional(),
-  tailors: z.boolean().optional(),
-  styles: z.boolean().optional(),
-  fabricCutting: z.boolean().optional(),
-  tailorJobs: z.boolean().optional(),
-  shipments: z.boolean().optional(),
-  rates: z.boolean().optional(),
-  users: z.boolean().optional(),
-  inventory: z.boolean().optional(),
-  qc: z.boolean().optional(),
-  payments: z.boolean().optional(),
-  approvals: z.boolean().optional(),
-});
+  dashboard: crudPermissionSchema,
+  vendors: crudPermissionSchema,
+  tailors: crudPermissionSchema,
+  styles: crudPermissionSchema,
+  fabricCutting: crudPermissionSchema,
+  distribution: crudPermissionSchema,
+  production: crudPermissionSchema,
+  shipments: crudPermissionSchema,
+  rates: crudPermissionSchema,
+  inventory: crudPermissionSchema,
+  qc: crudPermissionSchema,
+  payments: crudPermissionSchema,
+  approvals: crudPermissionSchema,
+  reports: crudPermissionSchema,
+  users: crudPermissionSchema,
+}).optional();
 
 // User validation
 export const userSchema = z.object({
