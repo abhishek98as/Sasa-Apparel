@@ -133,10 +133,6 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [isChanging, setIsChanging] = useState(false);
-  const [changeMessage, setChangeMessage] = useState<string | null>(null);
   const [analyticsPeriod, setAnalyticsPeriod] = useState<'weekly' | 'monthly' | 'yearly'>('monthly');
   const [analyticsTab, setAnalyticsTab] = useState<'efficiency' | 'tailors' | 'profitability' | 'vendors'>('efficiency');
 
@@ -307,59 +303,6 @@ export default function AdminDashboard() {
             <span className="text-surface-400">({data.range.label})</span>
           </div>
         )}
-
-        <div className="card p-4 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-col sm:flex-row gap-3 flex-1">
-            <Input
-              label="Current Password"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <Input
-              label="New Password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </div>
-          <div className="flex items-end gap-3">
-            <Button
-              onClick={async () => {
-                setIsChanging(true);
-                setChangeMessage(null);
-                try {
-                  const res = await fetch('/api/auth/change-password', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      currentPassword: currentPassword.trim(),
-                      newPassword: newPassword.trim(),
-                    }),
-                  });
-                  const result = await res.json();
-                  if (result.success) {
-                    setChangeMessage('Password updated');
-                    setCurrentPassword('');
-                    setNewPassword('');
-                  } else {
-                    setChangeMessage(result.error || 'Unable to update password');
-                  }
-                } catch {
-                  setChangeMessage('Unable to update password');
-                } finally {
-                  setIsChanging(false);
-                }
-              }}
-              isLoading={isChanging}
-            >
-              Update Password
-            </Button>
-            {changeMessage && (
-              <span className="text-xs text-surface-600">{changeMessage}</span>
-            )}
-          </div>
-        </div>
 
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
