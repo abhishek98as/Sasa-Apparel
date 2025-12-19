@@ -139,13 +139,14 @@ export default function VendorsPage() {
       const result = await response.json();
 
       if (result.success) {
-        showToast(result.message, 'success');
+        showToast(result.message || 'Vendor deactivated successfully', 'success');
         fetchVendors();
       } else {
-        showToast(result.error, 'error');
+        showToast(result.error || 'Failed to deactivate vendor', 'error');
       }
     } catch (error) {
-      showToast('An error occurred', 'error');
+      console.error('Delete vendor error:', error);
+      showToast('An error occurred while deleting', 'error');
     }
   };
 

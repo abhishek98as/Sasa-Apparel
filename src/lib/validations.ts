@@ -30,6 +30,23 @@ export const tailorSchema = z.object({
   isActive: z.boolean().default(true),
 });
 
+// Manager permissions schema
+export const managerPermissionsSchema = z.object({
+  dashboard: z.boolean().optional(),
+  vendors: z.boolean().optional(),
+  tailors: z.boolean().optional(),
+  styles: z.boolean().optional(),
+  fabricCutting: z.boolean().optional(),
+  tailorJobs: z.boolean().optional(),
+  shipments: z.boolean().optional(),
+  rates: z.boolean().optional(),
+  users: z.boolean().optional(),
+  inventory: z.boolean().optional(),
+  qc: z.boolean().optional(),
+  payments: z.boolean().optional(),
+  approvals: z.boolean().optional(),
+});
+
 // User validation
 export const userSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -38,6 +55,7 @@ export const userSchema = z.object({
   role: z.enum(['admin', 'manager', 'vendor', 'tailor']),
   vendorId: z.string().optional(),
   tailorId: z.string().optional(),
+  permissions: managerPermissionsSchema.optional(),
   isActive: z.boolean().default(true),
 });
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
@@ -12,7 +13,6 @@ import {
   Package,
   TrendingUp,
   FileText,
-  Settings,
   LogOut,
   UserCircle,
   Building2,
@@ -27,28 +27,45 @@ import {
   BadgeCheck,
 } from 'lucide-react';
 
+interface ManagerPermissions {
+  dashboard?: boolean;
+  vendors?: boolean;
+  tailors?: boolean;
+  styles?: boolean;
+  fabricCutting?: boolean;
+  tailorJobs?: boolean;
+  shipments?: boolean;
+  rates?: boolean;
+  users?: boolean;
+  inventory?: boolean;
+  qc?: boolean;
+  payments?: boolean;
+  approvals?: boolean;
+}
+
 interface NavItem {
   href: string;
   label: string;
   icon: typeof LayoutDashboard;
+  permissionKey?: keyof ManagerPermissions;
 }
 
 const adminNavItems: NavItem[] = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/vendors', label: 'Vendors', icon: Building2 },
-  { href: '/admin/styles', label: 'Styles', icon: Shirt },
-  { href: '/admin/tailors', label: 'Tailors', icon: Users },
-  { href: '/admin/fabric-cutting', label: 'Fabric & Cutting', icon: Scissors },
-  { href: '/admin/distribution', label: 'Distribution', icon: ClipboardList },
-  { href: '/admin/production', label: 'Production', icon: Package },
-  { href: '/admin/inventory', label: 'Inventory', icon: Boxes },
-  { href: '/admin/qc', label: 'Quality Control', icon: ShieldCheck },
-  { href: '/admin/shipments', label: 'Shipments', icon: Truck },
-  { href: '/admin/rates', label: 'Rates & Profit', icon: CircleDollarSign },
-  { href: '/admin/payments', label: 'Payments', icon: Wallet },
-  { href: '/admin/approvals', label: 'Approvals', icon: BadgeCheck },
-  { href: '/admin/reports', label: 'Reports', icon: FileText },
-  { href: '/admin/users', label: 'Users', icon: UserCircle },
+  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard, permissionKey: 'dashboard' },
+  { href: '/admin/vendors', label: 'Vendors', icon: Building2, permissionKey: 'vendors' },
+  { href: '/admin/styles', label: 'Styles', icon: Shirt, permissionKey: 'styles' },
+  { href: '/admin/tailors', label: 'Tailors', icon: Users, permissionKey: 'tailors' },
+  { href: '/admin/fabric-cutting', label: 'Fabric & Cutting', icon: Scissors, permissionKey: 'fabricCutting' },
+  { href: '/admin/distribution', label: 'Distribution', icon: ClipboardList, permissionKey: 'tailorJobs' },
+  { href: '/admin/production', label: 'Production', icon: Package, permissionKey: 'tailorJobs' },
+  { href: '/admin/inventory', label: 'Inventory', icon: Boxes, permissionKey: 'inventory' },
+  { href: '/admin/qc', label: 'Quality Control', icon: ShieldCheck, permissionKey: 'qc' },
+  { href: '/admin/shipments', label: 'Shipments', icon: Truck, permissionKey: 'shipments' },
+  { href: '/admin/rates', label: 'Rates & Profit', icon: CircleDollarSign, permissionKey: 'rates' },
+  { href: '/admin/payments', label: 'Payments', icon: Wallet, permissionKey: 'payments' },
+  { href: '/admin/approvals', label: 'Approvals', icon: BadgeCheck, permissionKey: 'approvals' },
+  { href: '/admin/reports', label: 'Reports', icon: FileText, permissionKey: 'dashboard' },
+  { href: '/admin/users', label: 'Users', icon: UserCircle, permissionKey: 'users' },
 ];
 
 const vendorNavItems: NavItem[] = [
@@ -68,15 +85,52 @@ export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { sidebarOpen, setSidebarOpen } = useLayout();
+  const [permissions, setPermissions] = useState<ManagerPermissions | null>(null);
 
   const role = session?.user?.role;
-  
-  const navItems =
-    role === 'admin' || role === 'manager'
-      ? adminNavItems
-      : role === 'vendor'
-      ? vendorNavItems
-      : tailorNavItems;
+
+  // Fetch user permissions for managers
+  useEffect(() => {
+    const fetchPermissions = async () => {
+      if (role === 'manager' && session?.user?.id) {
+        try {
+          const response = await fetch(`/api/users/${session.user.id}`);
+          const result = await response.json();
+          if (result.success && result.data?.permissions) {
+            setPermissions(result.data.permissions);
+          }
+        } catch (error) {
+          console.error('Failed to fetch permissions:', error);
+        }
+      }
+    };
+
+    fetchPermissions();
+  }, [role, session?.user?.id]);
+
+  // Get nav items based on role
+  const getNavItems = (): NavItem[] => {
+    if (role === 'admin') {
+      return adminNavItems;
+    }
+    if (role === 'manager') {
+      // Filter items based on permissions
+      if (!permissions) {
+        // If permissions not loaded yet, show only dashboard
+        return adminNavItems.filter((item) => item.permissionKey === 'dashboard');
+      }
+      return adminNavItems.filter((item) => {
+        if (!item.permissionKey) return true;
+        return permissions[item.permissionKey];
+      });
+    }
+    if (role === 'vendor') {
+      return vendorNavItems;
+    }
+    return tailorNavItems;
+  };
+
+  const navItems = getNavItems();
 
   const roleLabel =
     role === 'admin'
@@ -88,11 +142,13 @@ export function Sidebar() {
       : 'Tailor Portal';
 
   const roleColor =
-    role === 'admin' || role === 'manager'
-      ? 'bg-primary-600'
+    role === 'admin'
+      ? 'bg-red-600'
+      : role === 'manager'
+      ? 'bg-amber-600'
       : role === 'vendor'
       ? 'bg-blue-600'
-      : 'bg-accent-600';
+      : 'bg-green-600';
 
   const handleLinkClick = () => {
     // Close sidebar on mobile when a link is clicked
@@ -117,26 +173,26 @@ export function Sidebar() {
         )}
       >
         {/* Logo */}
-        <div className="p-5 border-b border-surface-100 flex items-center justify-between">
+        <div className="p-5 border-b border-surface-100 dark:border-surface-800 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3" onClick={handleLinkClick}>
             <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', roleColor)}>
               <Scissors className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-surface-900">Sasa Apparel</h1>
+              <h1 className="text-lg font-bold text-surface-900 dark:text-surface-50">Sasa Apparel</h1>
               <p className="text-xs text-surface-500">{roleLabel}</p>
             </div>
           </Link>
           {/* Close button for mobile */}
           <button
-            className="lg:hidden p-2 hover:bg-surface-100 rounded-lg"
+            className="lg:hidden p-2 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="w-5 h-5 text-surface-500" />
           </button>
         </div>
 
-      {/* Navigation */}
+        {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -158,13 +214,13 @@ export function Sidebar() {
         </nav>
 
         {/* User section */}
-        <div className="p-4 border-t border-surface-100">
+        <div className="p-4 border-t border-surface-100 dark:border-surface-800">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-surface-100 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center">
               <UserCircle className="w-6 h-6 text-surface-500" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-surface-900 truncate">
+              <p className="text-sm font-medium text-surface-900 dark:text-surface-50 truncate">
                 {session?.user?.name || 'User'}
               </p>
               <p className="text-xs text-surface-500 truncate">
@@ -174,7 +230,7 @@ export function Sidebar() {
           </div>
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="w-full sidebar-link text-red-600 hover:bg-red-50 hover:text-red-700"
+            className="w-full sidebar-link text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700"
           >
             <LogOut className="w-5 h-5" />
             <span>Sign out</span>
@@ -184,4 +240,3 @@ export function Sidebar() {
     </>
   );
 }
-

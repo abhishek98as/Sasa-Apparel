@@ -10,6 +10,23 @@ export interface BaseDocument {
   updatedAt: Date;
 }
 
+// Manager Permissions - defines which menu items a manager can access
+export interface ManagerPermissions {
+  dashboard?: boolean;
+  vendors?: boolean;
+  tailors?: boolean;
+  styles?: boolean;
+  fabricCutting?: boolean;
+  tailorJobs?: boolean;
+  shipments?: boolean;
+  rates?: boolean;
+  users?: boolean;
+  inventory?: boolean;
+  qc?: boolean;
+  payments?: boolean;
+  approvals?: boolean;
+}
+
 // User
 export interface User extends BaseDocument {
   email: string;
@@ -18,6 +35,7 @@ export interface User extends BaseDocument {
   role: UserRole;
   vendorId?: ObjectId; // Only for vendor role
   tailorId?: ObjectId; // Only for tailor role
+  permissions?: ManagerPermissions; // Only for manager role
   isActive: boolean;
   lastLogin?: Date;
 }
