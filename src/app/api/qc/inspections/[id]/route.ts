@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { qcInspectionSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

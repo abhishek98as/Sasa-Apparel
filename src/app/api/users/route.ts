@@ -5,6 +5,8 @@ import { authOptions, hashPassword } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { userSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // GET all users (admin only)
 export async function GET(request: NextRequest) {
   try {

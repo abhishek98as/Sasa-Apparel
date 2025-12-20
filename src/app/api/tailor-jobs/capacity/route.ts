@@ -4,6 +4,8 @@ import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 // GET tailor capacities for auto-suggestion
 export async function GET(request: NextRequest) {
   try {

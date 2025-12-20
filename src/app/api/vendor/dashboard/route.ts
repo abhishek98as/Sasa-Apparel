@@ -4,6 +4,9 @@ import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 
+// Force dynamic rendering for routes using auth
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);

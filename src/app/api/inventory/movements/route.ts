@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { inventoryMovementSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // Create a stock movement (in/out/waste/adjust)
 export async function POST(request: NextRequest) {
   try {

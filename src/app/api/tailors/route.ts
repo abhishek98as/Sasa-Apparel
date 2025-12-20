@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb } from '@/lib/mongodb';
 import { tailorSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 const COLLECTION = 'tailors';
 
 // GET all tailors

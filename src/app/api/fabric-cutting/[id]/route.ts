@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { fabricCuttingSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // GET single fabric cutting record
 export async function GET(
   request: NextRequest,

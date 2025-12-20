@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { shipmentSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // GET all shipments
 export async function GET(request: NextRequest) {
   try {

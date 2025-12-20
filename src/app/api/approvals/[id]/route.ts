@@ -4,6 +4,8 @@ import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 interface ApprovalPayload {
   collection: string;
   type: 'update' | 'softDelete';

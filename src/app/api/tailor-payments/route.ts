@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { tailorPaymentSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // List payments or outstanding summary
 export async function GET(request: NextRequest) {
   try {

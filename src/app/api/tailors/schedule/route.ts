@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { getStartOfDay } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 // Get weekly capacity view for all tailors
 export async function GET(request: NextRequest) {
   try {

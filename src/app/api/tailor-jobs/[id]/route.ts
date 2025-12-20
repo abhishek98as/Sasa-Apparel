@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { jobUpdateSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // GET single tailor job
 export async function GET(
   request: NextRequest,

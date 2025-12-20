@@ -4,6 +4,8 @@ import { ObjectId } from 'mongodb';
 import { authOptions, hashPassword, verifyPassword } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

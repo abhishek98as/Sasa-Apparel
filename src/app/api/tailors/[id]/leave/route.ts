@@ -4,6 +4,8 @@ import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb } from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 // Record leave for a tailor
 export async function POST(
   request: NextRequest,

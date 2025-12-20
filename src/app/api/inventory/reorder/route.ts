@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { reorderSuggestionSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // List reorder suggestions
 export async function GET() {
   try {
