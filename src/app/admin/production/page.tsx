@@ -20,7 +20,7 @@ import {
 import { PageLoader } from '@/components/ui/loading';
 import { useToast } from '@/components/ui/toast';
 import { formatNumber, formatDate, formatCurrency } from '@/lib/utils';
-import { Search, CheckCircle, Clock, AlertCircle, RefreshCw, Pencil, Trash2 } from 'lucide-react';
+import { Search, CheckCircle, Clock, AlertCircle, RefreshCw, Pencil, Trash2, XCircle } from 'lucide-react';
 
 interface Style {
   _id: string;
@@ -41,10 +41,12 @@ interface TailorJob {
   tailor?: Tailor;
   issuedPcs: number;
   returnedPcs: number;
+  rejectedPcs?: number;
+  rejectionReason?: string;
   rate: number;
   issueDate: string;
-  status: 'pending' | 'in-progress' | 'completed' | 'returned';
-  qcStatus: 'pending' | 'passed' | 'failed' | 'rework';
+  status: 'pending' | 'in-progress' | 'completed' | 'returned' | 'ready-to-ship' | 'shipped';
+  qcStatus: 'pending' | 'passed' | 'failed' | 'rework' | 'rejected';
   qcNotes?: string;
   completedDate?: string;
   isRework?: boolean;
@@ -65,7 +67,7 @@ export default function ProductionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [updateData, setUpdateData] = useState({
     returnedPcs: 0,
-    qcStatus: 'pending' as 'pending' | 'passed' | 'failed' | 'rework',
+    qcStatus: 'pending' as 'pending' | 'passed' | 'failed' | 'rework' | 'rejected',
     qcNotes: '',
   });
 
@@ -77,9 +79,17 @@ export default function ProductionPage() {
     issuedPcs: 0,
     returnedPcs: 0,
     rate: 0,
-    status: 'in-progress' as 'pending' | 'in-progress' | 'completed' | 'returned',
-    qcStatus: 'pending' as 'pending' | 'passed' | 'failed' | 'rework',
+    status: 'in-progress' as 'pending' | 'in-progress' | 'completed' | 'returned' | 'ready-to-ship' | 'shipped',
+    qcStatus: 'pending' as 'pending' | 'passed' | 'failed' | 'rework' | 'rejected',
     qcNotes: '',
+  });
+
+  // QC Rejection modal
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [rejectingJob, setRejectingJob] = useState<TailorJob | null>(null);
+  const [rejectData, setRejectData] = useState({
+    rejectedPcs: 0,
+    rejectionReason: '',
   });
 
   useEffect(() => {
@@ -188,6 +198,57 @@ export default function ProductionPage() {
     }
   };
 
+  // Open Reject Modal
+  const handleOpenRejectModal = (job: TailorJob) => {
+    setRejectingJob(job);
+    setRejectData({
+      rejectedPcs: job.rejectedPcs || 0,
+      rejectionReason: job.rejectionReason || '',
+    });
+    setIsRejectModalOpen(true);
+  };
+
+  // Handle Rejection
+  const handleReject = async () => {
+    if (!rejectingJob) return;
+    if (rejectData.rejectedPcs <= 0) {
+      showToast('Please enter rejected pieces count', 'error');
+      return;
+    }
+    if (!rejectData.rejectionReason.trim()) {
+      showToast('Please enter a rejection reason', 'error');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`/api/tailor-jobs/${rejectingJob._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          qcStatus: 'rejected',
+          rejectedPcs: rejectData.rejectedPcs,
+          rejectionReason: rejectData.rejectionReason,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast('Job marked as rejected', 'success');
+        setIsRejectModalOpen(false);
+        fetchData();
+      } else {
+        showToast(result.error || 'Failed to reject job', 'error');
+      }
+    } catch (error) {
+      showToast('An error occurred', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Handle Delete
   const handleDelete = async (job: TailorJob) => {
     if (!confirm(`Are you sure you want to delete this job for "${job.style?.name}"?`)) {
@@ -244,7 +305,7 @@ export default function ProductionPage() {
     }
   };
 
-  const getQCBadge = (qcStatus: string) => {
+  const getQCBadge = (qcStatus: string, rejectedPcs?: number) => {
     switch (qcStatus) {
       case 'pending':
         return <Badge variant="neutral">QC Pending</Badge>;
@@ -254,6 +315,15 @@ export default function ProductionPage() {
         return <Badge variant="danger">QC Failed</Badge>;
       case 'rework':
         return <Badge variant="warning">Rework</Badge>;
+      case 'rejected':
+        return (
+          <div>
+            <Badge variant="danger">Rejected</Badge>
+            {rejectedPcs && rejectedPcs > 0 && (
+              <span className="text-xs text-red-600 ml-1">({rejectedPcs})</span>
+            )}
+          </div>
+        );
       default:
         return <Badge>{qcStatus}</Badge>;
     }
@@ -422,7 +492,7 @@ export default function ProductionPage() {
                         {formatCurrency(job.returnedPcs * job.rate)}
                       </TableCell>
                       <TableCell>{getStatusBadge(job.status, job.isRework)}</TableCell>
-                      <TableCell>{getQCBadge(job.qcStatus)}</TableCell>
+                      <TableCell>{getQCBadge(job.qcStatus, job.rejectedPcs)}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
                           <Button
@@ -433,6 +503,15 @@ export default function ProductionPage() {
                           >
                             Update
                           </Button>
+                          {job.returnedPcs > 0 && job.qcStatus !== 'rejected' && (
+                            <button
+                              onClick={() => handleOpenRejectModal(job)}
+                              className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-surface-500 hover:text-red-600"
+                              title="Reject QC"
+                            >
+                              <XCircle className="w-4 h-4" />
+                            </button>
+                          )}
                           <button
                             onClick={() => handleOpenEditModal(job)}
                             className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-lg text-surface-500 hover:text-surface-700"
@@ -609,6 +688,8 @@ export default function ProductionPage() {
                   { value: 'in-progress', label: 'In Progress' },
                   { value: 'completed', label: 'Completed' },
                   { value: 'returned', label: 'Returned' },
+                  { value: 'ready-to-ship', label: 'Ready to Ship' },
+                  { value: 'shipped', label: 'Shipped' },
                 ]}
               />
               <Select
@@ -625,6 +706,7 @@ export default function ProductionPage() {
                   { value: 'passed', label: 'QC Passed' },
                   { value: 'failed', label: 'QC Failed' },
                   { value: 'rework', label: 'Rework' },
+                  { value: 'rejected', label: 'Rejected' },
                 ]}
               />
             </div>
@@ -656,6 +738,75 @@ export default function ProductionPage() {
               </Button>
               <Button onClick={handleEdit} isLoading={isSubmitting}>
                 Save Changes
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* QC Rejection Modal */}
+      <Modal
+        isOpen={isRejectModalOpen}
+        onClose={() => setIsRejectModalOpen(false)}
+        title="Reject QC - Mark Defective"
+      >
+        {rejectingJob && (
+          <div className="space-y-4">
+            <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <p className="font-medium text-red-800 dark:text-red-200">
+                {rejectingJob.style?.name}
+              </p>
+              <p className="text-sm text-red-600 dark:text-red-300">
+                Tailor: {rejectingJob.tailor?.name} • Returned: {formatNumber(rejectingJob.returnedPcs)} pcs
+              </p>
+            </div>
+
+            <Input
+              label="Rejected Pieces"
+              type="number"
+              min="1"
+              max={rejectingJob.returnedPcs}
+              value={rejectData.rejectedPcs}
+              onChange={(e) =>
+                setRejectData({
+                  ...rejectData,
+                  rejectedPcs: parseInt(e.target.value) || 0,
+                })
+              }
+              helperText={`Max: ${rejectingJob.returnedPcs} pcs (total returned)`}
+            />
+
+            <div>
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                Rejection Reason <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-surface-800 text-surface-900 dark:text-surface-100"
+                rows={3}
+                value={rejectData.rejectionReason}
+                onChange={(e) =>
+                  setRejectData({ ...rejectData, rejectionReason: e.target.value })
+                }
+                placeholder="Describe the quality issue or defect..."
+              />
+            </div>
+
+            <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+              <p className="text-sm text-amber-800 dark:text-amber-200">
+                <strong>Note:</strong> Rejected pieces can be reassigned to the same or a different tailor for rework via the Distribution page.
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4">
+              <Button variant="secondary" onClick={() => setIsRejectModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleReject} 
+                isLoading={isSubmitting}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                Confirm Rejection
               </Button>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/header';
 import { StatCard } from '@/components/ui/stat-card';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Modal } from '@/components/ui/modal';
 import {
   Table,
   TableHeader,
@@ -16,7 +17,7 @@ import {
 } from '@/components/ui/table';
 import { PageLoader } from '@/components/ui/loading';
 import { formatNumber, formatDate } from '@/lib/utils';
-import { Package, Truck, Clock, CheckCircle } from 'lucide-react';
+import { Package, Truck, Clock, CheckCircle, ChevronDown, ChevronUp, Send } from 'lucide-react';
 import {
   BarChart,
   Bar,
@@ -62,6 +63,8 @@ interface DashboardData {
 export default function VendorDashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showProgressModal, setShowProgressModal] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     fetchData();
@@ -79,6 +82,10 @@ export default function VendorDashboard() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const toggleCardExpand = (cardId: string) => {
+    setExpandedCards(prev => ({ ...prev, [cardId]: !prev[cardId] }));
   };
 
   if (isLoading) {
@@ -100,33 +107,141 @@ export default function VendorDashboard() {
       />
 
       <div className="p-6 space-y-6">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard
-            title="Total Received"
-            value={formatNumber(totals.totalReceived)}
-            icon={Package}
-            className="animate-slide-up stagger-1"
-          />
-          <StatCard
-            title="In Production"
-            value={formatNumber(totals.inProduction)}
-            icon={Clock}
-            className="animate-slide-up stagger-2"
-          />
-          <StatCard
-            title="Total Shipped"
-            value={formatNumber(totals.totalShipped)}
-            icon={Truck}
-            className="animate-slide-up stagger-3"
-          />
+        {/* Key Metrics - Updated Labels as per client requirements */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          {/* Point 7: Total Received → Total Cutting/Fabric Sent */}
+          <div 
+            className="animate-slide-up stagger-1 cursor-pointer"
+            onClick={() => toggleCardExpand('cutting-sent')}
+          >
+            <StatCard
+              title="Total Cutting/Fabric Sent"
+              value={formatNumber(totals.totalReceived)}
+              subtitle="pcs/mtr/kg"
+              icon={Send}
+            />
+            {expandedCards['cutting-sent'] && (
+              <div className="mt-2 p-3 bg-surface-50 rounded-lg border border-surface-200 text-sm">
+                <p className="text-surface-600">Total items sent by company</p>
+                <div className="mt-2 space-y-1">
+                  {data?.styles.slice(0, 3).map(s => (
+                    <div key={s._id} className="flex justify-between text-xs">
+                      <span>{s.code}</span>
+                      <span className="font-medium">{formatNumber(s.totalReceived)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Point 8: In Production with drill-down */}
+          <div 
+            className="animate-slide-up stagger-2 cursor-pointer"
+            onClick={() => setShowProgressModal(true)}
+          >
+            <StatCard
+              title="In Production"
+              value={formatNumber(totals.inProduction)}
+              subtitle="Click for details"
+              icon={Clock}
+            />
+          </div>
+
+          {/* Point 6: Total Shipped → Total Shipment Received */}
+          <div 
+            className="animate-slide-up stagger-3 cursor-pointer"
+            onClick={() => toggleCardExpand('shipment-received')}
+          >
+            <StatCard
+              title="Total Shipment Received"
+              value={formatNumber(totals.totalShipped)}
+              icon={Truck}
+            />
+            {expandedCards['shipment-received'] && (
+              <div className="mt-2 p-3 bg-surface-50 rounded-lg border border-surface-200 text-sm">
+                <p className="text-surface-600">Shipments received from company</p>
+                <div className="mt-2 space-y-1">
+                  {data?.recentShipments.slice(0, 3).map(s => (
+                    <div key={s._id} className="flex justify-between text-xs">
+                      <span>{s.challanNo}</span>
+                      <span className="font-medium">{formatNumber(s.pcsShipped)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <StatCard
             title="Pending Delivery"
             value={formatNumber(totals.pending)}
             icon={CheckCircle}
             className="animate-slide-up stagger-4"
           />
+
+          {/* Completed pieces */}
+          <StatCard
+            title="Completed"
+            value={formatNumber(data?.styles.reduce((sum, s) => sum + s.completed, 0) || 0)}
+            icon={Package}
+            className="animate-slide-up stagger-5"
+          />
         </div>
+
+        {/* Style-wise Progress Modal (Point 8) */}
+        <Modal
+          isOpen={showProgressModal}
+          onClose={() => setShowProgressModal(false)}
+          title="Style-wise Production Progress"
+          size="lg"
+        >
+          <div className="space-y-4">
+            {data?.styles.map((style) => (
+              <div key={style._id} className="p-4 border border-surface-200 rounded-lg">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="font-semibold">{style.name}</p>
+                    <p className="text-sm text-surface-500">{style.code}</p>
+                  </div>
+                  <Badge variant="info">{style.fabricType}</Badge>
+                </div>
+                <div className="grid grid-cols-4 gap-4 text-center">
+                  <div className="p-2 bg-blue-50 rounded">
+                    <p className="text-xs text-surface-500">Sent</p>
+                    <p className="font-bold text-blue-600">{formatNumber(style.totalReceived)}</p>
+                  </div>
+                  <div className="p-2 bg-amber-50 rounded">
+                    <p className="text-xs text-surface-500">In Progress</p>
+                    <p className="font-bold text-amber-600">{formatNumber(style.inProduction)}</p>
+                  </div>
+                  <div className="p-2 bg-green-50 rounded">
+                    <p className="text-xs text-surface-500">Completed</p>
+                    <p className="font-bold text-green-600">{formatNumber(style.completed)}</p>
+                  </div>
+                  <div className="p-2 bg-purple-50 rounded">
+                    <p className="text-xs text-surface-500">Shipped</p>
+                    <p className="font-bold text-purple-600">{formatNumber(style.totalShipped)}</p>
+                  </div>
+                </div>
+                {/* Progress Bar */}
+                <div className="mt-3 h-2 bg-surface-200 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-amber-500 via-green-500 to-purple-500"
+                    style={{ 
+                      width: `${style.totalReceived > 0 ? (style.totalShipped / style.totalReceived) * 100 : 0}%` 
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-surface-500 mt-1 text-right">
+                  {style.totalReceived > 0 
+                    ? Math.round((style.totalShipped / style.totalReceived) * 100) 
+                    : 0}% shipped
+                </p>
+              </div>
+            ))}
+          </div>
+        </Modal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Style Progress Chart */}
@@ -142,9 +257,10 @@ export default function VendorDashboard() {
                     <XAxis dataKey="code" tick={{ fontSize: 12 }} />
                     <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip />
-                    <Bar dataKey="totalReceived" fill="#df6358" name="Received" />
+                    <Bar dataKey="totalReceived" fill="#3b82f6" name="Cutting Sent" />
                     <Bar dataKey="inProduction" fill="#f59e0b" name="In Production" />
-                    <Bar dataKey="totalShipped" fill="#22c55e" name="Shipped" />
+                    <Bar dataKey="completed" fill="#22c55e" name="Completed" />
+                    <Bar dataKey="totalShipped" fill="#8b5cf6" name="Shipment Received" />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -211,11 +327,11 @@ export default function VendorDashboard() {
                 <TableRow>
                   <TableHead>Style</TableHead>
                   <TableHead>Fabric</TableHead>
-                  <TableHead>Received</TableHead>
+                  <TableHead>Cutting Sent</TableHead>
                   <TableHead>In Production</TableHead>
                   <TableHead>Completed</TableHead>
-                  <TableHead>Shipped</TableHead>
-                  <TableHead>Pending</TableHead>
+                  <TableHead>Shipment Received</TableHead>
+                  <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

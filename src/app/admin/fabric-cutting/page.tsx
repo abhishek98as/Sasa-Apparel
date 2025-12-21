@@ -34,16 +34,22 @@ interface Style {
   vendorId: string;
 }
 
+interface SizeBreakdown {
+  size: string;
+  quantity: number;
+}
+
 interface FabricCutting {
   _id: string;
   styleId: string;
-  style?: Style;
+  style?: Style & { availableSizes?: string[] };
   vendorId: string;
   vendor?: Vendor;
   fabricReceivedMeters: number;
   cuttingReceivedPcs: number;
   cuttingInHouse: boolean;
   date: string;
+  sizeBreakdown?: SizeBreakdown[];
   notes?: string;
 }
 
@@ -72,7 +78,12 @@ export default function FabricCuttingPage() {
     cuttingInHouse: false,
     date: new Date().toISOString().split('T')[0],
     notes: '',
+    sizeBreakdown: [] as SizeBreakdown[],
   });
+
+  // Size input states
+  const [enableSizeBreakdown, setEnableSizeBreakdown] = useState(false);
+  const [defaultSizes] = useState(['S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34', '36', '38', '40']);
 
   useEffect(() => {
     fetchData();
@@ -124,7 +135,9 @@ export default function FabricCuttingPage() {
         cuttingInHouse: record.cuttingInHouse,
         date: new Date(record.date).toISOString().split('T')[0],
         notes: record.notes || '',
+        sizeBreakdown: record.sizeBreakdown || [],
       });
+      setEnableSizeBreakdown(!!record.sizeBreakdown && record.sizeBreakdown.length > 0);
     } else {
       setEditingRecord(null);
       setFormData({
@@ -135,10 +148,51 @@ export default function FabricCuttingPage() {
         cuttingInHouse: false,
         date: new Date().toISOString().split('T')[0],
         notes: '',
+        sizeBreakdown: [],
       });
+      setEnableSizeBreakdown(false);
     }
     setIsModalOpen(true);
   };
+
+  const handleAddSize = () => {
+    setFormData({
+      ...formData,
+      sizeBreakdown: [...formData.sizeBreakdown, { size: '', quantity: 0 }],
+    });
+  };
+
+  const handleRemoveSize = (index: number) => {
+    setFormData({
+      ...formData,
+      sizeBreakdown: formData.sizeBreakdown.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleSizeChange = (index: number, field: 'size' | 'quantity', value: string | number) => {
+    const updated = [...formData.sizeBreakdown];
+    if (field === 'size') {
+      updated[index].size = value as string;
+    } else {
+      updated[index].quantity = value as number;
+    }
+    setFormData({ ...formData, sizeBreakdown: updated });
+  };
+
+  const toggleSizeBreakdown = (enabled: boolean) => {
+    setEnableSizeBreakdown(enabled);
+    if (enabled && formData.sizeBreakdown.length === 0) {
+      // Initialize with common sizes
+      setFormData({
+        ...formData,
+        sizeBreakdown: ['S', 'M', 'L', 'XL'].map(size => ({ size, quantity: 0 })),
+      });
+    } else if (!enabled) {
+      setFormData({ ...formData, sizeBreakdown: [] });
+    }
+  };
+
+  const totalSizeQty = formData.sizeBreakdown.reduce((sum, s) => sum + s.quantity, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -310,8 +364,8 @@ export default function FabricCuttingPage() {
                   <TableHead>Vendor</TableHead>
                   <TableHead>Fabric (m)</TableHead>
                   <TableHead>Cutting (pcs)</TableHead>
+                  <TableHead>Size Breakdown</TableHead>
                   <TableHead>Type</TableHead>
-                  <TableHead>Notes</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -336,14 +390,24 @@ export default function FabricCuttingPage() {
                         {formatNumber(record.cuttingReceivedPcs)}
                       </TableCell>
                       <TableCell>
+                        {record.sizeBreakdown && record.sizeBreakdown.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {record.sizeBreakdown.map((s, i) => (
+                              <span key={i} className="text-xs px-1.5 py-0.5 bg-surface-100 rounded">
+                                {s.size}: {s.quantity}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-surface-400 text-xs">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
                         <Badge
                           variant={record.cuttingInHouse ? 'warning' : 'info'}
                         >
                           {record.cuttingInHouse ? 'In-house' : 'Pre-cut'}
                         </Badge>
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {record.notes || '-'}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -441,20 +505,98 @@ export default function FabricCuttingPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="cuttingInHouse"
-              checked={formData.cuttingInHouse}
-              onChange={(e) =>
-                setFormData({ ...formData, cuttingInHouse: e.target.checked })
-              }
-              className="rounded border-surface-300"
-            />
-            <label htmlFor="cuttingInHouse" className="text-sm text-surface-700">
-              Cut in-house (not pre-cut from vendor)
-            </label>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="cuttingInHouse"
+                checked={formData.cuttingInHouse}
+                onChange={(e) =>
+                  setFormData({ ...formData, cuttingInHouse: e.target.checked })
+                }
+                className="rounded border-surface-300"
+              />
+              <label htmlFor="cuttingInHouse" className="text-sm text-surface-700">
+                Cut in-house
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="enableSizeBreakdown"
+                checked={enableSizeBreakdown}
+                onChange={(e) => toggleSizeBreakdown(e.target.checked)}
+                className="rounded border-surface-300"
+              />
+              <label htmlFor="enableSizeBreakdown" className="text-sm text-surface-700">
+                Enable size-wise entry
+              </label>
+            </div>
           </div>
+
+          {/* Size Breakdown Section */}
+          {enableSizeBreakdown && (
+            <div className="p-4 border border-surface-200 rounded-lg bg-surface-50">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-medium text-sm">Size-wise Breakdown</h4>
+                <Button type="button" size="sm" variant="secondary" onClick={handleAddSize}>
+                  <Plus className="w-3 h-3" /> Add Size
+                </Button>
+              </div>
+              
+              {formData.sizeBreakdown.length === 0 ? (
+                <p className="text-sm text-surface-500 text-center py-4">
+                  Click "Add Size" to add size breakdown
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-6 gap-2">
+                    {formData.sizeBreakdown.map((item, index) => (
+                      <div key={index} className="flex items-end gap-1">
+                        <div className="flex-1">
+                          <Select
+                            label={index === 0 ? "Size" : undefined}
+                            value={item.size}
+                            onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
+                            options={defaultSizes.map(s => ({ value: s, label: s }))}
+                            placeholder="Size"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Input
+                            label={index === 0 ? "Qty" : undefined}
+                            type="number"
+                            min="0"
+                            value={item.quantity}
+                            onChange={(e) => handleSizeChange(index, 'quantity', parseInt(e.target.value) || 0)}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveSize(index)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-2 border-t border-surface-200 mt-2">
+                    <span className="text-sm text-surface-600">Total from sizes:</span>
+                    <span className={`font-bold ${totalSizeQty !== formData.cuttingReceivedPcs ? 'text-red-600' : 'text-green-600'}`}>
+                      {totalSizeQty} / {formData.cuttingReceivedPcs} pcs
+                    </span>
+                  </div>
+                  {totalSizeQty !== formData.cuttingReceivedPcs && formData.cuttingReceivedPcs > 0 && (
+                    <p className="text-xs text-red-600">
+                      ⚠️ Size totals don&apos;t match cutting pieces
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           <Input
             label="Notes"

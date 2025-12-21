@@ -40,7 +40,7 @@ export default { then: (resolve: (value: MongoClient) => void, reject: (reason: 
 
 export async function getDb(): Promise<Db> {
   const client = await getClientPromise();
-  return client.db();
+  return client.db('cloth_manufacturing');
 }
 
 // Collection names as constants

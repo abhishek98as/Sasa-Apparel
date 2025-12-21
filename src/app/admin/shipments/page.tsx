@@ -34,6 +34,11 @@ interface Style {
   vendorId: string;
 }
 
+interface SizeBreakdown {
+  size: string;
+  quantity: number;
+}
+
 interface Shipment {
   _id: string;
   vendorId: string;
@@ -43,6 +48,7 @@ interface Shipment {
   pcsShipped: number;
   date: string;
   challanNo: string;
+  sizeBreakdown?: SizeBreakdown[];
   notes?: string;
   amount?: number;
   rate?: { vendorRate: number };
@@ -70,7 +76,11 @@ export default function ShipmentsPage() {
     date: new Date().toISOString().split('T')[0],
     challanNo: '',
     notes: '',
+    sizeBreakdown: [] as SizeBreakdown[],
   });
+
+  const [enableSizeBreakdown, setEnableSizeBreakdown] = useState(false);
+  const [defaultSizes] = useState(['S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34', '36', '38', '40']);
 
   useEffect(() => {
     fetchData();
@@ -120,7 +130,9 @@ export default function ShipmentsPage() {
         date: new Date(shipment.date).toISOString().split('T')[0],
         challanNo: shipment.challanNo,
         notes: shipment.notes || '',
+        sizeBreakdown: shipment.sizeBreakdown || [],
       });
+      setEnableSizeBreakdown(!!shipment.sizeBreakdown && shipment.sizeBreakdown.length > 0);
     } else {
       setEditingShipment(null);
       setFormData({
@@ -130,10 +142,50 @@ export default function ShipmentsPage() {
         date: new Date().toISOString().split('T')[0],
         challanNo: generateChallanNo(),
         notes: '',
+        sizeBreakdown: [],
       });
+      setEnableSizeBreakdown(false);
     }
     setIsModalOpen(true);
   };
+
+  const handleAddSize = () => {
+    setFormData({
+      ...formData,
+      sizeBreakdown: [...formData.sizeBreakdown, { size: '', quantity: 0 }],
+    });
+  };
+
+  const handleRemoveSize = (index: number) => {
+    setFormData({
+      ...formData,
+      sizeBreakdown: formData.sizeBreakdown.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleSizeChange = (index: number, field: 'size' | 'quantity', value: string | number) => {
+    const updated = [...formData.sizeBreakdown];
+    if (field === 'size') {
+      updated[index].size = value as string;
+    } else {
+      updated[index].quantity = value as number;
+    }
+    setFormData({ ...formData, sizeBreakdown: updated });
+  };
+
+  const toggleSizeBreakdown = (enabled: boolean) => {
+    setEnableSizeBreakdown(enabled);
+    if (enabled && formData.sizeBreakdown.length === 0) {
+      setFormData({
+        ...formData,
+        sizeBreakdown: ['S', 'M', 'L', 'XL'].map(size => ({ size, quantity: 0 })),
+      });
+    } else if (!enabled) {
+      setFormData({ ...formData, sizeBreakdown: [] });
+    }
+  };
+
+  const totalSizeQty = formData.sizeBreakdown.reduce((sum, s) => sum + s.quantity, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -288,15 +340,14 @@ export default function ShipmentsPage() {
                   <TableHead>Vendor</TableHead>
                   <TableHead>Style</TableHead>
                   <TableHead>Pieces</TableHead>
-                  <TableHead>Rate</TableHead>
+                  <TableHead>Size Breakdown</TableHead>
                   <TableHead>Amount</TableHead>
-                  <TableHead>Notes</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredShipments.length === 0 ? (
-                  <TableEmpty message="No shipments found" colSpan={9} />
+                  <TableEmpty message="No shipments found" colSpan={8} />
                 ) : (
                   filteredShipments.map((shipment) => (
                     <TableRow key={shipment._id}>
@@ -317,15 +368,20 @@ export default function ShipmentsPage() {
                         {formatNumber(shipment.pcsShipped)}
                       </TableCell>
                       <TableCell>
-                        {shipment.rate?.vendorRate
-                          ? formatCurrency(shipment.rate.vendorRate)
-                          : '-'}
+                        {shipment.sizeBreakdown && shipment.sizeBreakdown.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {shipment.sizeBreakdown.map((s, i) => (
+                              <span key={i} className="text-xs px-1.5 py-0.5 bg-surface-100 rounded">
+                                {s.size}: {s.quantity}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-surface-400 text-xs">-</span>
+                        )}
                       </TableCell>
                       <TableCell className="font-semibold">
                         {shipment.amount ? formatCurrency(shipment.amount) : '-'}
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {shipment.notes || '-'}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -416,6 +472,84 @@ export default function ShipmentsPage() {
               required
             />
           </div>
+
+          {/* Size Breakdown Toggle */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="enableSizeBreakdown"
+              checked={enableSizeBreakdown}
+              onChange={(e) => toggleSizeBreakdown(e.target.checked)}
+              className="rounded border-surface-300"
+            />
+            <label htmlFor="enableSizeBreakdown" className="text-sm text-surface-700">
+              Enable size-wise entry
+            </label>
+          </div>
+
+          {/* Size Breakdown Section */}
+          {enableSizeBreakdown && (
+            <div className="p-4 border border-surface-200 rounded-lg bg-surface-50">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-medium text-sm">Size-wise Breakdown</h4>
+                <Button type="button" size="sm" variant="secondary" onClick={handleAddSize}>
+                  <Plus className="w-3 h-3" /> Add Size
+                </Button>
+              </div>
+              
+              {formData.sizeBreakdown.length === 0 ? (
+                <p className="text-sm text-surface-500 text-center py-4">
+                  Click &quot;Add Size&quot; to add size breakdown
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-6 gap-2">
+                    {formData.sizeBreakdown.map((item, index) => (
+                      <div key={index} className="flex items-end gap-1">
+                        <div className="flex-1">
+                          <Select
+                            label={index === 0 ? "Size" : undefined}
+                            value={item.size}
+                            onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
+                            options={defaultSizes.map(s => ({ value: s, label: s }))}
+                            placeholder="Size"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Input
+                            label={index === 0 ? "Qty" : undefined}
+                            type="number"
+                            min="0"
+                            value={item.quantity}
+                            onChange={(e) => handleSizeChange(index, 'quantity', parseInt(e.target.value) || 0)}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveSize(index)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-2 border-t border-surface-200 mt-2">
+                    <span className="text-sm text-surface-600">Total from sizes:</span>
+                    <span className={`font-bold ${totalSizeQty !== formData.pcsShipped ? 'text-red-600' : 'text-green-600'}`}>
+                      {totalSizeQty} / {formData.pcsShipped} pcs
+                    </span>
+                  </div>
+                  {totalSizeQty !== formData.pcsShipped && formData.pcsShipped > 0 && (
+                    <p className="text-xs text-red-600">
+                      ⚠️ Size totals don&apos;t match shipped pieces
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           <Input
             label="Notes"

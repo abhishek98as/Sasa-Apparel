@@ -25,6 +25,7 @@ import {
   ShieldCheck,
   Wallet,
   BadgeCheck,
+  PackageCheck,
 } from 'lucide-react';
 
 interface CRUDPermission {
@@ -67,6 +68,7 @@ const adminNavItems: NavItem[] = [
   { href: '/admin/fabric-cutting', label: 'Fabric & Cutting', icon: Scissors, permissionKey: 'fabricCutting' },
   { href: '/admin/distribution', label: 'Distribution', icon: ClipboardList, permissionKey: 'distribution' },
   { href: '/admin/production', label: 'Production', icon: Package, permissionKey: 'production' },
+  { href: '/admin/ready-to-ship', label: 'Ready to Ship', icon: PackageCheck, permissionKey: 'shipments' },
   { href: '/admin/inventory', label: 'Inventory', icon: Boxes, permissionKey: 'inventory' },
   { href: '/admin/qc', label: 'Quality Control', icon: ShieldCheck, permissionKey: 'qc' },
   { href: '/admin/shipments', label: 'Shipments', icon: Truck, permissionKey: 'shipments' },

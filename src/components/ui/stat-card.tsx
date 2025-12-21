@@ -5,6 +5,7 @@ import { LucideIcon } from 'lucide-react';
 interface StatCardProps {
   title: string;
   value: string | number;
+  subtitle?: string;
   icon?: LucideIcon;
   change?: {
     value: number;
@@ -13,7 +14,7 @@ interface StatCardProps {
   className?: string;
 }
 
-export function StatCard({ title, value, icon: Icon, change, className }: StatCardProps) {
+export function StatCard({ title, value, subtitle, icon: Icon, change, className }: StatCardProps) {
   return (
     <div className={cn('stat-card group', className)}>
       {/* Decorative background element */}
@@ -23,6 +24,9 @@ export function StatCard({ title, value, icon: Icon, change, className }: StatCa
         <div>
           <p className="stat-label font-medium mb-1">{title}</p>
           <p className="stat-value text-3xl tracking-tight">{value}</p>
+          {subtitle && (
+            <p className="text-xs text-surface-400 mt-1">{subtitle}</p>
+          )}
           {change && (
             <div className="flex items-center gap-1 mt-2">
               <span

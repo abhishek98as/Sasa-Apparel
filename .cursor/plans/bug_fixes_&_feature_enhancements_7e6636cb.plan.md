@@ -4,55 +4,55 @@ overview: Fix critical bugs (seed script, login issues) and implement 11 new bus
 todos:
   - id: fix-seed-script
     content: Fix seed script JSON parsing error in package.json
-    status: pending
+    status: completed
   - id: fix-login
     content: Debug and fix login issues (DB connection, auth flow, password hashing)
-    status: pending
+    status: completed
   - id: create-tests
     content: Create test suite for DB connection, auth, and API health
-    status: pending
+    status: completed
   - id: extend-schema-sizes
     content: Add size dimension to data model (FabricCutting, TailorJob, Shipment)
-    status: pending
+    status: completed
   - id: qc-rejection-workflow
     content: Add QC rejection workflow with rejected pieces tracking
-    status: pending
+    status: completed
   - id: ready-to-ship-status
     content: Add ready-to-ship status and tracking
-    status: pending
+    status: completed
   - id: fix-completed-pcs
     content: Fix dashboard to show completed pcs even with pending orders
-    status: pending
+    status: completed
   - id: fix-revenue-calc
     content: Fix revenue to calculate from completed pcs not shipped
-    status: pending
+    status: completed
   - id: debug-distribution
     content: Debug and fix distribution engine not working
-    status: pending
+    status: completed
   - id: vendor-portal-labels
     content: Update vendor portal labels (Total Shipped, Total Received)
-    status: pending
+    status: completed
   - id: vendor-drilldown
     content: Add Total Sent with style-wise progress drill-down
-    status: pending
+    status: completed
   - id: vendor-card-view
     content: Improve vendor card view with expandable details
-    status: pending
+    status: completed
   - id: size-cutting-entry
     content: Add size-wise breakdown to fabric cutting entry
-    status: pending
+    status: completed
   - id: size-distribution
     content: Implement size-wise distribution to tailors
-    status: pending
+    status: completed
   - id: size-shipments
     content: Add size tracking to shipments
-    status: pending
+    status: completed
   - id: ready-to-ship-tab
     content: Create Ready to Ship tab UI
-    status: pending
+    status: completed
   - id: qc-rejection-ui
     content: Build QC rejection interface
-    status: pending
+    status: completed
 ---
 
 # Bug Fixes & Feature Enhancements Plan

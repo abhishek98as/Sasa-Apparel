@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node --project tsconfig.json scripts/seed.ts",
+    "seed": "npx tsx scripts/seed.ts",
     "reset-db": "npx tsx scripts/reset-database.ts",
     "test": "jest",
     "test:watch": "jest --watch",
