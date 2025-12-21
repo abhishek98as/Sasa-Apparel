@@ -1,0 +1,74 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd69c"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd694"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "fabricReceivedMeters": 500,
+    "cuttingReceivedPcs": 200,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "notes": "First batch of cotton shirts",
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd69d"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd695"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68e"
+    },
+    "fabricReceivedMeters": 300,
+    "cuttingReceivedPcs": 120,
+    "cuttingInHouse": true,
+    "date": {
+      "$date": "2025-12-20T17:17:55.826Z"
+    },
+    "notes": "Cut in-house for summer dresses",
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd69e"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd696"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68f"
+    },
+    "fabricReceivedMeters": 400,
+    "cuttingReceivedPcs": 150,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-14T17:17:55.826Z"
+    },
+    "notes": "Denim pants cutting received",
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    }
+  }
+]

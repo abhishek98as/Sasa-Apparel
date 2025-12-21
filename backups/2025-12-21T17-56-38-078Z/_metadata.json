@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "timestamp": "2025-12-21T17:56:39.125Z",
+  "database": "cloth_manufacturing",
+  "mongodbUri": "mongodb+srv://abhishek98as_db_user:****@cluster0.37zw1rl.mongodb.net/cloth_manufacturing?retryWrites=true&w=majority&appName=Cluster0",
+  "collections": {
+    "users": 7,
+    "test_crud": 0,
+    "tailorJobs": 4,
+    "tailors": 4,
+    "shipments": 2,
+    "styles": 4,
+    "fabricCutting": 3,
+    "rates": 4,
+    "approvals": 2,
+    "vendors": 3,
+    "qcInspections": 1,
+    "tailorPayments": 1
+  },
+  "totalDocuments": 35,
+  "totalCollections": 12,
+  "hasIndexes": true,
+  "backupType": "full",
+  "nodeVersion": "v24.4.1",
+  "features": [
+    "ObjectId preservation",
+    "Date preservation",
+    "Binary preservation",
+    "Index backup",
+    "Full backup file"
+  ]
+}

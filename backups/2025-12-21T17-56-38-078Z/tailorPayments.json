@@ -1,0 +1,27 @@
+[
+  {
+    "_id": {
+      "$oid": "69468982a3edd7124f68c1fa"
+    },
+    "tailorId": {
+      "$oid": "694687e0ef2645b15a29f64f"
+    },
+    "amount": 1000,
+    "entryType": "advance",
+    "description": "1000 Advanced at 19-Dec 9:00PM",
+    "jobId": null,
+    "balanceAfter": -1000,
+    "createdAt": {
+      "$date": "2025-12-20T11:33:22.245Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-20T11:33:22.245Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "69443a004213c59c9c50ac67"
+      },
+      "name": "Admin User"
+    }
+  }
+]

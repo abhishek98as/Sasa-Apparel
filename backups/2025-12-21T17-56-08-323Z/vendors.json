@@ -1,0 +1,56 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "name": "Fashion Hub Exports",
+    "contactPerson": "Rahul Sharma",
+    "phone": "+91 98765 43210",
+    "email": "rahul@fashionhub.com",
+    "address": "123 Textile Market, Surat, Gujarat",
+    "gstNumber": "GSTIN1234567890",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.642Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.642Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd68e"
+    },
+    "name": "Trendy Garments",
+    "contactPerson": "Priya Patel",
+    "phone": "+91 87654 32109",
+    "email": "priya@trendygarments.com",
+    "address": "456 Fashion Street, Mumbai, Maharashtra",
+    "gstNumber": "GSTIN0987654321",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.642Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.642Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd68f"
+    },
+    "name": "Classic Wear Co.",
+    "contactPerson": "Amit Kumar",
+    "phone": "+91 76543 21098",
+    "email": "amit@classicwear.com",
+    "address": "789 Cloth Market, Delhi",
+    "gstNumber": "GSTIN1122334455",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.642Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.642Z"
+    }
+  }
+]

@@ -2,9 +2,64 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
+
+// Serialize MongoDB types for JSON export
+function serializeDocument(doc: any): any {
+  if (doc === null || doc === undefined) return doc;
+  
+  if (doc instanceof ObjectId) {
+    return { $oid: doc.toHexString() };
+  }
+  
+  if (doc instanceof Date) {
+    return { $date: doc.toISOString() };
+  }
+  
+  if (Array.isArray(doc)) {
+    return doc.map(item => serializeDocument(item));
+  }
+  
+  if (typeof doc === 'object') {
+    const result: any = {};
+    for (const key of Object.keys(doc)) {
+      result[key] = serializeDocument(doc[key]);
+    }
+    return result;
+  }
+  
+  return doc;
+}
+
+// Deserialize JSON back to MongoDB types
+function deserializeDocument(doc: any): any {
+  if (doc === null || doc === undefined) return doc;
+  
+  if (typeof doc === 'object' && !Array.isArray(doc)) {
+    if (doc.$oid) {
+      return new ObjectId(doc.$oid);
+    }
+    
+    if (doc.$date) {
+      return new Date(doc.$date);
+    }
+    
+    const result: any = {};
+    for (const key of Object.keys(doc)) {
+      result[key] = deserializeDocument(doc[key]);
+    }
+    return result;
+  }
+  
+  if (Array.isArray(doc)) {
+    return doc.map(item => deserializeDocument(item));
+  }
+  
+  return doc;
+}
 
 // GET - Download backup as JSON
 export async function GET(request: NextRequest) {
@@ -26,25 +81,43 @@ export async function GET(request: NextRequest) {
     const collections = await db.listCollections().toArray();
     
     const backup: Record<string, any[]> = {};
+    const indexes: Record<string, any[]> = {};
     const summary: Record<string, number> = {};
     
     for (const collectionInfo of collections) {
       const collectionName = collectionInfo.name;
       const collection = db.collection(collectionName);
-      const documents = await collection.find({}).toArray();
       
-      backup[collectionName] = documents;
+      // Get all documents with proper serialization
+      const documents = await collection.find({}).toArray();
+      const serializedDocs = documents.map(doc => serializeDocument(doc));
+      
+      // Get indexes (excluding default _id)
+      const collectionIndexes = await collection.indexes();
+      indexes[collectionName] = collectionIndexes.filter(idx => idx.name !== '_id_');
+      
+      backup[collectionName] = serializedDocs;
       summary[collectionName] = documents.length;
     }
     
     const backupData = {
       metadata: {
+        version: '2.0',
         timestamp: new Date().toISOString(),
         database: 'cloth_manufacturing',
         collections: summary,
         totalDocuments: Object.values(summary).reduce((a, b) => a + b, 0),
+        totalCollections: collections.length,
+        hasIndexes: true,
         exportedBy: session.user.email,
+        features: [
+          'ObjectId preservation',
+          'Date preservation',
+          'Index backup',
+          'Full restoration support',
+        ],
       },
+      indexes,
       data: backup,
     };
     
@@ -92,25 +165,58 @@ export async function POST(request: NextRequest) {
     const client = await clientPromise;
     const db = client.db('cloth_manufacturing');
     
-    const restoreSummary: Record<string, number> = {};
+    const restoreSummary: Record<string, { documents: number; indexes: number }> = {};
     
     for (const [collectionName, documents] of Object.entries(backupData.data)) {
-      if (Array.isArray(documents) && documents.length > 0) {
+      if (Array.isArray(documents)) {
         const collection = db.collection(collectionName);
         
         // Clear existing data
         await collection.deleteMany({});
         
-        // Insert backup data
-        await collection.insertMany(documents as any[]);
-        restoreSummary[collectionName] = documents.length;
+        if (documents.length > 0) {
+          // Deserialize and insert documents
+          const deserializedDocs = documents.map(doc => deserializeDocument(doc));
+          await collection.insertMany(deserializedDocs);
+        }
+        
+        // Restore indexes if available
+        let indexesRestored = 0;
+        if (backupData.indexes && backupData.indexes[collectionName]) {
+          for (const index of backupData.indexes[collectionName]) {
+            try {
+              const { key, ...indexOptions } = index;
+              delete indexOptions.v;
+              delete indexOptions.ns;
+              await collection.createIndex(key, indexOptions);
+              indexesRestored++;
+            } catch (indexError: any) {
+              if (!indexError.message?.includes('already exists')) {
+                console.log(`Index warning for ${collectionName}: ${indexError.message}`);
+              }
+            }
+          }
+        }
+        
+        restoreSummary[collectionName] = {
+          documents: documents.length,
+          indexes: indexesRestored,
+        };
       }
+    }
+    
+    // Verify restoration
+    const verification: Record<string, number> = {};
+    for (const collectionName of Object.keys(backupData.data)) {
+      const collection = db.collection(collectionName);
+      verification[collectionName] = await collection.countDocuments();
     }
     
     return NextResponse.json({
       success: true,
-      message: 'Database restored successfully',
+      message: 'Database restored successfully with full data type preservation',
       restored: restoreSummary,
+      verification,
       restoredBy: session.user.email,
       timestamp: new Date().toISOString(),
     });

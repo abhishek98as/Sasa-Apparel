@@ -1,0 +1,66 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd690"
+    },
+    "name": "Ramesh Tailor",
+    "phone": "+91 99887 76655",
+    "address": "Shop 12, Local Market",
+    "specialization": "Shirts",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd691"
+    },
+    "name": "Suresh Stitching",
+    "phone": "+91 88776 65544",
+    "address": "Shop 15, Main Road",
+    "specialization": "Pants & Trousers",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd692"
+    },
+    "name": "Kumar Tailors",
+    "phone": "+91 77665 54433",
+    "address": "Shop 8, Industrial Area",
+    "specialization": "Dresses",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd693"
+    },
+    "name": "Singh Stitching Works",
+    "phone": "+91 66554 43322",
+    "address": "Unit 5, Garment Complex",
+    "specialization": "All Types",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.685Z"
+    }
+  }
+]

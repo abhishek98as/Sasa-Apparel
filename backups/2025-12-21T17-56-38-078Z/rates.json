@@ -1,0 +1,86 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd698"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd694"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "vendorRate": 450,
+    "effectiveDate": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd699"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd695"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68e"
+    },
+    "vendorRate": 650,
+    "effectiveDate": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd69a"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd696"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68f"
+    },
+    "vendorRate": 550,
+    "effectiveDate": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd69b"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd697"
+    },
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "vendorRate": 850,
+    "effectiveDate": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.785Z"
+    }
+  }
+]

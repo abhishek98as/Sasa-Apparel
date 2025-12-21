@@ -1,0 +1,126 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc4f1cc3f513c5fd6a5"
+    },
+    "email": "admin@sasa.com",
+    "password": "$2a$12$ROt2f5XZNtQOKShroUVQXu/E2pU.nBkFmENaEKBMemLLvBIcyf8PO",
+    "name": "Admin User",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc4f1cc3f513c5fd6a6"
+    },
+    "email": "vendor@test.com",
+    "password": "$2a$12$UwrAIL5c0vakxvjswSHTU.MLJxoXNJ1VUvCwz4uUaD1XV5onvy2NO",
+    "name": "Fashion Hub User",
+    "role": "vendor",
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc4f1cc3f513c5fd6a7"
+    },
+    "email": "vendor2@test.com",
+    "password": "$2a$12$UwrAIL5c0vakxvjswSHTU.MLJxoXNJ1VUvCwz4uUaD1XV5onvy2NO",
+    "name": "Trendy Garments User",
+    "role": "vendor",
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68e"
+    },
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc4f1cc3f513c5fd6a8"
+    },
+    "email": "tailor@test.com",
+    "password": "$2a$12$DaWVVeyNwU/4hbJ6orbPAen3712NHNl.QvrTM0A19BL2Ta16/rOVu",
+    "name": "Ramesh Tailor",
+    "role": "tailor",
+    "tailorId": {
+      "$oid": "69482bc3f1cc3f513c5fd690"
+    },
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:56.652Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482c2437411cca02cbc12f"
+    },
+    "email": "sasaapparels@gmail.com",
+    "password": "$2a$12$PYTDceiGsNBPh8RCJkGBQ.DzFXl.lygs0RS6MporeFF.GUYanAY9i",
+    "name": "Sasa Admin",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:19:32.944Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:19:32.944Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482c2537411cca02cbc130"
+    },
+    "email": "pixom.ai@gmail.com",
+    "password": "$2a$12$d9gQn.BgHIQXr6IHpzZuneb8vPekIBtq.0iLmV1iZytuk04j4eAM.",
+    "name": "Pixom Admin",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:19:33.256Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:19:33.256Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482c2537411cca02cbc131"
+    },
+    "email": "abhishek98as@gmail.com",
+    "password": "$2a$12$DakN.i0RMv49nRwaKrYbzOWNCavvTaj0.Py69UhxFIfOLF4AN67im",
+    "name": "Abhishek Admin",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:19:33.570Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:19:33.570Z"
+    },
+    "lastLogin": {
+      "$date": "2025-12-21T17:19:33.879Z"
+    }
+  }
+]

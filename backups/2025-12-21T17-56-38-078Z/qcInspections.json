@@ -1,0 +1,26 @@
+[
+  {
+    "_id": {
+      "$oid": "6947e8802888d3430f0c096d"
+    },
+    "styleId": {
+      "$oid": "694577fdf159a0cda6ffccaa"
+    },
+    "status": "pending",
+    "jobId": null,
+    "checklistId": null,
+    "reworkAssignedTo": null,
+    "createdAt": {
+      "$date": "2025-12-21T12:30:56.482Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T12:30:56.482Z"
+    },
+    "inspectedBy": {
+      "userId": {
+        "$oid": "69443a004213c59c9c50ac67"
+      },
+      "name": "Admin User"
+    }
+  }
+]

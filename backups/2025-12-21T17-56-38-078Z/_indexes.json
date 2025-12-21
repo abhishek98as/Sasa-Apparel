@@ -1,0 +1,122 @@
+{
+  "users": [
+    {
+      "v": 2,
+      "key": {
+        "email": 1
+      },
+      "name": "email_1",
+      "unique": true
+    }
+  ],
+  "test_crud": [],
+  "tailorJobs": [
+    {
+      "v": 2,
+      "key": {
+        "tailorId": 1
+      },
+      "name": "tailorId_1"
+    },
+    {
+      "v": 2,
+      "key": {
+        "styleId": 1
+      },
+      "name": "styleId_1"
+    },
+    {
+      "v": 2,
+      "key": {
+        "status": 1
+      },
+      "name": "status_1"
+    }
+  ],
+  "tailors": [],
+  "shipments": [
+    {
+      "v": 2,
+      "key": {
+        "vendorId": 1
+      },
+      "name": "vendorId_1"
+    },
+    {
+      "v": 2,
+      "key": {
+        "styleId": 1
+      },
+      "name": "styleId_1"
+    },
+    {
+      "v": 2,
+      "key": {
+        "date": -1
+      },
+      "name": "date_-1"
+    }
+  ],
+  "styles": [
+    {
+      "v": 2,
+      "key": {
+        "code": 1
+      },
+      "name": "code_1",
+      "unique": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "vendorId": 1
+      },
+      "name": "vendorId_1"
+    }
+  ],
+  "fabricCutting": [
+    {
+      "v": 2,
+      "key": {
+        "styleId": 1
+      },
+      "name": "styleId_1"
+    },
+    {
+      "v": 2,
+      "key": {
+        "vendorId": 1
+      },
+      "name": "vendorId_1"
+    },
+    {
+      "v": 2,
+      "key": {
+        "date": -1
+      },
+      "name": "date_-1"
+    }
+  ],
+  "rates": [
+    {
+      "v": 2,
+      "key": {
+        "styleId": 1,
+        "vendorId": 1
+      },
+      "name": "styleId_1_vendorId_1"
+    }
+  ],
+  "approvals": [],
+  "vendors": [
+    {
+      "v": 2,
+      "key": {
+        "name": 1
+      },
+      "name": "name_1"
+    }
+  ],
+  "qcInspections": [],
+  "tailorPayments": []
+}

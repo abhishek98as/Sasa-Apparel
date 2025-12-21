@@ -1,0 +1,126 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd69f"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd694"
+    },
+    "tailorId": {
+      "$oid": "69482bc3f1cc3f513c5fd690"
+    },
+    "fabricCuttingId": {
+      "$oid": "69482bc3f1cc3f513c5fd69c"
+    },
+    "issuedPcs": 50,
+    "rate": 80,
+    "issueDate": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "status": "in-progress",
+    "returnedPcs": 0,
+    "qcStatus": "pending",
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd6a0"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd694"
+    },
+    "tailorId": {
+      "$oid": "69482bc3f1cc3f513c5fd691"
+    },
+    "fabricCuttingId": {
+      "$oid": "69482bc3f1cc3f513c5fd69c"
+    },
+    "issuedPcs": 50,
+    "rate": 80,
+    "issueDate": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "status": "in-progress",
+    "returnedPcs": 20,
+    "qcStatus": "pending",
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd6a1"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd695"
+    },
+    "tailorId": {
+      "$oid": "69482bc3f1cc3f513c5fd692"
+    },
+    "fabricCuttingId": {
+      "$oid": "69482bc3f1cc3f513c5fd69d"
+    },
+    "issuedPcs": 60,
+    "rate": 120,
+    "issueDate": {
+      "$date": "2025-12-20T17:17:55.826Z"
+    },
+    "status": "completed",
+    "returnedPcs": 60,
+    "qcStatus": "passed",
+    "receivedDate": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "completedDate": {
+      "$date": "2025-12-21T17:17:55.826Z"
+    },
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd6a2"
+    },
+    "styleId": {
+      "$oid": "69482bc3f1cc3f513c5fd696"
+    },
+    "tailorId": {
+      "$oid": "69482bc3f1cc3f513c5fd693"
+    },
+    "fabricCuttingId": {
+      "$oid": "69482bc3f1cc3f513c5fd69e"
+    },
+    "issuedPcs": 100,
+    "rate": 90,
+    "issueDate": {
+      "$date": "2025-12-14T17:17:55.826Z"
+    },
+    "status": "completed",
+    "returnedPcs": 100,
+    "qcStatus": "passed",
+    "receivedDate": {
+      "$date": "2025-12-20T17:17:55.826Z"
+    },
+    "completedDate": {
+      "$date": "2025-12-20T17:17:55.826Z"
+    },
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.870Z"
+    }
+  }
+]

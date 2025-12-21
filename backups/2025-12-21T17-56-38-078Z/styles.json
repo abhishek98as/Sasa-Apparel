@@ -1,0 +1,78 @@
+[
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd694"
+    },
+    "code": "STY-001",
+    "name": "Classic Cotton Shirt",
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "fabricType": "Cotton",
+    "description": "Premium cotton formal shirt",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd695"
+    },
+    "code": "STY-002",
+    "name": "Linen Summer Dress",
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68e"
+    },
+    "fabricType": "Linen",
+    "description": "Lightweight summer dress",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd696"
+    },
+    "code": "STY-003",
+    "name": "Denim Casual Pants",
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68f"
+    },
+    "fabricType": "Denim",
+    "description": "Casual denim pants",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69482bc3f1cc3f513c5fd697"
+    },
+    "code": "STY-004",
+    "name": "Silk Kurta",
+    "vendorId": {
+      "$oid": "69482bc3f1cc3f513c5fd68d"
+    },
+    "fabricType": "Silk",
+    "description": "Traditional silk kurta",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-21T17:17:55.740Z"
+    }
+  }
+]
