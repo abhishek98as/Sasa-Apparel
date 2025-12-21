@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "69482bc3f1cc3f513c5fd6a3",
+    "vendorId": "69482bc3f1cc3f513c5fd68e",
+    "styleId": "69482bc3f1cc3f513c5fd695",
+    "pcsShipped": 60,
+    "date": "2025-12-21T17:17:55.826Z",
+    "challanNo": "CH240501",
+    "notes": "First shipment of summer dresses",
+    "createdAt": "2025-12-21T17:17:55.928Z",
+    "updatedAt": "2025-12-21T17:17:55.928Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd6a4",
+    "vendorId": "69482bc3f1cc3f513c5fd68f",
+    "styleId": "69482bc3f1cc3f513c5fd696",
+    "pcsShipped": 80,
+    "date": "2025-12-20T17:17:55.826Z",
+    "challanNo": "CH240502",
+    "notes": "Partial shipment of denim pants",
+    "createdAt": "2025-12-21T17:17:55.928Z",
+    "updatedAt": "2025-12-21T17:17:55.928Z"
+  }
+]

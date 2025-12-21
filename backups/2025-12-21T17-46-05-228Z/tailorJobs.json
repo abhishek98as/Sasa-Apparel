@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "69482bc3f1cc3f513c5fd69f",
+    "styleId": "69482bc3f1cc3f513c5fd694",
+    "tailorId": "69482bc3f1cc3f513c5fd690",
+    "fabricCuttingId": "69482bc3f1cc3f513c5fd69c",
+    "issuedPcs": 50,
+    "rate": 80,
+    "issueDate": "2025-12-21T17:17:55.826Z",
+    "status": "in-progress",
+    "returnedPcs": 0,
+    "qcStatus": "pending",
+    "createdAt": "2025-12-21T17:17:55.870Z",
+    "updatedAt": "2025-12-21T17:17:55.870Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd6a0",
+    "styleId": "69482bc3f1cc3f513c5fd694",
+    "tailorId": "69482bc3f1cc3f513c5fd691",
+    "fabricCuttingId": "69482bc3f1cc3f513c5fd69c",
+    "issuedPcs": 50,
+    "rate": 80,
+    "issueDate": "2025-12-21T17:17:55.826Z",
+    "status": "in-progress",
+    "returnedPcs": 20,
+    "qcStatus": "pending",
+    "createdAt": "2025-12-21T17:17:55.870Z",
+    "updatedAt": "2025-12-21T17:17:55.870Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd6a1",
+    "styleId": "69482bc3f1cc3f513c5fd695",
+    "tailorId": "69482bc3f1cc3f513c5fd692",
+    "fabricCuttingId": "69482bc3f1cc3f513c5fd69d",
+    "issuedPcs": 60,
+    "rate": 120,
+    "issueDate": "2025-12-20T17:17:55.826Z",
+    "status": "completed",
+    "returnedPcs": 60,
+    "qcStatus": "passed",
+    "receivedDate": "2025-12-21T17:17:55.826Z",
+    "completedDate": "2025-12-21T17:17:55.826Z",
+    "createdAt": "2025-12-21T17:17:55.870Z",
+    "updatedAt": "2025-12-21T17:17:55.870Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd6a2",
+    "styleId": "69482bc3f1cc3f513c5fd696",
+    "tailorId": "69482bc3f1cc3f513c5fd693",
+    "fabricCuttingId": "69482bc3f1cc3f513c5fd69e",
+    "issuedPcs": 100,
+    "rate": 90,
+    "issueDate": "2025-12-14T17:17:55.826Z",
+    "status": "completed",
+    "returnedPcs": 100,
+    "qcStatus": "passed",
+    "receivedDate": "2025-12-20T17:17:55.826Z",
+    "completedDate": "2025-12-20T17:17:55.826Z",
+    "createdAt": "2025-12-21T17:17:55.870Z",
+    "updatedAt": "2025-12-21T17:17:55.870Z"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "69482bc3f1cc3f513c5fd698",
+    "styleId": "69482bc3f1cc3f513c5fd694",
+    "vendorId": "69482bc3f1cc3f513c5fd68d",
+    "vendorRate": 450,
+    "effectiveDate": "2025-12-21T17:17:55.785Z",
+    "createdAt": "2025-12-21T17:17:55.785Z",
+    "updatedAt": "2025-12-21T17:17:55.785Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd699",
+    "styleId": "69482bc3f1cc3f513c5fd695",
+    "vendorId": "69482bc3f1cc3f513c5fd68e",
+    "vendorRate": 650,
+    "effectiveDate": "2025-12-21T17:17:55.785Z",
+    "createdAt": "2025-12-21T17:17:55.785Z",
+    "updatedAt": "2025-12-21T17:17:55.785Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd69a",
+    "styleId": "69482bc3f1cc3f513c5fd696",
+    "vendorId": "69482bc3f1cc3f513c5fd68f",
+    "vendorRate": 550,
+    "effectiveDate": "2025-12-21T17:17:55.785Z",
+    "createdAt": "2025-12-21T17:17:55.785Z",
+    "updatedAt": "2025-12-21T17:17:55.785Z"
+  },
+  {
+    "_id": "69482bc3f1cc3f513c5fd69b",
+    "styleId": "69482bc3f1cc3f513c5fd697",
+    "vendorId": "69482bc3f1cc3f513c5fd68d",
+    "vendorRate": 850,
+    "effectiveDate": "2025-12-21T17:17:55.785Z",
+    "createdAt": "2025-12-21T17:17:55.785Z",
+    "updatedAt": "2025-12-21T17:17:55.785Z"
+  }
+]

@@ -1,0 +1,60 @@
+[
+  {
+    "_id": "69469980c55ba43fac3ff220",
+    "entityType": "tailorJob",
+    "entityId": "6946882fa3edd7124f68c1f9",
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": "2025-12-20T12:41:36.086Z",
+        "returnedPcs": 0,
+        "qcStatus": "passed",
+        "receivedDate": "2025-12-20T12:41:36.086Z",
+        "qcNotes": ""
+      }
+    },
+    "requestedBy": {
+      "userId": "6946986431cc06ee38a089f0",
+      "name": "Aniket Gupta",
+      "role": "manager"
+    },
+    "status": "rejected",
+    "createdAt": "2025-12-20T12:41:36.086Z",
+    "updatedAt": "2025-12-20T12:45:16.509Z",
+    "decisionBy": "69443a004213c59c9c50ac67",
+    "decisionRemarks": "test"
+  },
+  {
+    "_id": "694699c931cc06ee38a089f1",
+    "entityType": "tailor",
+    "entityId": "69468b3c76b9ad39da9bf18a",
+    "action": "update",
+    "payload": {
+      "collection": "tailors",
+      "type": "update",
+      "data": {
+        "name": "Manish Eye Led",
+        "phone": "+911234567890",
+        "address": "Gurgaon",
+        "specialization": "Kaj Button/ Eye led",
+        "skills": [
+          "Kaj Buttons"
+        ],
+        "dailyCapacity": 100,
+        "isActive": true
+      }
+    },
+    "requestedBy": {
+      "userId": "6946986431cc06ee38a089f0",
+      "name": "Aniket Gupta",
+      "role": "manager"
+    },
+    "status": "rejected",
+    "createdAt": "2025-12-20T12:42:49.390Z",
+    "updatedAt": "2025-12-20T12:45:10.170Z",
+    "decisionBy": "69443a004213c59c9c50ac67",
+    "decisionRemarks": "test"
+  }
+]

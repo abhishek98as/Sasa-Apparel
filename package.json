@@ -15,7 +15,9 @@
     "test:db": "npx tsx scripts/run-db-tests.ts",
     "test:connection": "npx tsx scripts/test-connection.ts",
     "test:login": "jest __tests__/login.test.tsx",
-    "test:all": "npm run test:db && npm run test"
+    "test:all": "npm run test:db && npm run test",
+    "backup": "npx tsx scripts/backup-database.ts",
+    "restore": "npx tsx scripts/restore-database.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
