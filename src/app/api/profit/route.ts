@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
                   input: {
                     $filter: {
                       input: '$jobs',
-                      cond: { $eq: ['$$this.status', 'completed'] },
+                      cond: { $eq: ['$$this.qcStatus', 'passed'] },
                     },
                   },
                   in: '$$this.returnedPcs',
@@ -94,11 +94,11 @@ export async function GET(request: NextRequest) {
         {
           $addFields: {
             expectedRevenue: {
-              $multiply: ['$totalShipped', { $ifNull: ['$vendorRate', 0] }],
+              $multiply: ['$pcsCompleted', { $ifNull: ['$vendorRate', 0] }],
             },
             grossMargin: {
               $subtract: [
-                { $multiply: ['$totalShipped', { $ifNull: ['$vendorRate', 0] }] },
+                { $multiply: ['$pcsCompleted', { $ifNull: ['$vendorRate', 0] }] },
                 '$totalTailoringCost',
               ],
             },

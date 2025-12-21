@@ -14,8 +14,8 @@ const config: Config = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   testMatch: [
-    // Only run login tests (UI tests) - MongoDB tests need separate config
-    '<rootDir>/__tests__/login.test.tsx',
+    '<rootDir>/__tests__/**/login.test.{ts,tsx}',
+    '<rootDir>/tests/**/api-health.test.{ts,tsx}',
   ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
@@ -23,6 +23,9 @@ const config: Config = {
     '!src/**/types.ts',
   ],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(bson|mongodb|@mongodb-js)/)',
+  ],
 };
 
 export default createJestConfig(config);

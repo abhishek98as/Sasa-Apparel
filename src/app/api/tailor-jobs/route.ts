@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const fabricCuttingId = searchParams.get('fabricCuttingId');
 
     const query: Record<string, unknown> = {};
-    
+
     if (styleId) query.styleId = new ObjectId(styleId);
     if (tailorId) query.tailorId = new ObjectId(tailorId);
     if (status) query.status = status;
@@ -146,6 +146,7 @@ export async function POST(request: NextRequest) {
       fabricCuttingId: new ObjectId(validation.data.fabricCuttingId),
       issuedPcs: validation.data.issuedPcs,
       rate: validation.data.rate,
+      sizeBreakdown: validation.data.sizeBreakdown,
       issueDate: now,
       status: 'in-progress',
       returnedPcs: 0,

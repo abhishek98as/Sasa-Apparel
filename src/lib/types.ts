@@ -10,6 +10,12 @@ export interface BaseDocument {
   updatedAt: Date;
 }
 
+// Size Breakdown Interface
+export interface SizeBreakdown {
+  size: string;
+  quantity: number;
+}
+
 // CRUD Permission for each module
 export interface CRUDPermission {
   create?: boolean;
@@ -73,6 +79,7 @@ export interface Style extends BaseDocument {
   fabricType: string;
   description?: string;
   images?: string[];
+  availableSizes?: string[]; // Defined sizes for this style
   isActive: boolean;
 }
 
@@ -84,6 +91,7 @@ export interface FabricCutting extends BaseDocument {
   cuttingReceivedPcs: number;
   cuttingInHouse: boolean; // true if we cut in-house, false if pre-cut from vendor
   date: Date;
+  sizeBreakdown?: SizeBreakdown[];
   notes?: string;
 }
 
@@ -113,8 +121,8 @@ export interface Tailor extends BaseDocument {
 }
 
 // Tailor Job
-export type JobStatus = 'pending' | 'in-progress' | 'completed' | 'returned';
-export type QCStatus = 'pending' | 'passed' | 'failed' | 'rework';
+export type JobStatus = 'pending' | 'in-progress' | 'completed' | 'returned' | 'ready-to-ship' | 'shipped';
+export type QCStatus = 'pending' | 'passed' | 'failed' | 'rework' | 'rejected';
 
 export interface TailorJob extends BaseDocument {
   styleId: ObjectId;
@@ -125,8 +133,11 @@ export interface TailorJob extends BaseDocument {
   issueDate: Date;
   status: JobStatus;
   returnedPcs: number;
+  rejectedPcs?: number; // QC Rejected pieces
+  rejectionReason?: string;
   qcStatus: QCStatus;
   qcNotes?: string;
+  sizeBreakdown?: SizeBreakdown[];
   receivedDate?: Date;
   completedDate?: Date;
 }
@@ -138,6 +149,7 @@ export interface Shipment extends BaseDocument {
   pcsShipped: number;
   date: Date;
   challanNo: string;
+  sizeBreakdown?: SizeBreakdown[];
   notes?: string;
 }
 

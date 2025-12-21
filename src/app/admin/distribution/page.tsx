@@ -26,6 +26,7 @@ interface FabricCutting {
   vendorId: string;
   cuttingReceivedPcs: number;
   date: string;
+  sizeBreakdown?: { size: string; quantity: number }[];
 }
 
 interface TailorCapacity {
@@ -43,6 +44,7 @@ interface Assignment {
   tailorName: string;
   pcs: number;
   rate: number;
+  sizeBreakdown?: { size: string; quantity: number }[];
 }
 
 export default function DistributionPage() {
@@ -114,6 +116,7 @@ export default function DistributionPage() {
         tailorName: tailor.tailorName,
         pcs: 0,
         rate: defaultRate,
+        sizeBreakdown: selectedCutting?.sizeBreakdown?.map(s => ({ size: s.size, quantity: 0 })),
       },
     ]);
   };
@@ -124,7 +127,25 @@ export default function DistributionPage() {
     value: number
   ) => {
     const updated = [...assignments];
+    // @ts-ignore
     updated[index][field] = value;
+    setAssignments(updated);
+  };
+
+  const handleSizeChange = (
+    assignmentIndex: number,
+    sizeIndex: number,
+    value: number
+  ) => {
+    const updated = [...assignments];
+    if (updated[assignmentIndex].sizeBreakdown) {
+      updated[assignmentIndex].sizeBreakdown![sizeIndex].quantity = value;
+      // Recalculate total pcs
+      updated[assignmentIndex].pcs = updated[assignmentIndex].sizeBreakdown!.reduce(
+        (sum, s) => sum + s.quantity,
+        0
+      );
+    }
     setAssignments(updated);
   };
 
@@ -161,6 +182,7 @@ export default function DistributionPage() {
               fabricCuttingId: selectedCutting!._id,
               issuedPcs: assignment.pcs,
               rate: assignment.rate,
+              sizeBreakdown: assignment.sizeBreakdown,
             }),
           });
 
@@ -199,6 +221,10 @@ export default function DistributionPage() {
       tailorName: tailor.tailorName,
       pcs: pcsPerTailor + (index < remainder ? 1 : 0),
       rate: defaultRate,
+      sizeBreakdown: selectedCutting?.sizeBreakdown?.map(s => ({
+        size: s.size,
+        quantity: Math.floor(pcsPerTailor / (selectedCutting.sizeBreakdown?.length || 1)) // Rough distribution
+      })),
     }));
 
     setAssignments(suggested);
@@ -379,6 +405,7 @@ export default function DistributionPage() {
                           min="0"
                           max={availablePcs}
                           value={assignment.pcs}
+                          disabled={!!assignment.sizeBreakdown}
                           onChange={(e) =>
                             handleUpdateAssignment(
                               index,
@@ -401,6 +428,27 @@ export default function DistributionPage() {
                           }
                         />
                       </div>
+
+                      {/* Size Breakdown Inputs */}
+                      {selectedCutting?.sizeBreakdown && assignment.sizeBreakdown && (
+                        <div className="mt-2 p-2 bg-surface-50 rounded border border-surface-200">
+                          <p className="text-xs font-medium text-surface-500 mb-2">Size Breakdown</p>
+                          <div className="grid grid-cols-4 gap-2">
+                            {assignment.sizeBreakdown.map((size, sIndex) => (
+                              <div key={size.size}>
+                                <label className="text-[10px] uppercase text-surface-500">{size.size}</label>
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  className="h-8 text-sm"
+                                  value={size.quantity}
+                                  onChange={(e) => handleSizeChange(index, sIndex, parseInt(e.target.value) || 0)}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

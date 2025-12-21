@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+// Size Breakdown Validation
+export const sizeBreakdownSchema = z.object({
+  size: z.string().min(1, 'Size label required'),
+  quantity: z.number().min(0, 'Quantity must be non-negative'),
+});
+
 // Vendor validation
 export const vendorSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -18,6 +24,7 @@ export const styleSchema = z.object({
   vendorId: z.string().min(1, 'Vendor required'),
   fabricType: z.string().min(1, 'Fabric type required'),
   description: z.string().optional(),
+  availableSizes: z.array(z.string()).optional(),
   isActive: z.boolean().default(true),
 });
 
@@ -171,6 +178,7 @@ export const fabricCuttingSchema = z.object({
   cuttingReceivedPcs: z.number().min(1, 'Must be at least 1'),
   cuttingInHouse: z.boolean().default(false),
   date: z.string().or(z.date()),
+  sizeBreakdown: z.array(sizeBreakdownSchema).optional(),
   notes: z.string().optional(),
 });
 
@@ -181,6 +189,7 @@ export const tailorJobSchema = z.object({
   fabricCuttingId: z.string().min(1, 'Cutting record required'),
   issuedPcs: z.number().min(1, 'Must issue at least 1 piece'),
   rate: z.number().min(0, 'Rate must be positive'),
+  sizeBreakdown: z.array(sizeBreakdownSchema).optional(),
 });
 
 // Shipment validation
@@ -190,6 +199,7 @@ export const shipmentSchema = z.object({
   pcsShipped: z.number().min(1, 'Must ship at least 1 piece'),
   date: z.string().or(z.date()),
   challanNo: z.string().min(1, 'Challan number required'),
+  sizeBreakdown: z.array(sizeBreakdownSchema).optional(),
   notes: z.string().optional(),
 });
 
@@ -207,8 +217,10 @@ export const jobUpdateSchema = z.object({
   issuedPcs: z.number().min(1, 'Must issue at least 1 piece').optional(),
   returnedPcs: z.number().min(0).optional(),
   rate: z.number().min(0, 'Rate must be positive').optional(),
-  status: z.enum(['pending', 'in-progress', 'completed', 'returned']).optional(),
-  qcStatus: z.enum(['pending', 'passed', 'failed', 'rework']).optional(),
+  status: z.enum(['pending', 'in-progress', 'completed', 'returned', 'ready-to-ship', 'shipped']).optional(),
+  qcStatus: z.enum(['pending', 'passed', 'failed', 'rework', 'rejected']).optional(),
+  rejectedPcs: z.number().min(0).optional(),
+  rejectionReason: z.string().optional(),
   qcNotes: z.string().optional(),
 });
 

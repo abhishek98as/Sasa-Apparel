@@ -33,9 +33,9 @@ export async function GET(request: NextRequest) {
     const dateFilter =
       startDate || endDate
         ? {
-            ...(startDate ? { $gte: startDate } : {}),
-            ...(endDate ? { $lte: endDate } : {}),
-          }
+          ...(startDate ? { $gte: startDate } : {}),
+          ...(endDate ? { $lte: endDate } : {}),
+        }
         : undefined;
 
     const rangeLabel = startDate || endDate ? 'Filtered range' : 'All time';
@@ -96,7 +96,7 @@ export async function GET(request: NextRequest) {
             },
             completed: {
               $sum: {
-                $cond: [{ $eq: ['$status', 'completed'] }, '$returnedPcs', 0],
+                $cond: [{ $eq: ['$qcStatus', 'passed'] }, '$returnedPcs', 0],
               },
             },
           },
@@ -118,16 +118,42 @@ export async function GET(request: NextRequest) {
       ])
       .toArray();
 
-    // Calculate expected receivable (shipped * vendor rate)
+    // Calculate expected receivable (completed pcs * vendor rate)
+    // Formula: Sum(returnedPcs where qcStatus='passed' * vendorRate)
     const receivableData = await db
-      .collection(COLLECTIONS.SHIPMENTS)
+      .collection(COLLECTIONS.TAILOR_JOBS)
       .aggregate([
-        ...(dateFilter ? [{ $match: { date: dateFilter } }] : []),
+        {
+          $match: {
+            qcStatus: 'passed',
+            ...(dateFilter ? { completedDate: dateFilter } : {})
+          }
+        },
+        {
+          $lookup: {
+            from: COLLECTIONS.STYLES,
+            localField: 'styleId',
+            foreignField: '_id',
+            as: 'style',
+          },
+        },
+        { $unwind: '$style' },
         {
           $lookup: {
             from: COLLECTIONS.RATES,
-            localField: 'styleId',
-            foreignField: 'styleId',
+            let: { styleId: '$style._id', vendorId: '$style.vendorId' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$styleId', '$$styleId'] },
+                      { $eq: ['$vendorId', '$$vendorId'] },
+                    ],
+                  },
+                },
+              },
+            ],
             as: 'rate',
           },
         },
@@ -139,7 +165,7 @@ export async function GET(request: NextRequest) {
             _id: null,
             total: {
               $sum: {
-                $multiply: ['$pcsShipped', { $ifNull: ['$rate.vendorRate', 0] }],
+                $multiply: ['$returnedPcs', { $ifNull: ['$rate.vendorRate', 0] }],
               },
             },
           },
@@ -212,7 +238,7 @@ export async function GET(request: NextRequest) {
                   input: {
                     $filter: {
                       input: '$jobs',
-                      cond: { $eq: ['$$this.status', 'completed'] },
+                      cond: { $eq: ['$$this.qcStatus', 'passed'] },
                     },
                   },
                   in: '$$this.returnedPcs',
