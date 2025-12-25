@@ -27,6 +27,10 @@ export async function GET() {
                 ...settings.mongoConfig,
                 password: settings.mongoConfig.password ? decrypt(settings.mongoConfig.password) : '',
                 atlasUrl: settings.mongoConfig.atlasUrl ? decrypt(settings.mongoConfig.atlasUrl) : '',
+            } : undefined,
+            imageKitConfig: settings.imageKitConfig ? {
+                ...settings.imageKitConfig,
+                privateKey: settings.imageKitConfig.privateKey ? decrypt(settings.imageKitConfig.privateKey) : '',
             } : undefined
         };
 
@@ -46,7 +50,7 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json();
-        const { brandName, brandLogo, favicon, mongoConfig } = body;
+        const { brandName, brandLogo, favicon, mongoConfig, imageKitConfig } = body;
 
         const db = await getDb();
 
@@ -55,35 +59,36 @@ export async function POST(req: NextRequest) {
             updatedBy: session.user.id
         };
 
+        // Always update these fields when provided (even if empty string)
         if (brandName !== undefined) updateData.brandName = brandName;
         if (brandLogo !== undefined) updateData.brandLogo = brandLogo;
         if (favicon !== undefined) updateData.favicon = favicon;
 
         if (mongoConfig) {
             updateData.mongoConfig = {
-                username: mongoConfig.username,
-                password: mongoConfig.password ? encrypt(mongoConfig.password) : undefined,
-                atlasUrl: mongoConfig.atlasUrl ? encrypt(mongoConfig.atlasUrl) : undefined,
+                username: mongoConfig.username || '',
+                password: mongoConfig.password ? encrypt(mongoConfig.password) : '',
+                atlasUrl: mongoConfig.atlasUrl ? encrypt(mongoConfig.atlasUrl) : '',
             };
         }
 
-        // Update or Insert (Upsert basically, but we might want to keep the same ID if it exists)
-        // Actually, let's just use updateOne with upsert: true on a fixed query if we treat it as a singleton.
-        // Or just find one and update.
-
-        const existing = await db.collection(COLLECTIONS.SETTINGS).findOne({});
-
-        if (existing) {
-            await db.collection(COLLECTIONS.SETTINGS).updateOne(
-                { _id: existing._id },
-                { $set: updateData }
-            );
-        } else {
-            await db.collection(COLLECTIONS.SETTINGS).insertOne({
-                ...updateData,
-                createdAt: new Date()
-            });
+        if (imageKitConfig) {
+            updateData.imageKitConfig = {
+                urlEndpoint: imageKitConfig.urlEndpoint || '',
+                publicKey: imageKitConfig.publicKey || '',
+                privateKey: imageKitConfig.privateKey ? encrypt(imageKitConfig.privateKey) : '',
+            };
         }
+
+        // Use upsert to create or update the single settings document
+        await db.collection(COLLECTIONS.SETTINGS).updateOne(
+            {},  // Empty filter matches any document (for singleton pattern)
+            { 
+                $set: updateData,
+                $setOnInsert: { createdAt: new Date() }
+            },
+            { upsert: true }
+        );
 
         return NextResponse.json({ success: true, message: 'Settings updated successfully' });
     } catch (error) {

@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Loading } from '@/components/ui/loading';
 import { useToast } from '@/components/ui/toast';
 import { Header } from '@/components/layout/header';
-import { Save, Lock, Image as ImageIcon, AlertCircle, CheckCircle2, Upload } from 'lucide-react';
+import { Save, Lock, Image as ImageIcon, AlertCircle, CheckCircle2, Upload, Key } from 'lucide-react';
 
 export default function SettingsPage() {
     const [loading, setLoading] = useState(true);
@@ -25,8 +25,18 @@ export default function SettingsPage() {
         atlasUrl: '',
     });
 
-    const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/d6s8a2mzi';
-    const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
+    const [imageKitConfig, setImageKitConfig] = useState({
+        publicKey: '',
+        privateKey: '',
+        urlEndpoint: '',
+    });
+
+    // Default ImageKit values
+    const defaultUrlEndpoint = 'https://ik.imagekit.io/d6s8a2mzi';
+    const defaultPublicKey = 'public_DRZyuw7wkmBFjF75SSluw33h9Vc=';
+    
+    const urlEndpoint = imageKitConfig.urlEndpoint || defaultUrlEndpoint;
+    const publicKey = imageKitConfig.publicKey || defaultPublicKey;
     const authEndpoint = '/api/imagekit/auth';
 
     useEffect(() => {
@@ -46,6 +56,13 @@ export default function SettingsPage() {
                         username: json.data.mongoConfig.username || '',
                         password: json.data.mongoConfig.password || '',
                         atlasUrl: json.data.mongoConfig.atlasUrl || '',
+                    });
+                }
+                if (json.data.imageKitConfig) {
+                    setImageKitConfig({
+                        publicKey: json.data.imageKitConfig.publicKey || '',
+                        privateKey: json.data.imageKitConfig.privateKey || '',
+                        urlEndpoint: json.data.imageKitConfig.urlEndpoint || '',
                     });
                 }
             }
@@ -74,6 +91,7 @@ export default function SettingsPage() {
                     brandLogo,
                     favicon,
                     mongoConfig,
+                    imageKitConfig,
                 }),
             });
             const json = await res.json();
@@ -352,6 +370,72 @@ export default function SettingsPage() {
                                     </span>
                                 </p>
                             </div>
+                        </div>
+                    </Card>
+                </div>
+
+                {/* ImageKit Configuration Section */}
+                <div>
+                    <h2 className="text-xl font-semibold text-surface-800 dark:text-surface-100 mb-1 flex items-center gap-2">
+                        <Key size={22} className="text-purple-600" />
+                        ImageKit Configuration
+                    </h2>
+                    <p className="text-sm text-surface-500 mb-4">
+                        Manage ImageKit API credentials for image storage and delivery (encrypted before storage)
+                    </p>
+
+                    <Card className="p-6 bg-white dark:bg-surface-800 shadow-sm border border-surface-200 dark:border-surface-700 space-y-5">
+                        <div>
+                            <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                                URL Endpoint
+                            </label>
+                            <Input
+                                value={imageKitConfig.urlEndpoint}
+                                onChange={(e) => setImageKitConfig({ ...imageKitConfig, urlEndpoint: e.target.value })}
+                                placeholder="https://ik.imagekit.io/your_imagekit_id"
+                                className="font-mono text-sm"
+                            />
+                            <p className="text-xs text-surface-500 mt-1">
+                                Default: {defaultUrlEndpoint}
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                                    Public Key
+                                </label>
+                                <Input
+                                    value={imageKitConfig.publicKey}
+                                    onChange={(e) => setImageKitConfig({ ...imageKitConfig, publicKey: e.target.value })}
+                                    placeholder="public_xxxxxxxxxxxxx"
+                                    className="font-mono text-sm"
+                                />
+                                <p className="text-xs text-surface-500 mt-1">
+                                    Default: {defaultPublicKey.substring(0, 20)}...
+                                </p>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                                    Private Key (Keep Confidential)
+                                </label>
+                                <Input
+                                    type="password"
+                                    value={imageKitConfig.privateKey}
+                                    onChange={(e) => setImageKitConfig({ ...imageKitConfig, privateKey: e.target.value })}
+                                    placeholder="private_xxxxxxxxxxxxx"
+                                    className="font-mono text-sm"
+                                    autoComplete="new-password"
+                                />
+                            </div>
+                        </div>
+                        <div className="p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+                            <p className="text-xs text-purple-800 dark:text-purple-200 flex items-start gap-2">
+                                <Key size={14} className="mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <strong>Note:</strong> The private key is encrypted before storage. 
+                                    If left empty, the system will use the default ImageKit credentials from environment variables.
+                                </span>
+                            </p>
                         </div>
                     </Card>
                 </div>

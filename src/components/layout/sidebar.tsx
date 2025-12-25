@@ -132,7 +132,7 @@ export function Sidebar() {
   // Get nav items based on role
   const getNavItems = (): NavItem[] => {
     if (role === 'admin') {
-      return [...adminNavItems, { href: '/admin/settings', label: 'Settings', icon: Settings }];
+      return adminNavItems;
     }
     if (role === 'manager') {
       // Filter items based on CRUD permissions (check if user can at least read)
