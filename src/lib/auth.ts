@@ -14,6 +14,7 @@ declare module 'next-auth' {
       role: UserRole;
       vendorId?: string;
       tailorId?: string;
+      tenantId?: string;
     };
   }
 
@@ -24,6 +25,7 @@ declare module 'next-auth' {
     role: UserRole;
     vendorId?: string;
     tailorId?: string;
+    tenantId?: string;
   }
 }
 
@@ -33,6 +35,7 @@ declare module 'next-auth/jwt' {
     role: UserRole;
     vendorId?: string;
     tailorId?: string;
+    tenantId?: string;
   }
 }
 
@@ -138,6 +141,7 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.vendorId = user.vendorId;
         token.tailorId = user.tailorId;
+        token.tenantId = user.tenantId;
       }
       return token;
     },
@@ -147,6 +151,7 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role;
         session.user.vendorId = token.vendorId;
         session.user.tailorId = token.tailorId;
+        session.user.tenantId = token.tenantId;
       }
       return session;
     },

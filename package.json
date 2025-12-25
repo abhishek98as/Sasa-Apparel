@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx scripts/seed.ts",
+    "seed:analytics": "npx tsx scripts/seed-analytics-data.ts",
     "reset-db": "npx tsx scripts/reset-database.ts",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -15,6 +16,7 @@
     "test:db": "npx tsx scripts/run-db-tests.ts",
     "test:connection": "npx tsx scripts/test-connection.ts",
     "test:login": "jest __tests__/login.test.tsx",
+    "test:analytics": "jest __tests__/analytics",
     "test:all": "npm run test:db && npm run test",
     "backup": "npx tsx scripts/backup-database.ts",
     "restore": "npx tsx scripts/restore-database.ts"
@@ -22,6 +24,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
+    "csv-writer": "^1.6.0",
     "date-fns": "^3.6.0",
     "imagekit": "^6.0.0",
     "imagekitio-react": "^4.3.0",
@@ -32,6 +35,7 @@
     "next": "^14.2.35",
     "next-auth": "^4.24.7",
     "react": "^18.3.1",
+    "react-day-picker": "^9.13.0",
     "react-dom": "^18.3.1",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.3.0",

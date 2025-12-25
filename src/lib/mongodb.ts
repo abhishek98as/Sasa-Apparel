@@ -68,6 +68,15 @@ export const COLLECTIONS = {
   ORDER_SIZES: 'orderSizes',
   AUDIT_LOGS: 'auditLogs',
   FEATURE_FLAGS: 'featureFlags',
+  ANALYTICS_EVENTS: 'analyticsEvents',
+  ANALYTICS_DAILY: 'analyticsDaily',
+  ANALYTICS_WEEKLY: 'analyticsWeekly',
+  ANALYTICS_MONTHLY: 'analyticsMonthly',
+  ANALYTICS_AGGREGATES: 'analyticsAggregates',
+  SCHEDULED_REPORTS: 'scheduledReports',
+  ALERT_RULES: 'alertRules',
+  ALERT_HISTORY: 'alertHistory',
+  EXPORT_JOBS: 'exportJobs',
 } as const;
 
 // Status constants for calculations
