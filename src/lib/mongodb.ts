@@ -61,5 +61,17 @@ export const COLLECTIONS = {
   TAILOR_PAYMENTS: 'tailorPayments',
   APPROVALS: 'approvals',
   SETTINGS: 'settings',
+  SAMPLES: 'samples',
+  SAMPLE_VERSIONS: 'sampleVersions',
+  SAMPLE_COMMENTS: 'sampleComments',
+  // New collections for enhanced features
+  ORDER_SIZES: 'orderSizes',
+  AUDIT_LOGS: 'auditLogs',
+  FEATURE_FLAGS: 'featureFlags',
 } as const;
+
+// Status constants for calculations
+export const COMPLETED_STATUSES = ['completed'] as const;
+export const RECEIVABLE_STATUSES = ['shipped', 'completed'] as const;
+export const UNPAID_PAYMENT_STATUSES = ['pending', 'partial'] as const;
 

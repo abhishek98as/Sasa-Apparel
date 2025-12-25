@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { getDb, COLLECTIONS } from '@/lib/mongodb';
+import { getDb, COLLECTIONS, COMPLETED_STATUSES, RECEIVABLE_STATUSES, UNPAID_PAYMENT_STATUSES } from '@/lib/mongodb';
 import { getStartOfDay, getEndOfDay, getStartOfMonth, getEndOfMonth } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
@@ -77,6 +77,7 @@ export async function GET(request: NextRequest) {
       .toArray();
 
     // Get tailor job stats
+    // IMPORTANT: Only count pieces as "completed" when status is one of COMPLETED_STATUSES
     const tailorJobStats = await db
       .collection(COLLECTIONS.TAILOR_JOBS)
       .aggregate([
@@ -94,7 +95,14 @@ export async function GET(request: NextRequest) {
                 $cond: [{ $eq: ['$status', 'in-progress'] }, '$issuedPcs', 0],
               },
             },
+            // FIX: Count completed only when status is in COMPLETED_STATUSES
             completed: {
+              $sum: {
+                $cond: [{ $in: ['$status', COMPLETED_STATUSES] }, '$returnedPcs', 0],
+              },
+            },
+            // Separate count for QC passed (for reference)
+            qcPassed: {
               $sum: {
                 $cond: [{ $eq: ['$qcStatus', 'passed'] }, '$returnedPcs', 0],
               },
@@ -118,15 +126,20 @@ export async function GET(request: NextRequest) {
       ])
       .toArray();
 
-    // Calculate expected receivable (completed pcs * vendor rate)
-    // Formula: Sum(returnedPcs where qcStatus='passed' * vendorRate)
+    // Calculate expected receivable (from unpaid/partial shipped pieces)
+    // FIX: Use RECEIVABLE_STATUSES for shipment status and UNPAID_PAYMENT_STATUSES for payment
     const receivableData = await db
-      .collection(COLLECTIONS.TAILOR_JOBS)
+      .collection(COLLECTIONS.SHIPMENTS)
       .aggregate([
         {
           $match: {
-            qcStatus: 'passed',
-            ...(dateFilter ? { completedDate: dateFilter } : {})
+            status: { $in: RECEIVABLE_STATUSES },
+            $or: [
+              { paymentStatus: { $exists: false } },
+              { paymentStatus: null },
+              { paymentStatus: { $in: UNPAID_PAYMENT_STATUSES } }
+            ],
+            ...(dateFilter ? { date: dateFilter } : {})
           }
         },
         {
@@ -141,7 +154,7 @@ export async function GET(request: NextRequest) {
         {
           $lookup: {
             from: COLLECTIONS.RATES,
-            let: { styleId: '$style._id', vendorId: '$style.vendorId' },
+            let: { styleId: '$styleId', vendorId: '$vendorId' },
             pipeline: [
               {
                 $match: {
@@ -165,9 +178,10 @@ export async function GET(request: NextRequest) {
             _id: null,
             total: {
               $sum: {
-                $multiply: ['$returnedPcs', { $ifNull: ['$rate.vendorRate', 0] }],
+                $multiply: ['$pcsShipped', { $ifNull: ['$rate.vendorRate', 0] }],
               },
             },
+            totalPieces: { $sum: '$pcsShipped' },
           },
         },
       ])
@@ -232,13 +246,14 @@ export async function GET(request: NextRequest) {
                 },
               },
             },
+            // FIX: Count completed only when status is 'completed'
             completed: {
               $sum: {
                 $map: {
                   input: {
                     $filter: {
                       input: '$jobs',
-                      cond: { $eq: ['$$this.qcStatus', 'passed'] },
+                      cond: { $in: ['$$this.status', COMPLETED_STATUSES] },
                     },
                   },
                   in: '$$this.returnedPcs',
@@ -335,6 +350,7 @@ export async function GET(request: NextRequest) {
       totalCost: 0,
       inProgress: 0,
       completed: 0,
+      qcPassed: 0,
     };
 
     const metrics = {
@@ -342,8 +358,10 @@ export async function GET(request: NextRequest) {
       totalCuttingReceivedMonth: cuttingMonth[0]?.total || 0,
       cuttingInProduction: jobStats.inProgress,
       pcsCompleted: jobStats.completed,
+      pcsQcPassed: jobStats.qcPassed,
       pcsShipped: shipmentStats[0]?.totalShipped || 0,
       expectedReceivable: receivableData[0]?.total || 0,
+      unpaidShippedPieces: receivableData[0]?.totalPieces || 0,
       totalTailoringExpense: jobStats.totalCost,
       pendingFromTailors: jobStats.totalIssued - jobStats.totalReturned,
       totalVendors: vendorCount,

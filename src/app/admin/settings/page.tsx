@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IKContext, IKUpload, IKImage } from 'imagekitio-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,12 +8,17 @@ import { Card } from '@/components/ui/card';
 import { Loading } from '@/components/ui/loading';
 import { useToast } from '@/components/ui/toast';
 import { Header } from '@/components/layout/header';
-import { Save, Lock, Image as ImageIcon, AlertCircle, CheckCircle2, Upload, Key } from 'lucide-react';
+import { Save, Lock, Image as ImageIcon, AlertCircle, CheckCircle2, Upload, Key, RefreshCw } from 'lucide-react';
 
 export default function SettingsPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploadingLogo, setUploadingLogo] = useState(false);
+    const [uploadingFavicon, setUploadingFavicon] = useState(false);
     const { showToast } = useToast();
+
+    const logoInputRef = useRef<HTMLInputElement>(null);
+    const faviconInputRef = useRef<HTMLInputElement>(null);
 
     const [brandName, setBrandName] = useState('');
     const [brandLogo, setBrandLogo] = useState('');
@@ -129,7 +134,7 @@ export default function SettingsPage() {
 
     const onError = (err: any) => {
         console.error("Image upload error:", err);
-        showToast('Image upload failed. Please try again.', 'error');
+        showToast('Client-side upload failed. Trying server upload...', 'error');
     };
 
     const onSuccessLogo = (res: any) => {
@@ -142,6 +147,46 @@ export default function SettingsPage() {
         console.log("Favicon upload success:", res);
         setFavicon(res.filePath);
         showToast('Favicon uploaded successfully!', 'success');
+    };
+
+    // Server-side upload fallback
+    const handleServerUpload = async (file: File, type: 'logo' | 'favicon') => {
+        const setUploading = type === 'logo' ? setUploadingLogo : setUploadingFavicon;
+        const setImage = type === 'logo' ? setBrandLogo : setFavicon;
+        
+        setUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('fileName', type === 'logo' ? 'brand-logo' : 'favicon');
+            formData.append('folder', `/${brandName.replace(/\s+/g, '-').toLowerCase() || 'default'}/assets`);
+
+            const response = await fetch('/api/imagekit/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                setImage(result.data.filePath);
+                showToast(`${type === 'logo' ? 'Brand logo' : 'Favicon'} uploaded successfully!`, 'success');
+            } else {
+                throw new Error(result.error?.message || 'Upload failed');
+            }
+        } catch (error: any) {
+            console.error('Server upload error:', error);
+            showToast(`Failed to upload ${type}: ${error.message}`, 'error');
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'favicon') => {
+        const file = e.target.files?.[0];
+        if (file) {
+            handleServerUpload(file, type);
+        }
     };
 
     if (loading) return (
@@ -237,21 +282,22 @@ export default function SettingsPage() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <IKUpload
-                                        fileName="brand-logo"
-                                        folder={`/${brandName.replace(/\s+/g, '-').toLowerCase() || 'default'}/assets`}
-                                        onError={onError}
-                                        onSuccess={onSuccessLogo}
+                                <div className="flex items-center gap-3 flex-wrap">
+                                    {/* Server-side upload (recommended) */}
+                                    <input
+                                        ref={logoInputRef}
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => handleFileSelect(e, 'logo')}
                                         className="hidden"
-                                        id="logo-upload"
+                                        id="logo-server-upload"
                                     />
                                     <label
-                                        htmlFor="logo-upload"
-                                        className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                                        htmlFor="logo-server-upload"
+                                        className={`cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium ${uploadingLogo ? 'opacity-75 cursor-wait' : ''}`}
                                     >
-                                        <Upload size={16} />
-                                        Upload Logo
+                                        {uploadingLogo ? <RefreshCw size={16} className="animate-spin" /> : <Upload size={16} />}
+                                        {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
                                     </label>
                                     {brandLogo && (
                                         <span className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
@@ -284,21 +330,22 @@ export default function SettingsPage() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <IKUpload
-                                        fileName="favicon"
-                                        folder={`/${brandName.replace(/\s+/g, '-').toLowerCase() || 'default'}/assets`}
-                                        onError={onError}
-                                        onSuccess={onSuccessFavicon}
+                                <div className="flex items-center gap-3 flex-wrap">
+                                    {/* Server-side upload (recommended) */}
+                                    <input
+                                        ref={faviconInputRef}
+                                        type="file"
+                                        accept="image/*,.ico"
+                                        onChange={(e) => handleFileSelect(e, 'favicon')}
                                         className="hidden"
-                                        id="favicon-upload"
+                                        id="favicon-server-upload"
                                     />
                                     <label
-                                        htmlFor="favicon-upload"
-                                        className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                                        htmlFor="favicon-server-upload"
+                                        className={`cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium ${uploadingFavicon ? 'opacity-75 cursor-wait' : ''}`}
                                     >
-                                        <Upload size={16} />
-                                        Upload Favicon
+                                        {uploadingFavicon ? <RefreshCw size={16} className="animate-spin" /> : <Upload size={16} />}
+                                        {uploadingFavicon ? 'Uploading...' : 'Upload Favicon'}
                                     </label>
                                     {favicon && (
                                         <span className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">

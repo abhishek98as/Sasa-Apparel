@@ -79,11 +79,13 @@ const adminNavItems: NavItem[] = [
   { href: '/admin/reports', label: 'Reports', icon: FileText, permissionKey: 'reports' },
   { href: '/admin/users', label: 'Users', icon: UserCircle, permissionKey: 'users' },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/samples', label: 'Samples', icon: Boxes }, // Added Samples
 ];
 
 const vendorNavItems: NavItem[] = [
   { href: '/vendor/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/vendor/styles', label: 'My Styles', icon: Shirt },
+  { href: '/samples', label: 'Samples', icon: Boxes }, // Added Samples
   { href: '/vendor/shipments', label: 'Shipments', icon: Truck },
   { href: '/vendor/progress', label: 'Production Progress', icon: TrendingUp },
 ];
@@ -92,6 +94,7 @@ const tailorNavItems: NavItem[] = [
   { href: '/tailor/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/tailor/jobs', label: 'My Jobs', icon: ClipboardList },
   { href: '/tailor/history', label: 'History', icon: FileText },
+  { href: '/samples', label: 'Samples', icon: Boxes }, // Added Samples for tailors if needed
 ];
 
 // Helper to check if a module has at least read permission

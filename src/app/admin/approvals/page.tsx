@@ -153,14 +153,24 @@ export default function ApprovalsPage() {
   const renderPayloadDiff = (payload: ApprovalRequest['payload']) => {
     if (!payload.data) return <p className="text-surface-500">No changes to display</p>;
 
+    // Sanitize data: remove internal fields that shouldn't be shown
+    const sanitizedData = { ...payload.data };
+    // Remove sensitive/internal fields
+    const internalFields = ['_id', 'password', 'passwordHash', 'createdAt', 'updatedAt', '__v', 'internalNotes'];
+    internalFields.forEach(field => {
+      if (field in sanitizedData) {
+        delete sanitizedData[field];
+      }
+    });
+
     return (
       <div className="space-y-2">
         <p className="text-xs text-surface-500 uppercase tracking-wide">
-          Type: {payload.type === 'softDelete' ? 'Soft Delete' : 'Update'}
+          Type: {payload.type === 'softDelete' ? 'Delete' : 'Update'}
         </p>
         <div className="bg-surface-50 dark:bg-surface-800 rounded-lg p-3 overflow-auto max-h-60">
           <pre className="text-xs text-surface-700 dark:text-surface-300 whitespace-pre-wrap">
-            {JSON.stringify(payload.data, null, 2)}
+            {JSON.stringify(sanitizedData, null, 2)}
           </pre>
         </div>
       </div>
@@ -343,14 +353,12 @@ export default function ApprovalsPage() {
                             </h4>
                             <div className="space-y-1 text-sm">
                               <p>
-                                <span className="text-surface-500">Entity ID:</span>{' '}
-                                <code className="text-xs bg-surface-200 dark:bg-surface-700 px-1 rounded">
-                                  {approval.entityId}
-                                </code>
+                                <span className="text-surface-500">Date Requested:</span>{' '}
+                                {formatDate(approval.createdAt)}
                               </p>
                               <p>
-                                <span className="text-surface-500">Collection:</span>{' '}
-                                {approval.payload.collection}
+                                <span className="text-surface-500">Requester Role:</span>{' '}
+                                {approval.requestedBy.role.charAt(0).toUpperCase() + approval.requestedBy.role.slice(1)}
                               </p>
                             </div>
                           </div>
