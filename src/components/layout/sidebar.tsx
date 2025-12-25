@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import { useLayout } from './layout-context';
+import { useBrand } from './brand-context';
+import { IKContext, IKImage } from 'imagekitio-react';
 import {
   LayoutDashboard,
   Users,
@@ -109,7 +111,11 @@ export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { sidebarOpen, setSidebarOpen } = useLayout();
+  const { brandSettings } = useBrand();
   const [permissions, setPermissions] = useState<ManagerPermissions | null>(null);
+
+  const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/d6s8a2mzi';
+  const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || '';
 
   const role = session?.user?.role;
 
@@ -199,11 +205,27 @@ export function Sidebar() {
         {/* Logo */}
         <div className="p-5 border-b border-surface-100 dark:border-surface-800 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3" onClick={handleLinkClick}>
-            <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', roleColor)}>
-              <Scissors className="w-5 h-5 text-white" />
-            </div>
+            {brandSettings.brandLogo ? (
+              <IKContext publicKey={publicKey} urlEndpoint={urlEndpoint}>
+                <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0">
+                  <IKImage
+                    path={brandSettings.brandLogo}
+                    alt={brandSettings.brandName || 'Brand Logo'}
+                    width="40"
+                    height="40"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </IKContext>
+            ) : (
+              <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', roleColor)}>
+                <Scissors className="w-5 h-5 text-white" />
+              </div>
+            )}
             <div>
-              <h1 className="text-lg font-bold text-surface-900 dark:text-surface-50">Sasa Apparel</h1>
+              <h1 className="text-lg font-bold text-surface-900 dark:text-surface-50">
+                {brandSettings.brandName || 'Sasa Apparel'}
+              </h1>
               <p className="text-xs text-surface-500">{roleLabel}</p>
             </div>
           </Link>
