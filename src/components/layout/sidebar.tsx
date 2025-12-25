@@ -29,6 +29,7 @@ import {
   BadgeCheck,
   Settings,
   PackageCheck,
+  BarChart3,
 } from 'lucide-react';
 
 interface CRUDPermission {
@@ -65,6 +66,7 @@ interface NavItem {
 
 const adminNavItems: NavItem[] = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard, permissionKey: 'dashboard' },
+  { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/vendors', label: 'Vendors', icon: Building2, permissionKey: 'vendors' },
   { href: '/admin/styles', label: 'Styles', icon: Shirt, permissionKey: 'styles' },
   { href: '/admin/tailors', label: 'Tailors', icon: Users, permissionKey: 'tailors' },
@@ -86,6 +88,7 @@ const adminNavItems: NavItem[] = [
 
 const vendorNavItems: NavItem[] = [
   { href: '/vendor/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard/vendor-analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/vendor/styles', label: 'My Styles', icon: Shirt },
   { href: '/samples', label: 'Samples', icon: Boxes }, // Added Samples
   { href: '/vendor/shipments', label: 'Shipments', icon: Truck },
@@ -94,6 +97,7 @@ const vendorNavItems: NavItem[] = [
 
 const tailorNavItems: NavItem[] = [
   { href: '/tailor/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard/tailor-analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/tailor/jobs', label: 'My Jobs', icon: ClipboardList },
   { href: '/tailor/history', label: 'History', icon: FileText },
   { href: '/samples', label: 'Samples', icon: Boxes }, // Added Samples for tailors if needed
