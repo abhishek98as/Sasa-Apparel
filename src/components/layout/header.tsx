@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Bell, Menu, Moon, Sun, Globe } from 'lucide-react';
+import { IKContext, IKImage } from 'imagekitio-react';
 import { useLayout } from './layout-context';
 import { useTheme } from '../theme-provider';
 import { useI18n } from '../i18n-provider';
@@ -11,10 +13,48 @@ interface HeaderProps {
   actions?: React.ReactNode;
 }
 
+interface BrandSettings {
+  brandName?: string;
+  brandLogo?: string;
+  favicon?: string;
+}
+
 export function Header({ title, subtitle, actions }: HeaderProps) {
   const { toggleSidebar } = useLayout();
   const { theme, toggleTheme } = useTheme();
   const { locale, setLocale } = useI18n();
+  const [brandSettings, setBrandSettings] = useState<BrandSettings>({});
+
+  const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/d6s8a2mzi';
+  const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || '';
+
+  useEffect(() => {
+    // Fetch brand settings
+    fetch('/api/admin/settings')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data) {
+          setBrandSettings(json.data);
+          // Update favicon dynamically
+          if (json.data.favicon) {
+            updateFavicon(json.data.favicon);
+          }
+        }
+      })
+      .catch((err) => console.error('Failed to fetch brand settings:', err));
+  }, []);
+
+  const updateFavicon = (faviconPath: string) => {
+    const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    if (link) {
+      link.href = `${urlEndpoint}${faviconPath}`;
+    } else {
+      const newLink = document.createElement('link');
+      newLink.rel = 'icon';
+      newLink.href = `${urlEndpoint}${faviconPath}`;
+      document.head.appendChild(newLink);
+    }
+  };
 
   const toggleLanguage = () => {
     setLocale(locale === 'en' ? 'hi' : 'en');
@@ -31,8 +71,29 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
           >
             <Menu className="w-5 h-5 text-surface-600" />
           </button>
+          
+          {/* Brand Logo */}
+          {brandSettings.brandLogo && (
+            <IKContext
+              publicKey={publicKey}
+              urlEndpoint={urlEndpoint}
+            >
+              <div className="h-10 w-10 relative flex-shrink-0">
+                <IKImage
+                  path={brandSettings.brandLogo}
+                  alt={brandSettings.brandName || 'Brand Logo'}
+                  width="40"
+                  height="40"
+                  className="object-contain rounded"
+                />
+              </div>
+            </IKContext>
+          )}
+
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-xl font-semibold text-surface-900 dark:text-surface-50 truncate">{title}</h1>
+            <h1 className="text-lg sm:text-xl font-semibold text-surface-900 dark:text-surface-50 truncate">
+              {brandSettings.brandName || title}
+            </h1>
             {subtitle && (
               <p className="text-xs sm:text-sm text-surface-500 truncate">{subtitle}</p>
             )}

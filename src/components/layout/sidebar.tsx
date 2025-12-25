@@ -25,8 +25,8 @@ import {
   ShieldCheck,
   Wallet,
   BadgeCheck,
-  PackageCheck,
   Settings,
+  PackageCheck,
 } from 'lucide-react';
 
 interface CRUDPermission {
@@ -78,6 +78,7 @@ const adminNavItems: NavItem[] = [
   { href: '/admin/approvals', label: 'Approvals', icon: BadgeCheck, permissionKey: 'approvals' },
   { href: '/admin/reports', label: 'Reports', icon: FileText, permissionKey: 'reports' },
   { href: '/admin/users', label: 'Users', icon: UserCircle, permissionKey: 'users' },
+  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 const vendorNavItems: NavItem[] = [
