@@ -23,6 +23,8 @@
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "imagekit": "^6.0.0",
+    "imagekitio-react": "^4.3.0",
     "jspdf": "^3.0.4",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.378.0",

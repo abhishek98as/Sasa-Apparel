@@ -1,0 +1,27 @@
+[
+  {
+    "_id": {
+      "$oid": "694a9a6a008419e34cdbce53"
+    },
+    "tailorId": {
+      "$oid": "694996f0b62c0a1260206547"
+    },
+    "amount": 1000,
+    "entryType": "advance",
+    "description": "Advanced Payment",
+    "jobId": null,
+    "balanceAfter": -1000,
+    "createdAt": {
+      "$date": "2025-12-23T13:34:34.942Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T13:34:34.942Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  }
+]

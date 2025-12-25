@@ -1,0 +1,1740 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "timestamp": "2025-12-25T13:14:11.704Z",
+    "database": "cloth_manufacturing",
+    "mongodbUri": "mongodb+srv://abhishek98as_db_user:****@cluster0.37zw1rl.mongodb.net/cloth_manufacturing?retryWrites=true&w=majority&appName=Cluster0",
+    "collections": {
+      "users": 5,
+      "test_crud": 0,
+      "tailorJobs": 12,
+      "tailors": 10,
+      "shipments": 3,
+      "styles": 8,
+      "fabricCutting": 5,
+      "rates": 5,
+      "approvals": 2,
+      "vendors": 4,
+      "qcInspections": 0,
+      "tailorPayments": 1
+    },
+    "totalDocuments": 55,
+    "totalCollections": 12,
+    "hasIndexes": true,
+    "backupType": "full",
+    "nodeVersion": "v24.4.1",
+    "features": [
+      "ObjectId preservation",
+      "Date preservation",
+      "Binary preservation",
+      "Index backup",
+      "Full backup file"
+    ]
+  },
+  "indexes": {
+    "users": [
+      {
+        "v": 2,
+        "key": {
+          "email": 1
+        },
+        "name": "email_1",
+        "unique": true
+      }
+    ],
+    "test_crud": [],
+    "tailorJobs": [
+      {
+        "v": 2,
+        "key": {
+          "tailorId": 1
+        },
+        "name": "tailorId_1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "styleId": 1
+        },
+        "name": "styleId_1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "status": 1
+        },
+        "name": "status_1"
+      }
+    ],
+    "tailors": [],
+    "shipments": [
+      {
+        "v": 2,
+        "key": {
+          "vendorId": 1
+        },
+        "name": "vendorId_1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "styleId": 1
+        },
+        "name": "styleId_1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "date": -1
+        },
+        "name": "date_-1"
+      }
+    ],
+    "styles": [
+      {
+        "v": 2,
+        "key": {
+          "code": 1
+        },
+        "name": "code_1",
+        "unique": true
+      },
+      {
+        "v": 2,
+        "key": {
+          "vendorId": 1
+        },
+        "name": "vendorId_1"
+      }
+    ],
+    "fabricCutting": [
+      {
+        "v": 2,
+        "key": {
+          "styleId": 1
+        },
+        "name": "styleId_1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "vendorId": 1
+        },
+        "name": "vendorId_1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "date": -1
+        },
+        "name": "date_-1"
+      }
+    ],
+    "rates": [
+      {
+        "v": 2,
+        "key": {
+          "styleId": 1,
+          "vendorId": 1
+        },
+        "name": "styleId_1_vendorId_1"
+      }
+    ],
+    "approvals": [],
+    "vendors": [
+      {
+        "v": 2,
+        "key": {
+          "name": 1
+        },
+        "name": "name_1"
+      }
+    ],
+    "qcInspections": [],
+    "tailorPayments": []
+  },
+  "data": {
+    "users": [
+      {
+        "_id": {
+          "$oid": "69498f3994af65bc8be8673a"
+        },
+        "email": "abhishek98as@gmail.com",
+        "password": "$2a$12$BO.ZlfbT2p.teA7HUgq/Pe3upIDeVaLUigMVM2h3E5Pi7G2HF4TiC",
+        "name": "Abhishek",
+        "role": "admin",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:34:33.915Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T18:34:33.915Z"
+        },
+        "lastLogin": {
+          "$date": "2025-12-23T19:18:52.327Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694992ca739c3bcff5b78187"
+        },
+        "email": "sasaapparels@gmail.com",
+        "password": "$2a$12$qYGO702WjLFquKKZvvKbTumI.J9a.fm3vSnGciiZhakpPE2qPGuuG",
+        "name": "Shashibhushan Singh",
+        "role": "admin",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:49:46.764Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:14:04.628Z"
+        },
+        "permissions": {
+          "dashboard": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "vendors": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "tailors": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "styles": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "fabricCutting": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "distribution": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "production": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "shipments": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "rates": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "inventory": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "qc": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "payments": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "approvals": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "reports": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "users": {
+            "create": true,
+            "read": true,
+            "update": true
+          }
+        },
+        "lastLogin": {
+          "$date": "2025-12-24T10:12:07.757Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949978694af65bc8be86745"
+        },
+        "email": "aniket@sasaapparels.com",
+        "password": "$2a$12$cmzXUJIdGwoxos1jfGhAEuLlLwqBYUW3Wud4JAmq4ydU58kpCkY3G",
+        "name": "Aniket Gupta",
+        "role": "manager",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:09:58.062Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:16:17.727Z"
+        },
+        "permissions": {
+          "dashboard": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "vendors": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "tailors": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "styles": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "fabricCutting": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "distribution": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "production": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "shipments": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "rates": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "inventory": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "qc": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "payments": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "approvals": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "reports": {
+            "create": true,
+            "read": true,
+            "update": true
+          },
+          "users": {
+            "create": true,
+            "read": true,
+            "update": true
+          }
+        },
+        "lastLogin": {
+          "$date": "2025-12-22T19:15:36.534Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694998d7b62c0a1260206548"
+        },
+        "email": "pixom.ai@gmail.com",
+        "password": "$2a$12$CK0mra91mq1Yv8ryPz860OrOunG.tYfQXVYogjSXV.a.eJH5rtgla",
+        "name": "Pixom Admin",
+        "role": "admin",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:15:35.517Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:15:35.517Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "69499a990fe0185bbefc7ce1"
+        },
+        "email": "pushpraj@sasaapparels.com",
+        "password": "$2a$12$E/AbzfryN4pAEQ5howO3JOrWGch3FR8oUOZfBwateAoBw1cStd5Ou",
+        "name": "Pushpraj Singh",
+        "role": "manager",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:23:05.022Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:23:42.026Z"
+        },
+        "permissions": {
+          "dashboard": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "vendors": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "tailors": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "styles": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "fabricCutting": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "distribution": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "production": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "shipments": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "rates": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "inventory": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "qc": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "payments": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "approvals": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "reports": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          },
+          "users": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": false
+          }
+        },
+        "lastLogin": {
+          "$date": "2025-12-24T09:27:28.315Z"
+        }
+      }
+    ],
+    "test_crud": [],
+    "tailorJobs": [
+      {
+        "_id": {
+          "$oid": "694a99b7e234a17438793a35"
+        },
+        "styleId": {
+          "$oid": "6949959d94af65bc8be86740"
+        },
+        "tailorId": {
+          "$oid": "694996f0b62c0a1260206547"
+        },
+        "fabricCuttingId": {
+          "$oid": "694a992ae234a17438793a34"
+        },
+        "issuedPcs": 1100,
+        "rate": 12,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-23T13:31:35.602Z"
+        },
+        "status": "completed",
+        "returnedPcs": 1100,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-23T13:31:35.602Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T15:43:30.237Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-23T15:43:30.237Z"
+        },
+        "qcNotes": "Completed(Label work pending).",
+        "receivedDate": {
+          "$date": "2025-12-23T15:43:30.237Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694b7d02e3e5a26e717cb5a0"
+        },
+        "styleId": {
+          "$oid": "694a92976558be31ef574140"
+        },
+        "tailorId": {
+          "$oid": "694996a4b62c0a1260206545"
+        },
+        "fabricCuttingId": {
+          "$oid": "694a9369e234a17438793a32"
+        },
+        "issuedPcs": 27,
+        "rate": 60,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T05:41:22.206Z"
+        },
+        "status": "in-progress",
+        "returnedPcs": 0,
+        "qcStatus": "pending",
+        "createdAt": {
+          "$date": "2025-12-24T05:41:22.206Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T05:41:22.206Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694b7e5bd53b706997867720"
+        },
+        "styleId": {
+          "$oid": "694a92976558be31ef574140"
+        },
+        "tailorId": {
+          "$oid": "6949966494af65bc8be86743"
+        },
+        "fabricCuttingId": {
+          "$oid": "694a9369e234a17438793a32"
+        },
+        "issuedPcs": 27,
+        "rate": 60,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T05:47:07.759Z"
+        },
+        "status": "in-progress",
+        "returnedPcs": 0,
+        "qcStatus": "pending",
+        "createdAt": {
+          "$date": "2025-12-24T05:47:07.759Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:11:28.514Z"
+        },
+        "qcNotes": ""
+      },
+      {
+        "_id": {
+          "$oid": "694ba2d4dedb1789e3ecc0d5"
+        },
+        "styleId": {
+          "$oid": "694a92c16558be31ef574141"
+        },
+        "tailorId": {
+          "$oid": "6949963394af65bc8be86742"
+        },
+        "fabricCuttingId": {
+          "$oid": "694a938ce234a17438793a33"
+        },
+        "issuedPcs": 20,
+        "rate": 60,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T08:22:44.759Z"
+        },
+        "status": "in-progress",
+        "returnedPcs": 0,
+        "qcStatus": "pending",
+        "createdAt": {
+          "$date": "2025-12-24T08:22:44.759Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T08:22:44.759Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694ba321dedb1789e3ecc0d6"
+        },
+        "styleId": {
+          "$oid": "694a92c16558be31ef574141"
+        },
+        "tailorId": {
+          "$oid": "694996c2b62c0a1260206546"
+        },
+        "fabricCuttingId": {
+          "$oid": "694a938ce234a17438793a33"
+        },
+        "issuedPcs": 20,
+        "rate": 60,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T08:24:01.987Z"
+        },
+        "status": "in-progress",
+        "returnedPcs": 0,
+        "qcStatus": "pending",
+        "createdAt": {
+          "$date": "2025-12-24T08:24:01.987Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T08:24:01.987Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb3a3b309f08d4da565c4"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "tailorId": {
+          "$oid": "694995ff94af65bc8be86741"
+        },
+        "fabricCuttingId": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "issuedPcs": 500,
+        "rate": 90,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T09:34:27.732Z"
+        },
+        "status": "completed",
+        "returnedPcs": 500,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-24T09:34:27.732Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:06:22.139Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-24T10:06:22.139Z"
+        },
+        "qcNotes": "",
+        "receivedDate": {
+          "$date": "2025-12-24T10:06:22.139Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb3ad822b85f9d2902440"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "tailorId": {
+          "$oid": "6949968894af65bc8be86744"
+        },
+        "fabricCuttingId": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "issuedPcs": 500,
+        "rate": 90,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T09:34:37.799Z"
+        },
+        "status": "completed",
+        "returnedPcs": 500,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-24T09:34:37.799Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:06:12.326Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-24T10:06:12.326Z"
+        },
+        "qcNotes": "",
+        "receivedDate": {
+          "$date": "2025-12-24T10:06:12.326Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb3ba822b85f9d2902441"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "tailorId": {
+          "$oid": "694996c2b62c0a1260206546"
+        },
+        "fabricCuttingId": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "issuedPcs": 200,
+        "rate": 90,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T09:34:50.140Z"
+        },
+        "status": "completed",
+        "returnedPcs": 200,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-24T09:34:50.140Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:05:58.067Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-24T10:05:58.067Z"
+        },
+        "qcNotes": "",
+        "receivedDate": {
+          "$date": "2025-12-24T10:05:58.067Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb3c6822b85f9d2902442"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "tailorId": {
+          "$oid": "6949963394af65bc8be86742"
+        },
+        "fabricCuttingId": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "issuedPcs": 200,
+        "rate": 90,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T09:35:02.625Z"
+        },
+        "status": "completed",
+        "returnedPcs": 200,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-24T09:35:02.625Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:05:49.126Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-24T10:05:49.126Z"
+        },
+        "qcNotes": "",
+        "receivedDate": {
+          "$date": "2025-12-24T10:05:49.126Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb3cfb309f08d4da565c5"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "tailorId": {
+          "$oid": "6949966494af65bc8be86743"
+        },
+        "fabricCuttingId": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "issuedPcs": 500,
+        "rate": 90,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T09:35:11.849Z"
+        },
+        "status": "completed",
+        "returnedPcs": 500,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-24T09:35:11.849Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:05:39.666Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-24T10:05:39.666Z"
+        },
+        "qcNotes": "",
+        "receivedDate": {
+          "$date": "2025-12-24T10:05:39.666Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb3e3822b85f9d2902443"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "tailorId": {
+          "$oid": "694996a4b62c0a1260206545"
+        },
+        "fabricCuttingId": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "issuedPcs": 200,
+        "rate": 90,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-24T09:35:31.652Z"
+        },
+        "status": "completed",
+        "returnedPcs": 200,
+        "qcStatus": "passed",
+        "createdAt": {
+          "$date": "2025-12-24T09:35:31.652Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:05:22.904Z"
+        },
+        "completedDate": {
+          "$date": "2025-12-24T10:05:22.904Z"
+        },
+        "qcNotes": "",
+        "receivedDate": {
+          "$date": "2025-12-24T10:05:22.904Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694d17f585f951bfaa74782f"
+        },
+        "styleId": {
+          "$oid": "694a92c16558be31ef574141"
+        },
+        "tailorId": {
+          "$oid": "6949968894af65bc8be86744"
+        },
+        "fabricCuttingId": {
+          "$oid": "694a938ce234a17438793a33"
+        },
+        "issuedPcs": 40,
+        "rate": 60,
+        "sizeBreakdown": null,
+        "issueDate": {
+          "$date": "2025-12-25T10:54:45.137Z"
+        },
+        "status": "in-progress",
+        "returnedPcs": 0,
+        "qcStatus": "pending",
+        "createdAt": {
+          "$date": "2025-12-25T10:54:45.137Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-25T10:54:45.137Z"
+        }
+      }
+    ],
+    "tailors": [
+      {
+        "_id": {
+          "$oid": "694995ff94af65bc8be86741"
+        },
+        "name": "Kishan Master Group",
+        "phone": "+91233456783",
+        "address": "Gurgaon",
+        "specialization": "Shirt/Dress/Jacket",
+        "skills": [
+          "Cotton,Dress, Jacket"
+        ],
+        "dailyCapacity": 24,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:03:27.567Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:03:27.567Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949963394af65bc8be86742"
+        },
+        "name": "Rajeev Group",
+        "phone": "+91234567890",
+        "address": "Gurgaon",
+        "specialization": "Shirt/Dress",
+        "skills": [
+          "Cotton/Polyester"
+        ],
+        "dailyCapacity": 24,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:04:19.255Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:04:19.255Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949966494af65bc8be86743"
+        },
+        "name": "Upender Master Group",
+        "phone": "+91234567890",
+        "address": "Gurgaon",
+        "specialization": "Shirt/Jacket/Dress",
+        "skills": [
+          "Cotton/Polyester"
+        ],
+        "dailyCapacity": 24,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:05:08.570Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:05:08.570Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949968894af65bc8be86744"
+        },
+        "name": "Suraj Group",
+        "phone": "+91234567890",
+        "address": "Gurgaon",
+        "specialization": "Shirt/Dress/Jacket",
+        "skills": [
+          "Cotton,Polyester"
+        ],
+        "dailyCapacity": 36,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:05:44.014Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:05:44.014Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694996a4b62c0a1260206545"
+        },
+        "name": "Anil Master",
+        "phone": "+91234567890",
+        "address": "Gurgaon",
+        "specialization": "Shirt/Dress",
+        "skills": [
+          "Cotton,Silk"
+        ],
+        "dailyCapacity": 12,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:06:12.386Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:06:12.386Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694996c2b62c0a1260206546"
+        },
+        "name": "Ajeet Mandal",
+        "phone": "+91234567890",
+        "address": "Gurgaon",
+        "specialization": "Shirt/Dress/Jacket",
+        "skills": [
+          "Cotton,Polyester"
+        ],
+        "dailyCapacity": 12,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:06:42.321Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:06:42.321Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694996f0b62c0a1260206547"
+        },
+        "name": "Sandhya(T-shirt) Group",
+        "phone": "+91234567890",
+        "address": "Gurgaon",
+        "specialization": "T-shirt",
+        "skills": [
+          "T-shirt"
+        ],
+        "dailyCapacity": 500,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:07:28.789Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:07:28.789Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694ad53e3cbfbd3148cce898"
+        },
+        "name": "Sudhir(T-shirt)Group",
+        "phone": "+911234567898",
+        "address": "Gurgaon",
+        "specialization": "T-shirt",
+        "skills": [
+          "T-Shirt"
+        ],
+        "dailyCapacity": 1000,
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-23T17:45:34.596Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T17:46:47.724Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694baf4e822b85f9d290243f"
+        },
+        "name": "Gautam Group_OCT",
+        "phone": "+911234567893",
+        "address": "Gurgaon",
+        "specialization": "Shirt",
+        "skills": [
+          "Cotton Shirt"
+        ],
+        "dailyCapacity": 50,
+        "isActive": false,
+        "createdAt": {
+          "$date": "2025-12-24T09:15:58.680Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:21:05.440Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bafb9b309f08d4da565c3"
+        },
+        "name": "Sakir Miya",
+        "phone": "+91234567364",
+        "address": "Gurgaon",
+        "specialization": "Shirt",
+        "skills": [
+          "Cotton"
+        ],
+        "dailyCapacity": 20,
+        "isActive": false,
+        "createdAt": {
+          "$date": "2025-12-24T09:17:45.830Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:20:58.369Z"
+        }
+      }
+    ],
+    "shipments": [
+      {
+        "_id": {
+          "$oid": "694bbc9bcd95d112fde880b6"
+        },
+        "vendorId": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "pcsShipped": 166,
+        "date": {
+          "$date": "2025-12-24T00:00:00.000Z"
+        },
+        "challanNo": "CH25127199",
+        "notes": "Shomveer... ",
+        "createdAt": {
+          "$date": "2025-12-24T10:12:43.614Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:12:43.614Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bbccf46ac0d84eeac1207"
+        },
+        "vendorId": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "pcsShipped": 402,
+        "date": {
+          "$date": "2025-12-23T00:00:00.000Z"
+        },
+        "challanNo": "CH25126360",
+        "notes": "Shomveer ",
+        "createdAt": {
+          "$date": "2025-12-24T10:13:35.381Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:13:35.381Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bbd09cd95d112fde880b7"
+        },
+        "vendorId": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "pcsShipped": 70,
+        "date": {
+          "$date": "2025-12-21T00:00:00.000Z"
+        },
+        "challanNo": "CH25129998",
+        "notes": "Shomveer ...  Size - L ",
+        "createdAt": {
+          "$date": "2025-12-24T10:14:33.903Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:14:33.903Z"
+        }
+      }
+    ],
+    "styles": [
+      {
+        "_id": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "code": "JACKET_PD01",
+        "name": "MENS_JACKET_DEC",
+        "vendorId": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "fabricType": "Polyester",
+        "description": "Mens Jacket ",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:58:56.791Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T17:43:56.917Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949952e94af65bc8be8673f"
+        },
+        "code": "PINKDINO_PD02",
+        "name": "Pink Dino Shirt-Nov",
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricType": "Cotton",
+        "description": "Pink Dino Shirt",
+        "isActive": false,
+        "createdAt": {
+          "$date": "2025-12-22T18:59:58.316Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:20:43.329Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949959d94af65bc8be86740"
+        },
+        "code": "T-shirt_PD03",
+        "name": "T-Shirt_DEC",
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricType": "Other",
+        "description": "Multi Print T-shirt",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T19:01:49.119Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T17:44:35.140Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694a92976558be31ef574140"
+        },
+        "code": "STB3765",
+        "name": "DRESS-Orange_GGT_DEC",
+        "vendorId": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "fabricType": "Other",
+        "description": "Kids wear dress (Girls)",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-23T13:01:11.031Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T17:44:18.149Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694a92c16558be31ef574141"
+        },
+        "code": "STB3837",
+        "name": "DRESS-Chiffon_Peach_DEC",
+        "vendorId": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "fabricType": "Other",
+        "description": "Kids wear dress (Girls)",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-23T13:01:53.283Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T17:44:26.559Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694ad4533cbfbd3148cce896"
+        },
+        "code": "GREEN_JEEPDINO_SHIRT",
+        "name": "Green Jeep Dino Shirt_Nov",
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricType": "Cotton",
+        "description": "Green Jeep Dino Shirt",
+        "isActive": false,
+        "createdAt": {
+          "$date": "2025-12-23T17:41:39.778Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:20:30.647Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694ad4993cbfbd3148cce897"
+        },
+        "code": "TSHIRT_NOV",
+        "name": "T-Shirt_NOV",
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricType": "Cotton",
+        "description": "Multi-Print T-shirt 11Nov-30Nov-2025",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-23T17:42:49.602Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T17:42:49.602Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694adb92fbfbe759ede9d2f0"
+        },
+        "code": "BLK_SHIRT_OCT",
+        "name": "Black Shirt",
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricType": "Cotton",
+        "description": "Black shirt",
+        "isActive": false,
+        "createdAt": {
+          "$date": "2025-12-23T18:12:34.922Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:20:37.046Z"
+        }
+      }
+    ],
+    "fabricCutting": [
+      {
+        "_id": {
+          "$oid": "694a9369e234a17438793a32"
+        },
+        "styleId": {
+          "$oid": "694a92976558be31ef574140"
+        },
+        "vendorId": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "fabricReceivedMeters": 0,
+        "cuttingReceivedPcs": 54,
+        "cuttingInHouse": false,
+        "date": {
+          "$date": "2025-12-23T00:00:00.000Z"
+        },
+        "notes": "KIDS WEAR GIRLS",
+        "createdAt": {
+          "$date": "2025-12-23T13:04:41.696Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:11:03.566Z"
+        },
+        "sizeBreakdown": []
+      },
+      {
+        "_id": {
+          "$oid": "694a938ce234a17438793a33"
+        },
+        "styleId": {
+          "$oid": "694a92c16558be31ef574141"
+        },
+        "vendorId": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "fabricReceivedMeters": 0,
+        "cuttingReceivedPcs": 119,
+        "cuttingInHouse": false,
+        "date": {
+          "$date": "2025-12-23T00:00:00.000Z"
+        },
+        "notes": "GIRLS DRESS",
+        "createdAt": {
+          "$date": "2025-12-23T13:05:16.522Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T13:05:16.522Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694a9904008419e34cdbce52"
+        },
+        "styleId": {
+          "$oid": "6949959d94af65bc8be86740"
+        },
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricReceivedMeters": 463,
+        "cuttingReceivedPcs": 4400,
+        "cuttingInHouse": true,
+        "date": {
+          "$date": "2025-12-10T00:00:00.000Z"
+        },
+        "notes": "Blue + Yellow Colours Fabrics 463KG = 4400 pcs cutting received",
+        "createdAt": {
+          "$date": "2025-12-23T13:28:36.687Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T13:29:25.014Z"
+        },
+        "sizeBreakdown": []
+      },
+      {
+        "_id": {
+          "$oid": "694a992ae234a17438793a34"
+        },
+        "styleId": {
+          "$oid": "6949959d94af65bc8be86740"
+        },
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "fabricReceivedMeters": 0,
+        "cuttingReceivedPcs": 1100,
+        "cuttingInHouse": false,
+        "date": {
+          "$date": "2025-12-10T00:00:00.000Z"
+        },
+        "notes": "1100 cutting white print t-shirt",
+        "createdAt": {
+          "$date": "2025-12-23T13:29:14.878Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T13:29:14.878Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694bb386a86a1c6ff7e4e117"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "vendorId": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "fabricReceivedMeters": 0,
+        "cuttingReceivedPcs": 3000,
+        "cuttingInHouse": false,
+        "date": {
+          "$date": "2025-12-01T00:00:00.000Z"
+        },
+        "notes": "3k Pcs mens Jacket",
+        "createdAt": {
+          "$date": "2025-12-24T09:33:58.759Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T09:33:58.759Z"
+        }
+      }
+    ],
+    "rates": [
+      {
+        "_id": {
+          "$oid": "694a73c9eb7e682a3b8191c2"
+        },
+        "styleId": {
+          "$oid": "6949959d94af65bc8be86740"
+        },
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "createdAt": {
+          "$date": "2025-12-23T10:49:45.868Z"
+        },
+        "effectiveDate": {
+          "$date": "2025-12-01T00:00:00.000Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T10:49:45.868Z"
+        },
+        "vendorRate": 21
+      },
+      {
+        "_id": {
+          "$oid": "694add97eb7e682a3b8192a4"
+        },
+        "styleId": {
+          "$oid": "694ad4993cbfbd3148cce897"
+        },
+        "vendorId": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "createdAt": {
+          "$date": "2025-12-23T18:21:10.985Z"
+        },
+        "effectiveDate": {
+          "$date": "2025-12-10T00:00:00.000Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T18:21:10.985Z"
+        },
+        "vendorRate": 21
+      },
+      {
+        "_id": {
+          "$oid": "694bbd9beb7e682a3b81939c"
+        },
+        "styleId": {
+          "$oid": "694994f0b62c0a1260206544"
+        },
+        "vendorId": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "createdAt": {
+          "$date": "2025-12-24T10:16:58.985Z"
+        },
+        "effectiveDate": {
+          "$date": "2025-12-01T00:00:00.000Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:16:58.985Z"
+        },
+        "vendorRate": 110
+      },
+      {
+        "_id": {
+          "$oid": "694bbdfeeb7e682a3b81939d"
+        },
+        "styleId": {
+          "$oid": "694a92976558be31ef574140"
+        },
+        "vendorId": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "createdAt": {
+          "$date": "2025-12-24T10:18:38.249Z"
+        },
+        "effectiveDate": {
+          "$date": "2025-12-15T00:00:00.000Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:18:38.249Z"
+        },
+        "vendorRate": 96
+      },
+      {
+        "_id": {
+          "$oid": "694bbe19eb7e682a3b81939e"
+        },
+        "styleId": {
+          "$oid": "694a92c16558be31ef574141"
+        },
+        "vendorId": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "createdAt": {
+          "$date": "2025-12-24T10:19:04.993Z"
+        },
+        "effectiveDate": {
+          "$date": "2025-12-15T00:00:00.000Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-24T10:19:04.993Z"
+        },
+        "vendorRate": 96
+      }
+    ],
+    "approvals": [
+      {
+        "_id": {
+          "$oid": "6949995e94af65bc8be86746"
+        },
+        "entityType": "tailor",
+        "entityId": {
+          "$oid": "694996c2b62c0a1260206546"
+        },
+        "action": "delete",
+        "payload": {
+          "collection": "tailors",
+          "type": "softDelete"
+        },
+        "requestedBy": {
+          "userId": {
+            "$oid": "6949978694af65bc8be86745"
+          },
+          "name": "Aniket Gupta",
+          "role": "manager"
+        },
+        "status": "rejected",
+        "createdAt": {
+          "$date": "2025-12-22T19:17:50.203Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:21:43.184Z"
+        },
+        "decisionBy": {
+          "$oid": "69443a004213c59c9c50ac67"
+        },
+        "decisionRemarks": "test"
+      },
+      {
+        "_id": {
+          "$oid": "694999f494af65bc8be86748"
+        },
+        "entityType": "tailorJob",
+        "entityId": {
+          "$oid": "694999c294af65bc8be86747"
+        },
+        "action": "update",
+        "payload": {
+          "collection": "tailorJobs",
+          "type": "update",
+          "data": {
+            "updatedAt": {
+              "$date": "2025-12-22T19:20:20.584Z"
+            },
+            "returnedPcs": 100,
+            "status": "completed",
+            "completedDate": {
+              "$date": "2025-12-22T19:20:20.584Z"
+            },
+            "qcStatus": "passed",
+            "receivedDate": {
+              "$date": "2025-12-22T19:20:20.584Z"
+            },
+            "qcNotes": ""
+          }
+        },
+        "requestedBy": {
+          "userId": {
+            "$oid": "6949978694af65bc8be86745"
+          },
+          "name": "Aniket Gupta",
+          "role": "manager"
+        },
+        "status": "rejected",
+        "createdAt": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:21:37.552Z"
+        },
+        "decisionBy": {
+          "$oid": "69443a004213c59c9c50ac67"
+        },
+        "decisionRemarks": "test"
+      }
+    ],
+    "vendors": [
+      {
+        "_id": {
+          "$oid": "6949933f94af65bc8be8673b"
+        },
+        "name": "IKA Creation PVT LTD.",
+        "contactPerson": "Sidharth Chopera",
+        "phone": "+911234567890",
+        "email": "sidharth@ika.com",
+        "address": "Phase-3 Gurgaon",
+        "gstNumber": "IKAGST",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:51:43.853Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T18:51:43.853Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694993e694af65bc8be8673c"
+        },
+        "name": "GOOGO GAAGA PVT LTD.",
+        "contactPerson": "Pragya",
+        "phone": "+911234567890",
+        "email": "pragya@sasa.com",
+        "address": "IOC Gate Bijwasan, New Delhi-110061",
+        "gstNumber": "07AAHCG5103A1Z9",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:54:30.805Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T19:02:03.545Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "6949946394af65bc8be8673d"
+        },
+        "name": "Put-Chi Fashion",
+        "contactPerson": "Ajay",
+        "phone": "+911234567898",
+        "email": "ajay@putchi.com",
+        "address": "Phase-2 Gurgaon",
+        "gstNumber": "PUTCHIGST",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:56:35.817Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-22T18:56:35.817Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "694994aa94af65bc8be8673e"
+        },
+        "name": "STYLO-BUG",
+        "contactPerson": "Sangram",
+        "phone": "+911234567890",
+        "email": "sangram@stylobug.com",
+        "address": "Kapshera Border Delhi",
+        "gstNumber": "07ALKPG8698M1Z5",
+        "isActive": true,
+        "createdAt": {
+          "$date": "2025-12-22T18:57:46.248Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T12:57:43.750Z"
+        }
+      }
+    ],
+    "qcInspections": [],
+    "tailorPayments": [
+      {
+        "_id": {
+          "$oid": "694a9a6a008419e34cdbce53"
+        },
+        "tailorId": {
+          "$oid": "694996f0b62c0a1260206547"
+        },
+        "amount": 1000,
+        "entryType": "advance",
+        "description": "Advanced Payment",
+        "jobId": null,
+        "balanceAfter": -1000,
+        "createdAt": {
+          "$date": "2025-12-23T13:34:34.942Z"
+        },
+        "updatedAt": {
+          "$date": "2025-12-23T13:34:34.942Z"
+        },
+        "createdBy": {
+          "userId": {
+            "$oid": "694992ca739c3bcff5b78187"
+          },
+          "name": "Shashibhushan Singh"
+        }
+      }
+    ]
+  }
+}

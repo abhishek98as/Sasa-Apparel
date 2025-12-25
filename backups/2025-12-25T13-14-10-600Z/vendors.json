@@ -1,0 +1,74 @@
+[
+  {
+    "_id": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "name": "IKA Creation PVT LTD.",
+    "contactPerson": "Sidharth Chopera",
+    "phone": "+911234567890",
+    "email": "sidharth@ika.com",
+    "address": "Phase-3 Gurgaon",
+    "gstNumber": "IKAGST",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:51:43.853Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T18:51:43.853Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "name": "GOOGO GAAGA PVT LTD.",
+    "contactPerson": "Pragya",
+    "phone": "+911234567890",
+    "email": "pragya@sasa.com",
+    "address": "IOC Gate Bijwasan, New Delhi-110061",
+    "gstNumber": "07AAHCG5103A1Z9",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:54:30.805Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:02:03.545Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "name": "Put-Chi Fashion",
+    "contactPerson": "Ajay",
+    "phone": "+911234567898",
+    "email": "ajay@putchi.com",
+    "address": "Phase-2 Gurgaon",
+    "gstNumber": "PUTCHIGST",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:56:35.817Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T18:56:35.817Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "name": "STYLO-BUG",
+    "contactPerson": "Sangram",
+    "phone": "+911234567890",
+    "email": "sangram@stylobug.com",
+    "address": "Kapshera Border Delhi",
+    "gstNumber": "07ALKPG8698M1Z5",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:57:46.248Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T12:57:43.750Z"
+    }
+  }
+]

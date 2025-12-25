@@ -1,0 +1,71 @@
+[
+  {
+    "_id": {
+      "$oid": "694bbc9bcd95d112fde880b6"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 166,
+    "date": {
+      "$date": "2025-12-24T00:00:00.000Z"
+    },
+    "challanNo": "CH25127199",
+    "notes": "Shomveer... ",
+    "createdAt": {
+      "$date": "2025-12-24T10:12:43.614Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:12:43.614Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694bbccf46ac0d84eeac1207"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 402,
+    "date": {
+      "$date": "2025-12-23T00:00:00.000Z"
+    },
+    "challanNo": "CH25126360",
+    "notes": "Shomveer ",
+    "createdAt": {
+      "$date": "2025-12-24T10:13:35.381Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:13:35.381Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694bbd09cd95d112fde880b7"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 70,
+    "date": {
+      "$date": "2025-12-21T00:00:00.000Z"
+    },
+    "challanNo": "CH25129998",
+    "notes": "Shomveer ...  Size - L ",
+    "createdAt": {
+      "$date": "2025-12-24T10:14:33.903Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:14:33.903Z"
+    }
+  }
+]

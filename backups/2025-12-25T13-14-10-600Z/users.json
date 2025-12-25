@@ -1,0 +1,340 @@
+[
+  {
+    "_id": {
+      "$oid": "69498f3994af65bc8be8673a"
+    },
+    "email": "abhishek98as@gmail.com",
+    "password": "$2a$12$BO.ZlfbT2p.teA7HUgq/Pe3upIDeVaLUigMVM2h3E5Pi7G2HF4TiC",
+    "name": "Abhishek",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:34:33.915Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T18:34:33.915Z"
+    },
+    "lastLogin": {
+      "$date": "2025-12-23T19:18:52.327Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694992ca739c3bcff5b78187"
+    },
+    "email": "sasaapparels@gmail.com",
+    "password": "$2a$12$qYGO702WjLFquKKZvvKbTumI.J9a.fm3vSnGciiZhakpPE2qPGuuG",
+    "name": "Shashibhushan Singh",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:49:46.764Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:14:04.628Z"
+    },
+    "permissions": {
+      "dashboard": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "vendors": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "tailors": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "styles": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "fabricCutting": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "distribution": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "production": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "shipments": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "rates": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "inventory": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "qc": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "payments": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "approvals": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "reports": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "users": {
+        "create": true,
+        "read": true,
+        "update": true
+      }
+    },
+    "lastLogin": {
+      "$date": "2025-12-24T10:12:07.757Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949978694af65bc8be86745"
+    },
+    "email": "aniket@sasaapparels.com",
+    "password": "$2a$12$cmzXUJIdGwoxos1jfGhAEuLlLwqBYUW3Wud4JAmq4ydU58kpCkY3G",
+    "name": "Aniket Gupta",
+    "role": "manager",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:09:58.062Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:16:17.727Z"
+    },
+    "permissions": {
+      "dashboard": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "vendors": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "tailors": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "styles": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "fabricCutting": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "distribution": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "production": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "shipments": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "rates": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "inventory": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "qc": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "payments": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "approvals": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "reports": {
+        "create": true,
+        "read": true,
+        "update": true
+      },
+      "users": {
+        "create": true,
+        "read": true,
+        "update": true
+      }
+    },
+    "lastLogin": {
+      "$date": "2025-12-22T19:15:36.534Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694998d7b62c0a1260206548"
+    },
+    "email": "pixom.ai@gmail.com",
+    "password": "$2a$12$CK0mra91mq1Yv8ryPz860OrOunG.tYfQXVYogjSXV.a.eJH5rtgla",
+    "name": "Pixom Admin",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:15:35.517Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:15:35.517Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69499a990fe0185bbefc7ce1"
+    },
+    "email": "pushpraj@sasaapparels.com",
+    "password": "$2a$12$E/AbzfryN4pAEQ5howO3JOrWGch3FR8oUOZfBwateAoBw1cStd5Ou",
+    "name": "Pushpraj Singh",
+    "role": "manager",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:23:05.022Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:23:42.026Z"
+    },
+    "permissions": {
+      "dashboard": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "vendors": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "tailors": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "styles": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "fabricCutting": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "distribution": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "production": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "shipments": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "rates": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "inventory": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "qc": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "payments": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "approvals": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "reports": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "users": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      }
+    },
+    "lastLogin": {
+      "$date": "2025-12-24T09:27:28.315Z"
+    }
+  }
+]

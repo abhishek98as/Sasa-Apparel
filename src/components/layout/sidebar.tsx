@@ -26,6 +26,7 @@ import {
   Wallet,
   BadgeCheck,
   PackageCheck,
+  Settings,
 } from 'lucide-react';
 
 interface CRUDPermission {
@@ -130,7 +131,7 @@ export function Sidebar() {
   // Get nav items based on role
   const getNavItems = (): NavItem[] => {
     if (role === 'admin') {
-      return adminNavItems;
+      return [...adminNavItems, { href: '/admin/settings', label: 'Settings', icon: Settings }];
     }
     if (role === 'manager') {
       // Filter items based on CRUD permissions (check if user can at least read)
@@ -155,19 +156,19 @@ export function Sidebar() {
     role === 'admin'
       ? 'Administrator'
       : role === 'manager'
-      ? 'Manager Portal'
-      : role === 'vendor'
-      ? 'Vendor Portal'
-      : 'Tailor Portal';
+        ? 'Manager Portal'
+        : role === 'vendor'
+          ? 'Vendor Portal'
+          : 'Tailor Portal';
 
   const roleColor =
     role === 'admin'
       ? 'bg-red-600'
       : role === 'manager'
-      ? 'bg-amber-600'
-      : role === 'vendor'
-      ? 'bg-blue-600'
-      : 'bg-green-600';
+        ? 'bg-amber-600'
+        : role === 'vendor'
+          ? 'bg-blue-600'
+          : 'bg-green-600';
 
   const handleLinkClick = () => {
     // Close sidebar on mobile when a link is clicked

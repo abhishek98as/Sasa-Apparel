@@ -1,0 +1,107 @@
+[
+  {
+    "_id": {
+      "$oid": "694a73c9eb7e682a3b8191c2"
+    },
+    "styleId": {
+      "$oid": "6949959d94af65bc8be86740"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "createdAt": {
+      "$date": "2025-12-23T10:49:45.868Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T10:49:45.868Z"
+    },
+    "vendorRate": 21
+  },
+  {
+    "_id": {
+      "$oid": "694add97eb7e682a3b8192a4"
+    },
+    "styleId": {
+      "$oid": "694ad4993cbfbd3148cce897"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "createdAt": {
+      "$date": "2025-12-23T18:21:10.985Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-10T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T18:21:10.985Z"
+    },
+    "vendorRate": 21
+  },
+  {
+    "_id": {
+      "$oid": "694bbd9beb7e682a3b81939c"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "createdAt": {
+      "$date": "2025-12-24T10:16:58.985Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:16:58.985Z"
+    },
+    "vendorRate": 110
+  },
+  {
+    "_id": {
+      "$oid": "694bbdfeeb7e682a3b81939d"
+    },
+    "styleId": {
+      "$oid": "694a92976558be31ef574140"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "createdAt": {
+      "$date": "2025-12-24T10:18:38.249Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-15T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:18:38.249Z"
+    },
+    "vendorRate": 96
+  },
+  {
+    "_id": {
+      "$oid": "694bbe19eb7e682a3b81939e"
+    },
+    "styleId": {
+      "$oid": "694a92c16558be31ef574141"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "createdAt": {
+      "$date": "2025-12-24T10:19:04.993Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-15T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:19:04.993Z"
+    },
+    "vendorRate": 96
+  }
+]

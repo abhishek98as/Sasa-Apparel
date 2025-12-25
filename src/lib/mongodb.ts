@@ -60,5 +60,6 @@ export const COLLECTIONS = {
   QC_INSPECTIONS: 'qcInspections',
   TAILOR_PAYMENTS: 'tailorPayments',
   APPROVALS: 'approvals',
+  SETTINGS: 'settings',
 } as const;
 

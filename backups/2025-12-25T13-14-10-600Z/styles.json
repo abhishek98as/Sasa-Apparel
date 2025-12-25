@@ -1,0 +1,154 @@
+[
+  {
+    "_id": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "code": "JACKET_PD01",
+    "name": "MENS_JACKET_DEC",
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "fabricType": "Polyester",
+    "description": "Mens Jacket ",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:58:56.791Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:43:56.917Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949952e94af65bc8be8673f"
+    },
+    "code": "PINKDINO_PD02",
+    "name": "Pink Dino Shirt-Nov",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Pink Dino Shirt",
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-22T18:59:58.316Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T09:20:43.329Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949959d94af65bc8be86740"
+    },
+    "code": "T-shirt_PD03",
+    "name": "T-Shirt_DEC",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Other",
+    "description": "Multi Print T-shirt",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:01:49.119Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:44:35.140Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694a92976558be31ef574140"
+    },
+    "code": "STB3765",
+    "name": "DRESS-Orange_GGT_DEC",
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "fabricType": "Other",
+    "description": "Kids wear dress (Girls)",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-23T13:01:11.031Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:44:18.149Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694a92c16558be31ef574141"
+    },
+    "code": "STB3837",
+    "name": "DRESS-Chiffon_Peach_DEC",
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "fabricType": "Other",
+    "description": "Kids wear dress (Girls)",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-23T13:01:53.283Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:44:26.559Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694ad4533cbfbd3148cce896"
+    },
+    "code": "GREEN_JEEPDINO_SHIRT",
+    "name": "Green Jeep Dino Shirt_Nov",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Green Jeep Dino Shirt",
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-23T17:41:39.778Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T09:20:30.647Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694ad4993cbfbd3148cce897"
+    },
+    "code": "TSHIRT_NOV",
+    "name": "T-Shirt_NOV",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Multi-Print T-shirt 11Nov-30Nov-2025",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-23T17:42:49.602Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:42:49.602Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694adb92fbfbe759ede9d2f0"
+    },
+    "code": "BLK_SHIRT_OCT",
+    "name": "Black Shirt",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Black shirt",
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-23T18:12:34.922Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T09:20:37.046Z"
+    }
+  }
+]

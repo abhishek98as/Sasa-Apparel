@@ -1,0 +1,81 @@
+[
+  {
+    "_id": {
+      "$oid": "6949995e94af65bc8be86746"
+    },
+    "entityType": "tailor",
+    "entityId": {
+      "$oid": "694996c2b62c0a1260206546"
+    },
+    "action": "delete",
+    "payload": {
+      "collection": "tailors",
+      "type": "softDelete"
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "6949978694af65bc8be86745"
+      },
+      "name": "Aniket Gupta",
+      "role": "manager"
+    },
+    "status": "rejected",
+    "createdAt": {
+      "$date": "2025-12-22T19:17:50.203Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:21:43.184Z"
+    },
+    "decisionBy": {
+      "$oid": "69443a004213c59c9c50ac67"
+    },
+    "decisionRemarks": "test"
+  },
+  {
+    "_id": {
+      "$oid": "694999f494af65bc8be86748"
+    },
+    "entityType": "tailorJob",
+    "entityId": {
+      "$oid": "694999c294af65bc8be86747"
+    },
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "returnedPcs": 100,
+        "status": "completed",
+        "completedDate": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "qcStatus": "passed",
+        "receivedDate": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "qcNotes": ""
+      }
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "6949978694af65bc8be86745"
+      },
+      "name": "Aniket Gupta",
+      "role": "manager"
+    },
+    "status": "rejected",
+    "createdAt": {
+      "$date": "2025-12-22T19:20:20.584Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:21:37.552Z"
+    },
+    "decisionBy": {
+      "$oid": "69443a004213c59c9c50ac67"
+    },
+    "decisionRemarks": "test"
+  }
+]
