@@ -55,8 +55,8 @@ interface Sample {
     currentVersion: number;
     expectedBy?: string;
     createdAt: string;
-    versions: SampleVersion[];
-    comments: SampleComment[];
+    versions?: SampleVersion[];
+    comments?: SampleComment[];
 }
 
 const statusColors: Record<string, "neutral" | "success" | "warning" | "danger" | "info"> = {
@@ -227,7 +227,7 @@ export default function SampleDetailPage({ params }: { params: { id: string } })
 
     const isVendor = session?.user?.role === 'vendor';
     const isManufacturer = session?.user?.role === 'admin' || session?.user?.role === 'manager'; // Manufacturer roles
-    const currentVersion = sample.versions[0]; // Assuming sorted descending from API
+    const currentVersion = sample.versions && sample.versions.length > 0 ? sample.versions[0] : null; // Assuming sorted descending from API
 
     return (
         <div className="animate-fade-in pb-10">
@@ -274,7 +274,7 @@ export default function SampleDetailPage({ params }: { params: { id: string } })
                                         {statusLabels[sample.status]}
                                     </Badge>
                                     <span className="text-sm text-surface-500">
-                                        Updated {new Date(sample.versions[0]?.createdAt || sample.createdAt).toLocaleDateString()}
+                                        Updated {new Date(sample.versions?.[0]?.createdAt || sample.createdAt).toLocaleDateString()}
                                     </span>
                                 </div>
                             </div>
@@ -329,7 +329,7 @@ export default function SampleDetailPage({ params }: { params: { id: string } })
                         </div>
                         <CardContent className="p-0">
                             <div className="max-h-[500px] overflow-y-auto p-4 space-y-4">
-                                {sample.comments.length === 0 ? (
+                                {(!sample.comments || sample.comments.length === 0) ? (
                                     <div className="text-center py-8 text-surface-400 text-sm">No comments yet. Start the discussion!</div>
                                 ) : (
                                     sample.comments.map((comment) => (
@@ -405,7 +405,7 @@ export default function SampleDetailPage({ params }: { params: { id: string } })
                             <h4 className="font-semibold text-xs text-surface-500 uppercase">Version History</h4>
                         </div>
                         <div className="divide-y divide-surface-100">
-                            {sample.versions.map((ver) => (
+                            {(sample.versions || []).map((ver) => (
                                 <div key={ver._id} className="p-3 hover:bg-surface-50 transition-colors flex justify-between items-center group cursor-pointer">
                                     <div>
                                         <div className="flex items-center gap-2">

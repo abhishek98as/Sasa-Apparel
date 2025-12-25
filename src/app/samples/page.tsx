@@ -188,9 +188,9 @@ export default function SamplesPage() {
     };
 
     const filteredSamples = samples.filter(s =>
-        s.styleCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        s.styleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        s.vendorName.toLowerCase().includes(searchTerm.toLowerCase())
+        (s.styleCode || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (s.styleName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (s.vendorName || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading && !samples.length) {
