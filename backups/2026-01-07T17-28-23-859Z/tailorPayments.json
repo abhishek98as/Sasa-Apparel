@@ -1,0 +1,277 @@
+[
+  {
+    "_id": {
+      "$oid": "694a9a6a008419e34cdbce53"
+    },
+    "tailorId": {
+      "$oid": "694996f0b62c0a1260206547"
+    },
+    "amount": 1000,
+    "entryType": "advance",
+    "description": "Advanced Payment",
+    "jobId": null,
+    "balanceAfter": -1000,
+    "createdAt": {
+      "$date": "2025-12-23T13:34:34.942Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T13:34:34.942Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694ea0672fde739cbd70fc53"
+    },
+    "tailorId": {
+      "$oid": "694996f0b62c0a1260206547"
+    },
+    "amount": 500,
+    "entryType": "advance",
+    "description": "26-Dec advanced",
+    "jobId": null,
+    "balanceAfter": -1500,
+    "createdAt": {
+      "$date": "2025-12-26T14:49:11.675Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-26T14:49:11.675Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695121776591c2c90ee0e56f"
+    },
+    "tailorId": {
+      "$oid": "694996f0b62c0a1260206547"
+    },
+    "amount": 500,
+    "entryType": "advance",
+    "description": "PINTU",
+    "jobId": null,
+    "balanceAfter": -2000,
+    "createdAt": {
+      "$date": "2025-12-28T12:24:23.387Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:24:23.387Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512a52491b76612a8135a5"
+    },
+    "tailorId": {
+      "$oid": "6949968894af65bc8be86744"
+    },
+    "amount": 44910,
+    "entryType": "payout",
+    "description": "25-DEC for jacket @90 for 499pcs",
+    "jobId": null,
+    "balanceAfter": -44910,
+    "createdAt": {
+      "$date": "2025-12-28T13:02:10.919Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:02:10.919Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512a94491b76612a8135a6"
+    },
+    "tailorId": {
+      "$oid": "694996c2b62c0a1260206546"
+    },
+    "amount": 16470,
+    "entryType": "payout",
+    "description": "for 183 @90 jacket",
+    "jobId": null,
+    "balanceAfter": -16470,
+    "createdAt": {
+      "$date": "2025-12-28T13:03:16.693Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:03:16.693Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512ac8491b76612a8135a7"
+    },
+    "tailorId": {
+      "$oid": "6949966494af65bc8be86743"
+    },
+    "amount": 36590,
+    "entryType": "payout",
+    "description": "for 401 pcs @90 jacket",
+    "jobId": null,
+    "balanceAfter": -36590,
+    "createdAt": {
+      "$date": "2025-12-28T13:04:08.757Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:04:08.757Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512aeada3a855c1cd9c53e"
+    },
+    "tailorId": {
+      "$oid": "6949963394af65bc8be86742"
+    },
+    "amount": 28440,
+    "entryType": "payout",
+    "description": "for 316 pcs @90 jacket",
+    "jobId": null,
+    "balanceAfter": -28440,
+    "createdAt": {
+      "$date": "2025-12-28T13:04:42.563Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:04:42.563Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512b13da3a855c1cd9c53f"
+    },
+    "tailorId": {
+      "$oid": "694995ff94af65bc8be86741"
+    },
+    "amount": 38620,
+    "entryType": "payout",
+    "description": "for 438 pcs @90 jacket",
+    "jobId": null,
+    "balanceAfter": -38620,
+    "createdAt": {
+      "$date": "2025-12-28T13:05:23.387Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:05:23.387Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512b78491b76612a8135a8"
+    },
+    "tailorId": {
+      "$oid": "694996a4b62c0a1260206545"
+    },
+    "amount": 10980,
+    "entryType": "payout",
+    "description": "for 122 pcs @90 jacket",
+    "jobId": null,
+    "balanceAfter": -10980,
+    "createdAt": {
+      "$date": "2025-12-28T13:07:04.198Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:07:04.198Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69512c24da3a855c1cd9c540"
+    },
+    "tailorId": {
+      "$oid": "694995ff94af65bc8be86741"
+    },
+    "amount": 800,
+    "entryType": "deduction",
+    "description": "previous advanced pay deducted from actual pay",
+    "jobId": null,
+    "balanceAfter": -39420,
+    "createdAt": {
+      "$date": "2025-12-28T13:09:56.137Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T13:09:56.137Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695518fb9916c1e8549162eb"
+    },
+    "tailorId": {
+      "$oid": "694996f0b62c0a1260206547"
+    },
+    "amount": 11202,
+    "entryType": "payout",
+    "description": "11202 + 2000 done!",
+    "jobId": null,
+    "balanceAfter": -13202,
+    "createdAt": {
+      "$date": "2025-12-31T12:37:15.665Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-31T12:37:15.665Z"
+    },
+    "createdBy": {
+      "userId": {
+        "$oid": "694992ca739c3bcff5b78187"
+      },
+      "name": "Shashibhushan Singh"
+    }
+  }
+]

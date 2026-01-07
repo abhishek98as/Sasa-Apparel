@@ -470,14 +470,14 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          status: { $in: ['issued', 'in_progress'] }
+          status: { $in: ['pending', 'in-progress'] }
         }
       },
       {
         $group: {
           _id: null,
           orders: { $sum: 1 },
-          pcs: { $sum: { $subtract: ['$issuedPcs', { $ifNull: ['$returnedPcs', 0] }] } }
+          pcs: { $sum: { $subtract: [{ $ifNull: ['$issuedPcs', 0] }, { $ifNull: ['$returnedPcs', 0] }] } }
         }
       }
     ]).toArray();
@@ -490,13 +490,13 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          shippedAt: { $gte: dateRange.start, $lte: dateRange.end }
+          date: { $gte: dateRange.start, $lte: dateRange.end }
         }
       },
       {
         $group: {
           _id: null,
-          total: { $sum: '$shippedQty' }
+          total: { $sum: { $ifNull: ['$pcsShipped', 0] } }
         }
       }
     ]).toArray();
@@ -509,13 +509,55 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          paymentStatus: { $in: ['pending', 'partial'] }
+          $or: [
+            { paymentStatus: { $exists: false } },
+            { paymentStatus: null },
+            { paymentStatus: { $in: ['pending', 'partial'] } }
+          ]
         }
+      },
+      {
+        $lookup: {
+          from: COLLECTIONS.STYLES,
+          localField: 'styleId',
+          foreignField: '_id',
+          as: 'style',
+        },
+      },
+      { $unwind: { path: '$style', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: COLLECTIONS.RATES,
+          let: { styleId: '$styleId', vendorId: '$vendorId' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$styleId', '$$styleId'] },
+                    { $eq: ['$vendorId', '$$vendorId'] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'rate',
+        },
+      },
+      {
+        $unwind: { path: '$rate', preserveNullAndEmptyArrays: true },
       },
       {
         $group: {
           _id: null,
-          amount: { $sum: '$invoiceValue' }
+          amount: { 
+            $sum: { 
+              $multiply: [
+                { $ifNull: ['$pcsShipped', 0] }, 
+                { $ifNull: ['$rate.vendorRate', 0] }
+              ] 
+            } 
+          }
         }
       }
     ]).toArray();
@@ -528,14 +570,17 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          status: 'completed',
-          completedAt: { $gte: dateRange.start, $lte: dateRange.end }
+          status: { $in: ['completed', 'ready-to-ship', 'shipped'] },
+          $or: [
+            { completedDate: { $gte: dateRange.start, $lte: dateRange.end } },
+            { updatedAt: { $gte: dateRange.start, $lte: dateRange.end } }
+          ]
         }
       },
       {
         $group: {
           _id: null,
-          total: { $sum: '$returnedPcs' }
+          total: { $sum: { $ifNull: ['$returnedPcs', 0] } }
         }
       }
     ]).toArray();
@@ -548,13 +593,17 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          paidAt: { $gte: dateRange.start, $lte: dateRange.end }
+          $or: [
+            { paymentDate: { $gte: dateRange.start, $lte: dateRange.end } },
+            { paidAt: { $gte: dateRange.start, $lte: dateRange.end } },
+            { createdAt: { $gte: dateRange.start, $lte: dateRange.end } }
+          ]
         }
       },
       {
         $group: {
           _id: null,
-          amount: { $sum: '$amount' }
+          amount: { $sum: { $ifNull: ['$amount', 0] } }
         }
       }
     ]).toArray();
@@ -567,14 +616,14 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          status: { $in: ['issued', 'in_progress'] }
+          status: { $in: ['pending', 'in-progress'] }
         }
       },
       {
         $group: {
           _id: null,
           assignments: { $sum: 1 },
-          pcs: { $sum: { $subtract: ['$issuedPcs', { $ifNull: ['$returnedPcs', 0] }] } }
+          pcs: { $sum: { $subtract: [{ $ifNull: ['$issuedPcs', 0] }, { $ifNull: ['$returnedPcs', 0] }] } }
         }
       }
     ]).toArray();
@@ -638,14 +687,17 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          completedAt: { $gte: dateRange.start, $lte: dateRange.end }
+          $or: [
+            { completedDate: { $gte: dateRange.start, $lte: dateRange.end } },
+            { updatedAt: { $gte: dateRange.start, $lte: dateRange.end } }
+          ]
         }
       },
       {
         $group: {
           _id: null,
-          issued: { $sum: '$issuedPcs' },
-          returned: { $sum: '$returnedPcs' }
+          issued: { $sum: { $ifNull: ['$issuedPcs', 0] } },
+          returned: { $sum: { $ifNull: ['$returnedPcs', 0] } }
         }
       }
     ]).toArray();
@@ -662,14 +714,14 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          shippedAt: { $gte: dateRange.start, $lte: dateRange.end }
+          date: { $gte: dateRange.start, $lte: dateRange.end }
         }
       },
       {
         $project: {
           isLate: {
             $cond: [
-              { $and: [{ $ne: ['$promisedDate', null] }, { $gt: ['$shippedAt', '$promisedDate'] }] },
+              { $and: [{ $ne: ['$promisedDate', null] }, { $gt: ['$date', '$promisedDate'] }] },
               1,
               0
             ]
@@ -702,13 +754,16 @@ export class AnalyticsQueryService {
       {
         $match: {
           ...filter,
-          completedAt: { $gte: dateRange.start, $lte: dateRange.end }
+          $or: [
+            { completedDate: { $gte: dateRange.start, $lte: dateRange.end } },
+            { updatedAt: { $gte: dateRange.start, $lte: dateRange.end } }
+          ]
         }
       },
       {
         $group: {
           _id: null,
-          returned: { $sum: '$returnedPcs' },
+          returned: { $sum: { $ifNull: ['$returnedPcs', 0] } },
           rejected: { $sum: { $ifNull: ['$rejectedPcs', 0] } }
         }
       }

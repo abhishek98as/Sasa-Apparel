@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
 import { fabricCuttingSchema } from '@/lib/validations';
+import { InventoryService } from '@/lib/inventory/inventory-service';
 
 export const dynamic = 'force-dynamic';
 
@@ -113,6 +114,47 @@ export async function POST(request: NextRequest) {
       updatedAt: now,
     });
 
+    // AUTO-CREATE INVENTORY TRANSACTION for fabric consumption
+    // Find fabric inventory item by checking for items with category 'fabric'
+    // You may need to adjust this logic to match your specific fabric item
+    if (validation.data.fabricReceivedMeters > 0) {
+      try {
+        const inventoryService = new InventoryService();
+        
+        // Try to find a fabric item associated with this style
+        // This is a simple implementation - you may want to add a fabricItemId field
+        // to your fabric-cutting schema for more precise tracking
+        const fabricItems = await db.collection(COLLECTIONS.INVENTORY_ITEMS).find({
+          category: 'fabric',
+          isActive: true
+        }).limit(1).toArray();
+
+        if (fabricItems.length > 0) {
+          const fabricItem = fabricItems[0];
+          
+          // Record consumption transaction
+          await inventoryService.recordTransaction({
+            itemId: fabricItem._id.toString(),
+            transactionType: 'consumption',
+            quantity: validation.data.fabricReceivedMeters, // This will be negative in consumption
+            unitCost: fabricItem.weightedAverageCost || 0,
+            referenceType: 'fabric_cutting',
+            referenceId: result.insertedId.toString(),
+            remarks: `Fabric consumption for style cutting - ${validation.data.cuttingReceivedPcs} pcs`,
+            performedBy: session.user.id,
+            transactionDate: new Date(validation.data.date)
+          });
+
+          console.log('✅ Inventory transaction auto-created for fabric consumption');
+        } else {
+          console.warn('⚠️ No fabric inventory item found - skipping inventory transaction');
+        }
+      } catch (invError) {
+        // Log error but don't fail the main operation
+        console.error('❌ Error creating inventory transaction:', invError);
+      }
+    }
+
     const record = await db
       .collection(COLLECTIONS.FABRIC_CUTTING)
       .aggregate([
@@ -139,7 +181,7 @@ export async function POST(request: NextRequest) {
       .toArray();
 
     return NextResponse.json(
-      { success: true, data: record[0], message: 'Cutting record created successfully' },
+      { success: true, data: record[0], message: 'Cutting record created successfully (with inventory tracking)' },
       { status: 201 }
     );
   } catch (error) {

@@ -54,7 +54,9 @@ export const COLLECTIONS = {
   RATES: 'rates',
   EVENTS: 'events',
   INVENTORY_ITEMS: 'inventoryItems',
+  INVENTORY_TRANSACTIONS: 'inventoryTransactions',
   INVENTORY_MOVEMENTS: 'inventoryMovements',
+  PURCHASE_ORDERS: 'purchaseOrders',
   REORDER_SUGGESTIONS: 'reorderSuggestions',
   QC_CHECKLISTS: 'qcChecklists',
   QC_INSPECTIONS: 'qcInspections',
@@ -77,6 +79,9 @@ export const COLLECTIONS = {
   ALERT_RULES: 'alertRules',
   ALERT_HISTORY: 'alertHistory',
   EXPORT_JOBS: 'exportJobs',
+  // Financial Management Collections
+  FINANCIAL_PERIODS: 'financialPeriods',
+  COST_ENTRIES: 'costEntries',
 } as const;
 
 // Status constants for calculations

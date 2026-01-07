@@ -1,0 +1,275 @@
+[
+  {
+    "_id": {
+      "$oid": "6949995e94af65bc8be86746"
+    },
+    "entityType": "tailor",
+    "entityId": {
+      "$oid": "694996c2b62c0a1260206546"
+    },
+    "action": "delete",
+    "payload": {
+      "collection": "tailors",
+      "type": "softDelete"
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "6949978694af65bc8be86745"
+      },
+      "name": "Aniket Gupta",
+      "role": "manager"
+    },
+    "status": "rejected",
+    "createdAt": {
+      "$date": "2025-12-22T19:17:50.203Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:21:43.184Z"
+    },
+    "decisionBy": {
+      "$oid": "69443a004213c59c9c50ac67"
+    },
+    "decisionRemarks": "test"
+  },
+  {
+    "_id": {
+      "$oid": "694999f494af65bc8be86748"
+    },
+    "entityType": "tailorJob",
+    "entityId": {
+      "$oid": "694999c294af65bc8be86747"
+    },
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "returnedPcs": 100,
+        "status": "completed",
+        "completedDate": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "qcStatus": "passed",
+        "receivedDate": {
+          "$date": "2025-12-22T19:20:20.584Z"
+        },
+        "qcNotes": ""
+      }
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "6949978694af65bc8be86745"
+      },
+      "name": "Aniket Gupta",
+      "role": "manager"
+    },
+    "status": "rejected",
+    "createdAt": {
+      "$date": "2025-12-22T19:20:20.584Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:21:37.552Z"
+    },
+    "decisionBy": {
+      "$oid": "69443a004213c59c9c50ac67"
+    },
+    "decisionRemarks": "test"
+  },
+  {
+    "_id": {
+      "$oid": "6957e717320fb494d8541f7d"
+    },
+    "entityType": "tailorJob",
+    "entityId": {
+      "$oid": "69520e093a0ab873fd2047a6"
+    },
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": {
+          "$date": "2026-01-02T15:41:11.889Z"
+        },
+        "tailorId": {
+          "$oid": "694996c2b62c0a1260206546"
+        },
+        "issuedPcs": 20,
+        "rate": 45,
+        "returnedPcs": 20,
+        "status": "in-progress",
+        "completedDate": {
+          "$date": "2026-01-02T15:41:11.889Z"
+        },
+        "qcStatus": "pending",
+        "qcNotes": ""
+      }
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "69499a990fe0185bbefc7ce1"
+      },
+      "name": "Pushpraj Singh",
+      "role": "manager"
+    },
+    "status": "approved",
+    "createdAt": {
+      "$date": "2026-01-02T15:41:11.889Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:25:37.439Z"
+    },
+    "decisionBy": {
+      "$oid": "694992ca739c3bcff5b78187"
+    },
+    "decisionRemarks": null
+  },
+  {
+    "_id": {
+      "$oid": "6957e730320fb494d8541f7e"
+    },
+    "entityType": "tailorJob",
+    "entityId": {
+      "$oid": "69520e093a0ab873fd2047a6"
+    },
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": {
+          "$date": "2026-01-02T15:41:36.525Z"
+        },
+        "tailorId": {
+          "$oid": "694996c2b62c0a1260206546"
+        },
+        "issuedPcs": 20,
+        "rate": 45,
+        "returnedPcs": 20,
+        "status": "in-progress",
+        "completedDate": {
+          "$date": "2026-01-02T15:41:36.525Z"
+        },
+        "qcStatus": "pending",
+        "qcNotes": ""
+      }
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "69499a990fe0185bbefc7ce1"
+      },
+      "name": "Pushpraj Singh",
+      "role": "manager"
+    },
+    "status": "approved",
+    "createdAt": {
+      "$date": "2026-01-02T15:41:36.525Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:25:29.807Z"
+    },
+    "decisionBy": {
+      "$oid": "694992ca739c3bcff5b78187"
+    },
+    "decisionRemarks": null
+  },
+  {
+    "_id": {
+      "$oid": "6957e751320fb494d8541f7f"
+    },
+    "entityType": "tailorJob",
+    "entityId": {
+      "$oid": "69521bdb0f4e925751a6140d"
+    },
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": {
+          "$date": "2026-01-02T15:42:09.656Z"
+        },
+        "tailorId": {
+          "$oid": "6949966494af65bc8be86743"
+        },
+        "issuedPcs": 24,
+        "rate": 45,
+        "returnedPcs": 24,
+        "status": "in-progress",
+        "completedDate": {
+          "$date": "2026-01-02T15:42:09.656Z"
+        },
+        "qcStatus": "pending",
+        "qcNotes": ""
+      }
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "69499a990fe0185bbefc7ce1"
+      },
+      "name": "Pushpraj Singh",
+      "role": "manager"
+    },
+    "status": "approved",
+    "createdAt": {
+      "$date": "2026-01-02T15:42:09.656Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:25:26.212Z"
+    },
+    "decisionBy": {
+      "$oid": "694992ca739c3bcff5b78187"
+    },
+    "decisionRemarks": null
+  },
+  {
+    "_id": {
+      "$oid": "6957e7b4320fb494d8541f80"
+    },
+    "entityType": "tailorJob",
+    "entityId": {
+      "$oid": "69520e093a0ab873fd2047a6"
+    },
+    "action": "update",
+    "payload": {
+      "collection": "tailorJobs",
+      "type": "update",
+      "data": {
+        "updatedAt": {
+          "$date": "2026-01-02T15:43:48.561Z"
+        },
+        "returnedPcs": 20,
+        "status": "completed",
+        "completedDate": {
+          "$date": "2026-01-02T15:43:48.561Z"
+        },
+        "qcStatus": "passed",
+        "receivedDate": {
+          "$date": "2026-01-02T15:43:48.561Z"
+        },
+        "qcNotes": "20 pcs "
+      }
+    },
+    "requestedBy": {
+      "userId": {
+        "$oid": "69499a990fe0185bbefc7ce1"
+      },
+      "name": "Pushpraj Singh",
+      "role": "manager"
+    },
+    "status": "approved",
+    "createdAt": {
+      "$date": "2026-01-02T15:43:48.561Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:25:20.179Z"
+    },
+    "decisionBy": {
+      "$oid": "694992ca739c3bcff5b78187"
+    },
+    "decisionRemarks": null
+  }
+]

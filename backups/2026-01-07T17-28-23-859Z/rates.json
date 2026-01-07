@@ -1,0 +1,317 @@
+[
+  {
+    "_id": {
+      "$oid": "694a73c9eb7e682a3b8191c2"
+    },
+    "styleId": {
+      "$oid": "6949959d94af65bc8be86740"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "createdAt": {
+      "$date": "2025-12-23T10:49:45.868Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T10:49:45.868Z"
+    },
+    "vendorRate": 21
+  },
+  {
+    "_id": {
+      "$oid": "694add97eb7e682a3b8192a4"
+    },
+    "styleId": {
+      "$oid": "694ad4993cbfbd3148cce897"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "createdAt": {
+      "$date": "2025-12-23T18:21:10.985Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-10T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T18:21:10.985Z"
+    },
+    "vendorRate": 21
+  },
+  {
+    "_id": {
+      "$oid": "694bbd9beb7e682a3b81939c"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "createdAt": {
+      "$date": "2025-12-24T10:16:58.985Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:16:58.985Z"
+    },
+    "vendorRate": 110
+  },
+  {
+    "_id": {
+      "$oid": "694bbdfeeb7e682a3b81939d"
+    },
+    "styleId": {
+      "$oid": "694a92976558be31ef574140"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "createdAt": {
+      "$date": "2025-12-24T10:18:38.249Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-29T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T11:45:24.574Z"
+    },
+    "vendorRate": 102
+  },
+  {
+    "_id": {
+      "$oid": "694bbe19eb7e682a3b81939e"
+    },
+    "styleId": {
+      "$oid": "694a92c16558be31ef574141"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "createdAt": {
+      "$date": "2025-12-24T10:19:04.993Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-29T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T11:45:40.039Z"
+    },
+    "vendorRate": 102
+  },
+  {
+    "_id": {
+      "$oid": "694f8895eb7e682a3b81a7e2"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "styleId": {
+      "$oid": "694f87b1cc478d28d2555e55"
+    },
+    "createdAt": {
+      "$date": "2025-12-27T07:19:49.361Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-26T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-27T07:19:49.361Z"
+    },
+    "vendorRate": 11.5
+  },
+  {
+    "_id": {
+      "$oid": "69511e1beb7e682a3b81af24"
+    },
+    "styleId": {
+      "$oid": "69501c30fb2685a002559de6"
+    },
+    "vendorId": {
+      "$oid": "69501be428d67e67cf85a309"
+    },
+    "createdAt": {
+      "$date": "2025-12-28T12:10:03.618Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-26T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:10:03.618Z"
+    },
+    "vendorRate": 63
+  },
+  {
+    "_id": {
+      "$oid": "69512259eb7e682a3b81af27"
+    },
+    "styleId": {
+      "$oid": "694fcb76556d51de4d3d0d47"
+    },
+    "vendorId": {
+      "$oid": "694fcb2d02b4d68d74f4a6e3"
+    },
+    "createdAt": {
+      "$date": "2025-12-28T12:28:09.158Z"
+    },
+    "effectiveDate": {
+      "$date": "2025-12-10T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-02T11:45:47.098Z"
+    },
+    "vendorRate": 120
+  },
+  {
+    "_id": {
+      "$oid": "6958eadbeb7e682a3b82eac4"
+    },
+    "styleId": {
+      "$oid": "6951254d9c699d1b480a2739"
+    },
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "createdAt": {
+      "$date": "2026-01-03T10:09:31.567Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:09:31.567Z"
+    },
+    "vendorRate": 200
+  },
+  {
+    "_id": {
+      "$oid": "6958eaeaeb7e682a3b82eac5"
+    },
+    "styleId": {
+      "$oid": "695125679c699d1b480a273a"
+    },
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "createdAt": {
+      "$date": "2026-01-03T10:09:46.001Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:09:46.001Z"
+    },
+    "vendorRate": 200
+  },
+  {
+    "_id": {
+      "$oid": "6958eb23eb7e682a3b82eac6"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "styleId": {
+      "$oid": "6956b88b0e7f75ce2a47f0fa"
+    },
+    "createdAt": {
+      "$date": "2026-01-03T10:10:43.718Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:10:43.718Z"
+    },
+    "vendorRate": 27
+  },
+  {
+    "_id": {
+      "$oid": "695bce7beb7e682a3b82f519"
+    },
+    "styleId": {
+      "$oid": "695bcc3f114ca5737fe59498"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "createdAt": {
+      "$date": "2026-01-05T14:45:15.357Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:45:15.357Z"
+    },
+    "vendorRate": 34
+  },
+  {
+    "_id": {
+      "$oid": "695bd302eb7e682a3b82f51b"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "styleId": {
+      "$oid": "694ad4533cbfbd3148cce896"
+    },
+    "createdAt": {
+      "$date": "2026-01-05T15:04:34.561Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-04T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T15:05:08.624Z"
+    },
+    "vendorRate": 47
+  },
+  {
+    "_id": {
+      "$oid": "695bd315eb7e682a3b82f51c"
+    },
+    "styleId": {
+      "$oid": "6949952e94af65bc8be8673f"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "createdAt": {
+      "$date": "2026-01-05T15:04:52.976Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T15:04:52.976Z"
+    },
+    "vendorRate": 45
+  },
+  {
+    "_id": {
+      "$oid": "695bd351eb7e682a3b82f51d"
+    },
+    "styleId": {
+      "$oid": "695bd13cfc67aee6af45d9ee"
+    },
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "createdAt": {
+      "$date": "2026-01-05T15:05:53.487Z"
+    },
+    "effectiveDate": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T15:05:53.487Z"
+    },
+    "vendorRate": 200
+  }
+]

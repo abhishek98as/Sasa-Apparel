@@ -333,8 +333,8 @@ export default function ProductionPage() {
   const totalInProgress = jobs.filter((j) => j.status === 'in-progress' && !j.isRework).length;
   const totalCompleted = jobs.filter((j) => j.status === 'completed').length;
   const totalRework = jobs.filter((j) => j.isRework || j.qcStatus === 'rework').length;
-  const totalPending = jobs.reduce((sum, j) => sum + (j.issuedPcs - j.returnedPcs), 0);
-  const totalCost = jobs.reduce((sum, j) => sum + j.returnedPcs * j.rate, 0);
+  const totalPending = jobs.reduce((sum, j) => sum + ((j.issuedPcs || 0) - (j.returnedPcs || 0)), 0);
+  const totalCost = jobs.reduce((sum, j) => sum + (j.returnedPcs || 0) * (j.rate || 0), 0);
 
   if (isLoading) {
     return <PageLoader />;

@@ -1,0 +1,41 @@
+[
+  {
+    "_id": {
+      "$oid": "694da3aed346783701fc3ae8"
+    },
+    "tenantId": null,
+    "userId": {
+      "$oid": "69498f3994af65bc8be8673a"
+    },
+    "userName": "Abhishek",
+    "userRole": "admin",
+    "exportType": "kpis",
+    "format": "csv",
+    "filters": {
+      "dateRange": {
+        "start": "2025-11-30T18:30:00.000Z",
+        "end": "2025-12-25T20:50:41.286Z"
+      }
+    },
+    "status": "completed",
+    "progress": 100,
+    "createdAt": {
+      "$date": "2025-12-25T20:50:54.283Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-25T20:50:59.817Z"
+    },
+    "startedAt": {
+      "$date": "2025-12-25T20:50:54.501Z"
+    },
+    "completedAt": {
+      "$date": "2025-12-25T20:50:59.817Z"
+    },
+    "expiresAt": {
+      "$date": "2025-12-25T21:50:59.817Z"
+    },
+    "fileSize": 0,
+    "fileUrl": "data:text/csv;base64,",
+    "rowCount": 0
+  }
+]

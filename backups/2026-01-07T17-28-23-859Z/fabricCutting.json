@@ -1,0 +1,419 @@
+[
+  {
+    "_id": {
+      "$oid": "694a9369e234a17438793a32"
+    },
+    "styleId": {
+      "$oid": "694a92976558be31ef574140"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 52,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-23T00:00:00.000Z"
+    },
+    "notes": "KIDS WEAR GIRLS",
+    "createdAt": {
+      "$date": "2025-12-23T13:04:41.696Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-26T05:02:36.039Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "694a938ce234a17438793a33"
+    },
+    "styleId": {
+      "$oid": "694a92c16558be31ef574141"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 60,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-23T00:00:00.000Z"
+    },
+    "notes": "GIRLS DRESS",
+    "createdAt": {
+      "$date": "2025-12-23T13:05:16.522Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T13:56:32.463Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "694a9904008419e34cdbce52"
+    },
+    "styleId": {
+      "$oid": "6949959d94af65bc8be86740"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricReceivedMeters": 463,
+    "cuttingReceivedPcs": 4400,
+    "cuttingInHouse": true,
+    "date": {
+      "$date": "2025-12-10T00:00:00.000Z"
+    },
+    "notes": "Blue + Yellow Colours Fabrics 463KG = 4400 pcs cutting received",
+    "createdAt": {
+      "$date": "2025-12-23T13:28:36.687Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T13:29:25.014Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "694a992ae234a17438793a34"
+    },
+    "styleId": {
+      "$oid": "6949959d94af65bc8be86740"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 1159,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-10T00:00:00.000Z"
+    },
+    "notes": "1159 cutting white print t-shirt",
+    "createdAt": {
+      "$date": "2025-12-23T13:29:14.878Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:16:03.535Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "694bb386a86a1c6ff7e4e117"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 2714,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-01T00:00:00.000Z"
+    },
+    "notes": "2704 Pcs mens Jacket + 10 additional",
+    "createdAt": {
+      "$date": "2025-12-24T09:33:58.759Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:05:32.887Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "694f87e4653f61c79ea299d2"
+    },
+    "styleId": {
+      "$oid": "694f87b1cc478d28d2555e55"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 3000,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-26T00:00:00.000Z"
+    },
+    "notes": "3K cutting rcvd jogger and T-shirt",
+    "createdAt": {
+      "$date": "2025-12-27T07:16:52.614Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-27T07:16:52.614Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694fcba5a75b5d451b978c9d"
+    },
+    "styleId": {
+      "$oid": "694fcb76556d51de4d3d0d47"
+    },
+    "vendorId": {
+      "$oid": "694fcb2d02b4d68d74f4a6e3"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 210,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-27T00:00:00.000Z"
+    },
+    "notes": "210 pcs total cutting in different sizes.",
+    "createdAt": {
+      "$date": "2025-12-27T12:05:57.539Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-27T12:05:57.539Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69501c6028d67e67cf85a30a"
+    },
+    "styleId": {
+      "$oid": "69501c30fb2685a002559de6"
+    },
+    "vendorId": {
+      "$oid": "69501be428d67e67cf85a309"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 243,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-27T00:00:00.000Z"
+    },
+    "notes": "250 red color pant",
+    "createdAt": {
+      "$date": "2025-12-27T17:50:24.619Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T12:48:06.848Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "695125b9f815ccf7bdf10b87"
+    },
+    "styleId": {
+      "$oid": "6951254d9c699d1b480a2739"
+    },
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 22,
+    "cuttingInHouse": true,
+    "date": {
+      "$date": "2025-12-27T00:00:00.000Z"
+    },
+    "notes": "22 kurta + 22 Pants",
+    "createdAt": {
+      "$date": "2025-12-28T12:42:33.903Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:57:50.312Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "695125dc9c699d1b480a273b"
+    },
+    "styleId": {
+      "$oid": "695125679c699d1b480a273a"
+    },
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 22,
+    "cuttingInHouse": true,
+    "date": {
+      "$date": "2025-12-27T00:00:00.000Z"
+    },
+    "notes": "22-Pant + 22-Kurta set",
+    "createdAt": {
+      "$date": "2025-12-28T12:43:08.885Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:57:58.810Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "69535bd164ec463acd47a744"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 252,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2025-12-30T00:00:00.000Z"
+    },
+    "notes": "Jacket New Cutting ",
+    "createdAt": {
+      "$date": "2025-12-30T04:57:53.130Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T04:57:53.130Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6957b56b93f3fcb0262e9d07"
+    },
+    "styleId": {
+      "$oid": "6956b88b0e7f75ce2a47f0fa"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 222,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2026-01-02T00:00:00.000Z"
+    },
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-02T12:09:15.056Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-04T12:00:53.752Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "695bcc5c7003fdc50b35e56c"
+    },
+    "styleId": {
+      "$oid": "695bcc3f114ca5737fe59498"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 500,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "notes": "500pcs recived",
+    "createdAt": {
+      "$date": "2026-01-05T14:36:12.510Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:36:12.510Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bd163fc67aee6af45d9ef"
+    },
+    "styleId": {
+      "$oid": "695bd13cfc67aee6af45d9ee"
+    },
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 40,
+    "cuttingInHouse": true,
+    "date": {
+      "$date": "2026-01-04T00:00:00.000Z"
+    },
+    "notes": "40pcs cutting",
+    "createdAt": {
+      "$date": "2026-01-05T14:57:39.401Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:57:39.401Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bd212fc67aee6af45d9f0"
+    },
+    "styleId": {
+      "$oid": "6949952e94af65bc8be8673f"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 114,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-05T15:00:34.632Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T15:00:34.632Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bd21efc67aee6af45d9f1"
+    },
+    "styleId": {
+      "$oid": "694ad4533cbfbd3148cce896"
+    },
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 334,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-05T15:00:46.649Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T15:00:46.649Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695cdb3662f7ccc355b5d5c7"
+    },
+    "styleId": {
+      "$oid": "695bb78d40314869a6ddf4e5"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "fabricReceivedMeters": 0,
+    "cuttingReceivedPcs": 205,
+    "cuttingInHouse": false,
+    "date": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-06T09:51:50.673Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-06T09:51:50.673Z"
+    }
+  }
+]

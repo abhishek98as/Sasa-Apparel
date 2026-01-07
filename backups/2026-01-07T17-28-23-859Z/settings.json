@@ -1,0 +1,27 @@
+[
+  {
+    "_id": {
+      "$oid": "694d61480bea786ca4f19d12"
+    },
+    "updatedAt": {
+      "$date": "2025-12-26T12:18:09.669Z"
+    },
+    "updatedBy": "694992ca739c3bcff5b78187",
+    "brandName": "SASA Apparels",
+    "brandLogo": "/sasa-apparels/assets/brand-logo_TuAsJAkdo",
+    "favicon": "/sasa-apparels/assets/favicon_wRndHsluH",
+    "mongoConfig": {
+      "username": "",
+      "password": "",
+      "atlasUrl": ""
+    },
+    "createdAt": {
+      "$date": "2025-12-25T16:07:36.782Z"
+    },
+    "imageKitConfig": {
+      "urlEndpoint": "",
+      "publicKey": "",
+      "privateKey": ""
+    }
+  }
+]

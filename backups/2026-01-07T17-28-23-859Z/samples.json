@@ -1,0 +1,30 @@
+[
+  {
+    "_id": {
+      "$oid": "694d8ab8bd282fe49be66245"
+    },
+    "createdAt": {
+      "$date": "2025-12-25T19:04:24.074Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-25T19:04:24.074Z"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "styleCode": "JACKET_PD01",
+    "styleName": "MENS_JACKET_DEC",
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "vendorName": "IKA Creation PVT LTD.",
+    "status": "requested",
+    "currentVersion": 1,
+    "expectedBy": {
+      "$date": "2025-12-26T00:00:00.000Z"
+    },
+    "images": [
+      "https://ik.imagekit.io/d6s8a2mzi/samples/references/file_aoOA68bk6"
+    ]
+  }
+]

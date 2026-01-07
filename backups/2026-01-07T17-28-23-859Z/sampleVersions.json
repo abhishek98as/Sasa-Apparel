@@ -1,0 +1,29 @@
+[
+  {
+    "_id": {
+      "$oid": "694d8ab8bd282fe49be66246"
+    },
+    "createdAt": {
+      "$date": "2025-12-25T19:04:24.074Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-25T19:04:24.074Z"
+    },
+    "sampleId": {
+      "$oid": "694d8ab8bd282fe49be66245"
+    },
+    "versionNumber": 1,
+    "submittedBy": {
+      "userId": {
+        "$oid": "69498f3994af65bc8be8673a"
+      },
+      "name": "Abhishek",
+      "role": "admin"
+    },
+    "status": "requested",
+    "attachments": [
+      "https://ik.imagekit.io/d6s8a2mzi/samples/references/file_aoOA68bk6"
+    ],
+    "notes": "test"
+  }
+]

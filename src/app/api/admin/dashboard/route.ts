@@ -150,7 +150,7 @@ export async function GET(request: NextRequest) {
             as: 'style',
           },
         },
-        { $unwind: '$style' },
+        { $unwind: { path: '$style', preserveNullAndEmptyArrays: true } },
         {
           $lookup: {
             from: COLLECTIONS.RATES,
@@ -178,10 +178,13 @@ export async function GET(request: NextRequest) {
             _id: null,
             total: {
               $sum: {
-                $multiply: ['$pcsShipped', { $ifNull: ['$rate.vendorRate', 0] }],
+                $multiply: [
+                  { $ifNull: ['$pcsShipped', 0] }, 
+                  { $ifNull: ['$rate.vendorRate', 0] }
+                ],
               },
             },
-            totalPieces: { $sum: '$pcsShipped' },
+            totalPieces: { $sum: { $ifNull: ['$pcsShipped', 0] } },
           },
         },
       ])

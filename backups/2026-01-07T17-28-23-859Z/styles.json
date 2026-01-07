@@ -1,0 +1,325 @@
+[
+  {
+    "_id": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "code": "JACKET_PD01",
+    "name": "MENS_JACKET_DEC",
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "fabricType": "Polyester",
+    "description": "Mens Jacket ",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:58:56.791Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:43:56.917Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949952e94af65bc8be8673f"
+    },
+    "code": "PINKDINO_PD02",
+    "name": "Pink Dino Shirt-Nov",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Pink Dino Shirt",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T18:59:58.316Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T15:00:08.547Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949959d94af65bc8be86740"
+    },
+    "code": "T-shirt_PD03",
+    "name": "T-Shirt_DEC",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Other",
+    "description": "Multi Print T-shirt",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:01:49.119Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:44:35.140Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694a92976558be31ef574140"
+    },
+    "code": "STB3765",
+    "name": "DRESS-Orange_GGT_DEC",
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "fabricType": "Other",
+    "description": "Kids wear dress (Girls)",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-23T13:01:11.031Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:44:18.149Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694a92c16558be31ef574141"
+    },
+    "code": "STB3837",
+    "name": "DRESS-Chiffon_Peach_DEC",
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "fabricType": "Other",
+    "description": "Kids wear dress (Girls)",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-23T13:01:53.283Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-23T17:44:26.559Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694ad4533cbfbd3148cce896"
+    },
+    "code": "GREEN_JEEPDINO_SHIRT",
+    "name": "Green Jeep Dino Shirt_Nov",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Green Jeep Dino Shirt",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-23T17:41:39.778Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:59:57.133Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694ad4993cbfbd3148cce897"
+    },
+    "code": "TSHIRT_NOV",
+    "name": "T-Shirt_NOV",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Multi-Print T-shirt 11Nov-30Nov-2025",
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-23T17:42:49.602Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:35:48.998Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694adb92fbfbe759ede9d2f0"
+    },
+    "code": "BLK_SHIRT_OCT",
+    "name": "Black Shirt_OCT",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Cotton",
+    "description": "Black shirt",
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-23T18:12:34.922Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T13:37:01.421Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694f87b1cc478d28d2555e55"
+    },
+    "code": "T-SHIRT_Huddies",
+    "name": "T-Shirt_Huddies_Jogger_DEC",
+    "vendorId": {
+      "$oid": "694993e694af65bc8be8673c"
+    },
+    "fabricType": "Other",
+    "description": "26-Dec Cutting recieved 3K T-shirt and jogger.",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-27T07:16:01.708Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:34:52.594Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694fcb76556d51de4d3d0d47"
+    },
+    "code": "AFFNITY_MENS-SHIRT",
+    "name": "MENS_SHIRT_DEC",
+    "vendorId": {
+      "$oid": "694fcb2d02b4d68d74f4a6e3"
+    },
+    "fabricType": "Other",
+    "description": "Mens shirt @putchi",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-27T12:05:10.842Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:35:24.473Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69501c30fb2685a002559de6"
+    },
+    "code": "FR_PANT",
+    "name": "Hello_KIDS_PANT_DEC",
+    "vendorId": {
+      "$oid": "69501be428d67e67cf85a309"
+    },
+    "fabricType": "Cotton",
+    "description": "250 + 250 = 500pcs total cutting",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-27T17:49:36.905Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:35:11.269Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6951254d9c699d1b480a2739"
+    },
+    "code": "PUTCHI-KURTASET-035",
+    "name": "Kurta Set Green_035_JAN",
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "fabricType": "Cotton",
+    "description": "",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-28T12:40:45.002Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:06:05.511Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695125679c699d1b480a273a"
+    },
+    "code": "PUTCHI-KURTASET_35P",
+    "name": "PUTCHI-KURTASET_PURPLE_JAN",
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "fabricType": "Cotton",
+    "description": "",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-28T12:41:11.076Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:05:53.241Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6956b88b0e7f75ce2a47f0fa"
+    },
+    "code": "Mens_BW_pants",
+    "name": "White Blue Pants_JAN",
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "fabricType": "Polyester",
+    "description": "",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-01-01T18:10:19.261Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:05:21.686Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bb78d40314869a6ddf4e5"
+    },
+    "code": "Blue-TOP",
+    "name": "BLUETOP_JAN",
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "fabricType": "Cotton",
+    "description": "205 pcs cutting...",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-01-05T13:07:25.023Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T13:07:25.023Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bcc3f114ca5737fe59498"
+    },
+    "code": "WHITETOP",
+    "name": "WHITE_TOPHOS_JAN",
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "fabricType": "Cotton",
+    "description": "500pcs recived",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-01-05T14:35:43.713Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:35:43.713Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bd13cfc67aee6af45d9ee"
+    },
+    "code": "GREENPRINT_02",
+    "name": "PTCHGreen_print Kurta pant_JAN",
+    "vendorId": {
+      "$oid": "6949946394af65bc8be8673d"
+    },
+    "fabricType": "Cotton",
+    "description": "",
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-01-05T14:57:00.844Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:59:27.161Z"
+    }
+  }
+]

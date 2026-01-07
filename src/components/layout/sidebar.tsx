@@ -30,6 +30,12 @@ import {
   Settings,
   PackageCheck,
   BarChart3,
+  DollarSign,
+  List,
+  ArrowRightLeft,
+  ShoppingCart,
+  TrendingDown,
+  RefreshCw,
 } from 'lucide-react';
 
 interface CRUDPermission {
@@ -75,15 +81,25 @@ const adminNavItems: NavItem[] = [
   { href: '/admin/production', label: 'Production', icon: Package, permissionKey: 'production' },
   { href: '/admin/ready-to-ship', label: 'Ready to Ship', icon: PackageCheck, permissionKey: 'shipments' },
   { href: '/admin/inventory', label: 'Inventory', icon: Boxes, permissionKey: 'inventory' },
+  { href: '/admin/inventory/items', label: '  └ Items', icon: List, permissionKey: 'inventory' },
+  { href: '/admin/inventory/transactions', label: '  └ Transactions', icon: ArrowRightLeft, permissionKey: 'inventory' },
+  { href: '/admin/inventory/purchase-orders', label: '  └ Purchase Orders', icon: ShoppingCart, permissionKey: 'inventory' },
+  { href: '/admin/inventory/stock-report', label: '  └ Stock Report', icon: BarChart3, permissionKey: 'inventory' },
   { href: '/admin/qc', label: 'Quality Control', icon: ShieldCheck, permissionKey: 'qc' },
   { href: '/admin/shipments', label: 'Shipments', icon: Truck, permissionKey: 'shipments' },
   { href: '/admin/rates', label: 'Rates & Profit', icon: CircleDollarSign, permissionKey: 'rates' },
   { href: '/admin/payments', label: 'Payments', icon: Wallet, permissionKey: 'payments' },
+  { href: '/admin/financial', label: 'Financial', icon: DollarSign, permissionKey: 'rates' },
+  { href: '/admin/financial/dashboard', label: '  └ Dashboard', icon: TrendingUp, permissionKey: 'rates' },
+  { href: '/admin/financial/revenue', label: '  └ Revenue Analysis', icon: TrendingUp, permissionKey: 'rates' },
+  { href: '/admin/financial/costs', label: '  └ Cost Analysis', icon: TrendingDown, permissionKey: 'rates' },
+  { href: '/admin/financial/profit-loss', label: '  └ P&L Statement', icon: FileText, permissionKey: 'rates' },
+  { href: '/admin/financial/turnover', label: '  └ Turnover & Ratios', icon: RefreshCw, permissionKey: 'rates' },
   { href: '/admin/approvals', label: 'Approvals', icon: BadgeCheck, permissionKey: 'approvals' },
   { href: '/admin/reports', label: 'Reports', icon: FileText, permissionKey: 'reports' },
   { href: '/admin/users', label: 'Users', icon: UserCircle, permissionKey: 'users' },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
-  { href: '/samples', label: 'Samples', icon: Boxes }, // Added Samples
+  { href: '/samples', label: 'Samples', icon: Boxes },
 ];
 
 const vendorNavItems: NavItem[] = [

@@ -1,0 +1,325 @@
+[
+  {
+    "_id": {
+      "$oid": "694bbc9bcd95d112fde880b6"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 166,
+    "date": {
+      "$date": "2025-12-24T00:00:00.000Z"
+    },
+    "challanNo": "CH25127199",
+    "notes": "Shomveer... ",
+    "createdAt": {
+      "$date": "2025-12-24T10:12:43.614Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:12:43.614Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694bbccf46ac0d84eeac1207"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 402,
+    "date": {
+      "$date": "2025-12-23T00:00:00.000Z"
+    },
+    "challanNo": "CH25126360",
+    "notes": "Shomveer ",
+    "createdAt": {
+      "$date": "2025-12-24T10:13:35.381Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:13:35.381Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694bbd09cd95d112fde880b7"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 70,
+    "date": {
+      "$date": "2025-12-21T00:00:00.000Z"
+    },
+    "challanNo": "CH25129998",
+    "notes": "Shomveer ...  Size - L ",
+    "createdAt": {
+      "$date": "2025-12-24T10:14:33.903Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-24T10:14:33.903Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694e6b2aa8a1561f75a3a8e2"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 230,
+    "date": {
+      "$date": "2025-12-26T00:00:00.000Z"
+    },
+    "challanNo": "CH25123622",
+    "notes": "E - Rikshaw Atul 230 pcs ",
+    "createdAt": {
+      "$date": "2025-12-26T11:02:02.438Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-26T11:02:02.438Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "69511d32f3df71c7e2d196e0"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 1846,
+    "date": {
+      "$date": "2025-12-26T00:00:00.000Z"
+    },
+    "challanNo": "CH25123244",
+    "notes": "",
+    "createdAt": {
+      "$date": "2025-12-28T12:06:10.587Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:06:10.587Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6953d4615fb26175acd39c44"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "styleId": {
+      "$oid": "694a92c16558be31ef574141"
+    },
+    "pcsShipped": 60,
+    "date": {
+      "$date": "2025-12-30T00:00:00.000Z"
+    },
+    "challanNo": "CH25128672",
+    "notes": "112 pcs total shipped to Stylo-Bugs",
+    "createdAt": {
+      "$date": "2025-12-30T13:32:17.520Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T13:32:17.520Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6953d4625fb26175acd39c45"
+    },
+    "vendorId": {
+      "$oid": "694994aa94af65bc8be8673e"
+    },
+    "styleId": {
+      "$oid": "694a92976558be31ef574140"
+    },
+    "pcsShipped": 52,
+    "date": {
+      "$date": "2025-12-30T00:00:00.000Z"
+    },
+    "challanNo": "CH25128672",
+    "notes": "112 pcs total shipped to Stylo-Bugs",
+    "createdAt": {
+      "$date": "2025-12-30T13:32:18.439Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-30T13:32:18.439Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6955745aaebdc3b9ed5a721a"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 32,
+    "date": {
+      "$date": "2025-12-31T00:00:00.000Z"
+    },
+    "challanNo": "CH26016350",
+    "notes": "",
+    "createdAt": {
+      "$date": "2025-12-31T19:07:06.974Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-31T19:09:07.469Z"
+    },
+    "sizeBreakdown": []
+  },
+  {
+    "_id": {
+      "$oid": "695778813f6aedacd44899b6"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 188,
+    "date": {
+      "$date": "2026-01-02T00:00:00.000Z"
+    },
+    "challanNo": "CH26013996",
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-02T07:49:21.037Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-02T07:49:21.037Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6957b59a35fc5df6f40187e2"
+    },
+    "vendorId": {
+      "$oid": "6949933f94af65bc8be8673b"
+    },
+    "styleId": {
+      "$oid": "694994f0b62c0a1260206544"
+    },
+    "pcsShipped": 32,
+    "date": {
+      "$date": "2026-01-02T00:00:00.000Z"
+    },
+    "challanNo": "CH26012143",
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-02T12:10:02.752Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-02T12:10:02.752Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6958ea436321ef0ae37dc479"
+    },
+    "vendorId": {
+      "$oid": "69501be428d67e67cf85a309"
+    },
+    "styleId": {
+      "$oid": "69501c30fb2685a002559de6"
+    },
+    "pcsShipped": 243,
+    "date": {
+      "$date": "2026-01-02T00:00:00.000Z"
+    },
+    "challanNo": "CH26012166",
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-03T10:06:59.495Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T10:06:59.495Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695a4aa69ed7443cc9b1eeea"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "styleId": {
+      "$oid": "6956b88b0e7f75ce2a47f0fa"
+    },
+    "pcsShipped": 59,
+    "date": {
+      "$date": "2026-01-04T00:00:00.000Z"
+    },
+    "challanNo": "CH26014756",
+    "notes": "55pcs shipped 4 remains",
+    "createdAt": {
+      "$date": "2026-01-04T11:10:30.565Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-04T11:10:30.565Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695a694f58ae64598ac2f7a0"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "styleId": {
+      "$oid": "6956b88b0e7f75ce2a47f0fa"
+    },
+    "pcsShipped": 82,
+    "date": {
+      "$date": "2026-01-04T00:00:00.000Z"
+    },
+    "challanNo": "CH26013203",
+    "notes": "86 = (82 this shipment + 4 previous)",
+    "createdAt": {
+      "$date": "2026-01-04T13:21:19.853Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-04T13:21:19.853Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "695bb408ee044001699525d9"
+    },
+    "vendorId": {
+      "$oid": "6953d559e4b4919a5f2fc3f1"
+    },
+    "styleId": {
+      "$oid": "6956b88b0e7f75ce2a47f0fa"
+    },
+    "pcsShipped": 81,
+    "date": {
+      "$date": "2026-01-05T00:00:00.000Z"
+    },
+    "challanNo": "CH26011307",
+    "notes": "",
+    "createdAt": {
+      "$date": "2026-01-05T12:52:24.524Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T12:52:24.524Z"
+    }
+  }
+]

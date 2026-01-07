@@ -1,174 +1,138 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
-import { inventoryItemSchema } from '@/lib/validations';
+import { ObjectId } from 'mongodb';
 
 export const dynamic = 'force-dynamic';
 
+// GET /api/inventory/items/[id] - Get single item
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || !['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { id } = await params;
-    if (!ObjectId.isValid(id)) {
-      return NextResponse.json({ success: false, error: 'Invalid item ID' }, { status: 400 });
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const db = await getDb();
-    const item = await db
-      .collection(COLLECTIONS.INVENTORY_ITEMS)
-      .findOne({ _id: new ObjectId(id) });
+    const item = await db.collection(COLLECTIONS.INVENTORY_ITEMS).findOne({
+      _id: new ObjectId(params.id)
+    });
 
     if (!item) {
-      return NextResponse.json({ success: false, error: 'Item not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Item not found' },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ success: true, data: item });
-  } catch (error) {
-    console.error('Inventory item GET error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Error fetching inventory item:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to fetch item' },
+      { status: 500 }
+    );
   }
 }
 
+// PUT /api/inventory/items/[id] - Update item
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { id } = await params;
-    if (!ObjectId.isValid(id)) {
-      return NextResponse.json({ success: false, error: 'Invalid item ID' }, { status: 400 });
-    }
-
-    const body = await request.json();
-    const validation = inventoryItemSchema.partial().safeParse(body);
-    if (!validation.success) {
-      return NextResponse.json(
-        { success: false, error: validation.error.errors[0].message },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const db = await getDb();
-    const data = {
-      ...validation.data,
-      vendorId: validation.data.vendorId ? new ObjectId(validation.data.vendorId) : undefined,
-      updatedAt: new Date(),
+    const body = await request.json();
+
+    const updateData: any = {
+      updatedAt: new Date()
     };
 
-    // Managers require admin approval
-    if (session.user.role === 'manager') {
-      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
-        entityType: 'inventoryItem',
-        entityId: new ObjectId(id),
-        action: 'update',
-        payload: {
-          collection: COLLECTIONS.INVENTORY_ITEMS,
-          type: 'update',
-          data,
-        },
-        requestedBy: {
-          userId: new ObjectId(session.user.id),
-          name: session.user.name,
-          role: session.user.role,
-        },
-        status: 'pending',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+    // Only update provided fields
+    if (body.itemName) updateData.itemName = body.itemName;
+    if (body.category) updateData.category = body.category;
+    if (body.subCategory !== undefined) updateData.subCategory = body.subCategory;
+    if (body.unit) updateData.unit = body.unit;
+    if (body.reorderLevel !== undefined) updateData.reorderLevel = body.reorderLevel;
+    if (body.maxStockLevel !== undefined) updateData.maxStockLevel = body.maxStockLevel;
+    if (body.supplier !== undefined) updateData.supplier = body.supplier;
+    if (body.specifications !== undefined) updateData.specifications = body.specifications;
+    if (body.isActive !== undefined) updateData.isActive = body.isActive;
 
+    const result = await db.collection(COLLECTIONS.INVENTORY_ITEMS).updateOne(
+      { _id: new ObjectId(params.id) },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
       return NextResponse.json(
-        { success: true, data: { approvalId: approval.insertedId }, message: 'Update submitted for approval' },
-        { status: 202 }
+        { success: false, error: 'Item not found' },
+        { status: 404 }
       );
     }
 
-    const result = await db.collection(COLLECTIONS.INVENTORY_ITEMS).findOneAndUpdate(
-      { _id: new ObjectId(id) },
-      { $set: data },
-      { returnDocument: 'after' }
+    return NextResponse.json({
+      success: true,
+      message: 'Item updated successfully'
+    });
+  } catch (error: any) {
+    console.error('Error updating inventory item:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to update item' },
+      { status: 500 }
     );
-
-    if (!result) {
-      return NextResponse.json({ success: false, error: 'Item not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true, data: result, message: 'Item updated successfully' });
-  } catch (error) {
-    console.error('Inventory item PUT error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
+// DELETE /api/inventory/items/[id] - Soft delete item
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || !['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { id } = await params;
-    if (!ObjectId.isValid(id)) {
-      return NextResponse.json({ success: false, error: 'Invalid item ID' }, { status: 400 });
+    if (!session || session.user.role !== 'admin') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const db = await getDb();
+    
+    // Soft delete by setting isActive = false
+    const result = await db.collection(COLLECTIONS.INVENTORY_ITEMS).updateOne(
+      { _id: new ObjectId(params.id) },
+      {
+        $set: {
+          isActive: false,
+          updatedAt: new Date()
+        }
+      }
+    );
 
-    if (session.user.role === 'manager') {
-      const approval = await db.collection(COLLECTIONS.APPROVALS).insertOne({
-        entityType: 'inventoryItem',
-        entityId: new ObjectId(id),
-        action: 'delete',
-        payload: {
-          collection: COLLECTIONS.INVENTORY_ITEMS,
-          type: 'softDelete',
-        },
-        requestedBy: {
-          userId: new ObjectId(session.user.id),
-          name: session.user.name,
-          role: session.user.role,
-        },
-        status: 'pending',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-
+    if (result.matchedCount === 0) {
       return NextResponse.json(
-        { success: true, data: { approvalId: approval.insertedId }, message: 'Deletion submitted for approval' },
-        { status: 202 }
+        { success: false, error: 'Item not found' },
+        { status: 404 }
       );
     }
 
-    const result = await db.collection(COLLECTIONS.INVENTORY_ITEMS).findOneAndUpdate(
-      { _id: new ObjectId(id) },
-      { $set: { isActive: false, updatedAt: new Date() } },
-      { returnDocument: 'after' }
+    return NextResponse.json({
+      success: true,
+      message: 'Item deleted successfully'
+    });
+  } catch (error: any) {
+    console.error('Error deleting inventory item:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to delete item' },
+      { status: 500 }
     );
-
-    if (!result) {
-      return NextResponse.json({ success: false, error: 'Item not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true, message: 'Item deactivated successfully' });
-  } catch (error) {
-    console.error('Inventory item DELETE error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
-

@@ -1,92 +1,122 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { ObjectId } from 'mongodb';
 import { authOptions } from '@/lib/auth';
 import { getDb, COLLECTIONS } from '@/lib/mongodb';
-import { inventoryItemSchema } from '@/lib/validations';
+import { ObjectId } from 'mongodb';
 
 export const dynamic = 'force-dynamic';
 
-// List inventory items
+// GET /api/inventory/items - List all inventory items
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const searchParams = request.nextUrl.searchParams;
-    const type = searchParams.get('type');
-    const q = searchParams.get('q');
-    const lowStockOnly = searchParams.get('lowStock') === 'true';
-
-    const query: Record<string, unknown> = {};
-    if (type) query.type = type;
-    if (q) query.name = { $regex: q, $options: 'i' };
-    if (lowStockOnly) query.$expr = { $lt: ['$currentStock', '$minStock'] };
-
     const db = await getDb();
+    const searchParams = request.nextUrl.searchParams;
+    
+    const category = searchParams.get('category');
+    const active = searchParams.get('active');
+    const search = searchParams.get('search');
+    const lowStock = searchParams.get('lowStock');
+
+    const filter: any = {};
+    
+    if (category) filter.category = category;
+    if (active !== null) filter.isActive = active === 'true';
+    if (search) {
+      filter.$or = [
+        { itemCode: { $regex: search, $options: 'i' } },
+        { itemName: { $regex: search, $options: 'i' } }
+      ];
+    }
+    if (lowStock === 'true') {
+      filter.$expr = { $lte: ['$currentStock', '$reorderLevel'] };
+    }
+
     const items = await db
       .collection(COLLECTIONS.INVENTORY_ITEMS)
-      .find(query)
-      .sort({ name: 1 })
+      .find(filter)
+      .sort({ itemName: 1 })
       .toArray();
 
-    return NextResponse.json({ success: true, data: items });
-  } catch (error) {
-    console.error('Inventory items GET error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({
+      success: true,
+      data: items,
+      count: items.length
+    });
+  } catch (error: any) {
+    console.error('Error fetching inventory items:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to fetch items' },
+      { status: 500 }
+    );
   }
 }
 
-// Create inventory item
+// POST /api/inventory/items - Create new inventory item
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await request.json();
-    const validation = inventoryItemSchema.safeParse(body);
-    if (!validation.success) {
-      return NextResponse.json(
-        { success: false, error: validation.error.errors[0].message },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const db = await getDb();
-    const now = new Date();
-    const data = {
-      ...validation.data,
-      vendorId: validation.data.vendorId ? new ObjectId(validation.data.vendorId) : undefined,
-      createdAt: now,
-      updatedAt: now,
-    };
+    const body = await request.json();
 
-    const existingSku = await db
-      .collection(COLLECTIONS.INVENTORY_ITEMS)
-      .findOne({ sku: validation.data.sku });
-    if (existingSku) {
+    // Validate required fields
+    if (!body.itemCode || !body.itemName || !body.category || !body.unit) {
       return NextResponse.json(
-        { success: false, error: 'SKU already exists' },
+        { success: false, error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    const result = await db.collection(COLLECTIONS.INVENTORY_ITEMS).insertOne(data);
-    const item = await db
-      .collection(COLLECTIONS.INVENTORY_ITEMS)
-      .findOne({ _id: result.insertedId });
+    // Check if item code already exists
+    const existing = await db.collection(COLLECTIONS.INVENTORY_ITEMS).findOne({
+      itemCode: body.itemCode
+    });
 
+    if (existing) {
+      return NextResponse.json(
+        { success: false, error: 'Item code already exists' },
+        { status: 400 }
+      );
+    }
+
+    const newItem = {
+      itemCode: body.itemCode,
+      itemName: body.itemName,
+      category: body.category,
+      subCategory: body.subCategory || '',
+      unit: body.unit,
+      currentStock: body.currentStock || 0,
+      weightedAverageCost: body.weightedAverageCost || 0,
+      totalValue: (body.currentStock || 0) * (body.weightedAverageCost || 0),
+      reorderLevel: body.reorderLevel || 0,
+      maxStockLevel: body.maxStockLevel || 0,
+      supplier: body.supplier || '',
+      specifications: body.specifications || {},
+      isActive: body.isActive !== false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    const result = await db.collection(COLLECTIONS.INVENTORY_ITEMS).insertOne(newItem);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Inventory item created successfully',
+      data: { _id: result.insertedId, ...newItem }
+    });
+  } catch (error: any) {
+    console.error('Error creating inventory item:', error);
     return NextResponse.json(
-      { success: true, data: item, message: 'Item created successfully' },
-      { status: 201 }
+      { success: false, error: error.message || 'Failed to create item' },
+      { status: 500 }
     );
-  } catch (error) {
-    console.error('Inventory items POST error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
-

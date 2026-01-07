@@ -1,0 +1,202 @@
+[
+  {
+    "_id": {
+      "$oid": "694995ff94af65bc8be86741"
+    },
+    "name": "Kishan Master Group",
+    "phone": "+91233456783",
+    "address": "Gurgaon",
+    "specialization": "Shirt/Dress/Jacket",
+    "skills": [
+      "Cotton,Dress, Jacket"
+    ],
+    "dailyCapacity": 36,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:03:27.567Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-06T09:49:51.686Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949963394af65bc8be86742"
+    },
+    "name": "DILSHAD Group",
+    "phone": "+91234567890",
+    "address": "Gurgaon",
+    "specialization": "Shirt/Dress",
+    "skills": [
+      "Cotton/Polyester"
+    ],
+    "dailyCapacity": 24,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:04:19.255Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-03T11:30:24.139Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949966494af65bc8be86743"
+    },
+    "name": "Upender Master Group",
+    "phone": "+91234567890",
+    "address": "Gurgaon",
+    "specialization": "Shirt/Jacket/Dress",
+    "skills": [
+      "Cotton/Polyester"
+    ],
+    "dailyCapacity": 24,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:05:08.570Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:05:08.570Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6949968894af65bc8be86744"
+    },
+    "name": "Suraj Group",
+    "phone": "+91234567890",
+    "address": "Gurgaon",
+    "specialization": "Shirt/Dress/Jacket",
+    "skills": [
+      "Cotton,Polyester"
+    ],
+    "dailyCapacity": 36,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:05:44.014Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:05:44.014Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694996a4b62c0a1260206545"
+    },
+    "name": "Anil Master",
+    "phone": "+91234567890",
+    "address": "Gurgaon",
+    "specialization": "Shirt/Dress",
+    "skills": [
+      "Cotton,Silk"
+    ],
+    "dailyCapacity": 12,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:06:12.386Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:06:12.386Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694996c2b62c0a1260206546"
+    },
+    "name": "Ajeet Mandal",
+    "phone": "+91234567890",
+    "address": "Gurgaon",
+    "specialization": "Shirt/Dress/Jacket",
+    "skills": [
+      "Cotton,Polyester"
+    ],
+    "dailyCapacity": 12,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-22T19:06:42.321Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-22T19:06:42.321Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694996f0b62c0a1260206547"
+    },
+    "name": "Sandhya(T-shirt) Group",
+    "phone": "+91234567890",
+    "address": "Gurgaon",
+    "specialization": "T-shirt",
+    "skills": [
+      "T-shirt"
+    ],
+    "dailyCapacity": 500,
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-22T19:07:28.789Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-04T15:45:29.631Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694ad53e3cbfbd3148cce898"
+    },
+    "name": "Sudhir(T-shirt)Group",
+    "phone": "+911234567898",
+    "address": "Gurgaon",
+    "specialization": "T-shirt",
+    "skills": [
+      "T-Shirt"
+    ],
+    "dailyCapacity": 1000,
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-23T17:45:34.596Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-28T12:36:06.095Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694baf4e822b85f9d290243f"
+    },
+    "name": "PINTU_TSHIRT_GROUP",
+    "phone": "+911234567893",
+    "address": "Gurgaon",
+    "specialization": "T-Shirt",
+    "skills": [
+      "T-Shirt"
+    ],
+    "dailyCapacity": 300,
+    "isActive": true,
+    "createdAt": {
+      "$date": "2025-12-24T09:15:58.680Z"
+    },
+    "updatedAt": {
+      "$date": "2026-01-05T14:51:12.808Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "694bafb9b309f08d4da565c3"
+    },
+    "name": "Dihadi Tailors",
+    "phone": "+91234567364",
+    "address": "Gurgaon",
+    "specialization": "Shirt",
+    "skills": [
+      "Cotton"
+    ],
+    "dailyCapacity": 20,
+    "isActive": false,
+    "createdAt": {
+      "$date": "2025-12-24T09:17:45.830Z"
+    },
+    "updatedAt": {
+      "$date": "2025-12-31T12:02:40.675Z"
+    }
+  }
+]
